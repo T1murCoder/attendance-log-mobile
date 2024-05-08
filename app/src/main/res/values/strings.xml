@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">AttendanceLogApp</string>
+    <string name="lessons">Lessons</string>
+    <string name="groups">Groups</string>
+    <string name="profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="groups_test_text">Здесь пока нет групп</string>
+    <string name="lessons_test_text">У вас пока нет занятий</string>
+    <string name="profile_test_text">Профиль</string>
 </resources>
