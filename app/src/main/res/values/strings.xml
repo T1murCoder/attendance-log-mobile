@@ -8,4 +8,9 @@
     <string name="groups_test_text">Здесь пока нет групп</string>
     <string name="lessons_test_text">У вас пока нет занятий</string>
     <string name="profile_test_text">Профиль</string>
+    <string name="grup_list_item_text">Group_name</string>
+    <string name="groups_list_item_content_button_description">Open journal</string>
+    <string name="groups_fab_content_description">Create new journal</string>
+    <string name="groups_text">Группы</string>
+    <string name="password_edit_text_hint">Password</string>
 </resources>

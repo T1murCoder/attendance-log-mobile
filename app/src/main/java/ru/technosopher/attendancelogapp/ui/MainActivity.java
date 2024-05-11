@@ -1,7 +1,6 @@
-package ru.technosopher.attendancelogapp;
+package ru.technosopher.attendancelogapp.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -9,21 +8,19 @@ import android.os.Bundle;
 
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
+import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-    private ChipNavigationBar navigationBar;
     private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        navigationBar = findViewById(R.id.bottom_navigation_bar);
-
+        ChipNavigationBar navigationBar = findViewById(R.id.bottom_navigation_bar);
         navigationBar.setOnItemSelectedListener(i -> {
-
+            int a = navigationBar.getSelectedItemId(); // TODO (check current item selected)
             navController = Navigation.findNavController(MainActivity.this, R.id.fragmentContainerView);
 
             if (i == R.id.lessons) {
