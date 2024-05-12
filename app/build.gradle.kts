@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    
     namespace = "ru.technosopher.attendancelogapp"
     compileSdk = 34
 
@@ -39,12 +40,17 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("com.google.code.gson:gson:2.10")
 
-    implementation("com.android.support:design:28.0.0")
-    implementation("io.ak1:bubbletabbar:1.0.8")
+    implementation("com.squareup.picasso:picasso:2.8")
+
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 
     implementation("com.github.ismaeldivita:chip-navigation-bar:1.4.0")
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.22")
+
     implementation("androidx.navigation:navigation-fragment:2.7.7")
     implementation("androidx.navigation:navigation-ui:2.7.7")
 

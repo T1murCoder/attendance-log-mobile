@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_gray"
+    android:padding="20dp"
+    tools:context=".ui.profile.ProfileFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/avatar_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/profile_new_image_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/profile_avatar_iv"
+                android:layout_alignBottom="@id/profile_avatar_iv"
+                android:backgroundTint="@color/main_blue"
+                android:clickable="true"
+                android:contentDescription="@string/groups_fab_content_description"
+                android:src="@drawable/ic_new_avatar"
+                android:tint="@color/white"
+                app:fabCustomSize="69dp" />
+
+            <ImageView
+                android:id="@+id/profile_avatar_iv"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:src="@drawable/empty_avatar_image" />
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Основная информация"
+                android:textSize="16sp"
+                android:layout_marginBottom="20sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Login"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/main_gray"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/profile_login_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="textEnd"
+                        android:text="login"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"/>
+                    <View
+                        android:layout_width="40dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Фамилия"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/main_gray"
+                        android:textSize="14sp"/>
+
+                    <EditText
+                        android:id="@+id/profile_surname_et"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Surname"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/inter_regular"
+                        android:focusable="false"
+                        android:textAlignment="textEnd"/>
+
+                    <ImageButton
+                        android:id="@+id/profile_surname_edit_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_redact"
+                        android:backgroundTint="@color/background_gray"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Имя"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/main_gray"
+                        android:textSize="14sp"/>
+
+                    <EditText
+                        android:id="@+id/profile_name_et"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Name"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/inter_regular"
+                        android:focusable="false"
+                        android:textAlignment="textEnd"/>
+
+                    <ImageButton
+                        android:id="@+id/profile_name_edit_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_redact"
+                        android:backgroundTint="@color/background_gray"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Telegram"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/main_gray"
+                        android:textSize="14sp"/>
+
+                    <EditText
+                        android:id="@+id/profile_telegram_et"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="*telegram"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/inter_regular"
+                        android:focusable="false"
+                        android:textAlignment="textEnd"/>
+
+                    <ImageButton
+                        android:id="@+id/profile_telegram_edit_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_redact"
+                        android:backgroundTint="@color/background_gray"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Github"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/main_gray"
+                        android:textSize="14sp"/>
+
+                    <EditText
+                        android:id="@+id/profile_github_et"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="github_link"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/inter_regular"
+                        android:focusable="false"
+                        android:textAlignment="textEnd"/>
+
+                    <ImageButton
+                        android:id="@+id/profile_github_edit_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_redact"
+                        android:backgroundTint="@color/background_gray"/>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Напоминания"
+                android:textSize="16sp"
+                android:layout_marginBottom="20sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Включить напоминания"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"/>
+                    <CheckBox
+                        android:id="@+id/profile_notify_cb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Напоминать о занятии"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"/>
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_weight="2">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Выход из аккаунта"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/main_red"
+                    android:textSize="14sp"/>
+
+                <ImageButton
+                    android:id="@+id/profile_logout_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_logout"
+                    android:backgroundTint="@color/background_gray"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>
