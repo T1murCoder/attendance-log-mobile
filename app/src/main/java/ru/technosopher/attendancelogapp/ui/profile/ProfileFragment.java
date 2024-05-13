@@ -41,6 +41,7 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentProfileBinding.bind(view);
         viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), state -> {
             TeacherEntity teacher = state.getTeacher();
             if (teacher == null) return;

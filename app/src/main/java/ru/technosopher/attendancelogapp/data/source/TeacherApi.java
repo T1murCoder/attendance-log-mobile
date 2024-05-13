@@ -22,8 +22,8 @@ public interface TeacherApi {
     @GET("teacher/login")
     Call<TeacherDto> getTeacherById();
 
-    @GET("")
-    Call<TeacherDto> getProfile();
+//    @GET("")
+//    Call<TeacherDto> getProfile();
 
     @GET("teacher/username/{username}")
     Call<Void> isExists(@Path("username") String login);

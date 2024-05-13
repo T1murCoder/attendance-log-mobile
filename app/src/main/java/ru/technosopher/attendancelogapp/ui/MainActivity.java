@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
         if (navigationBar != null) navigationBar.setVisibility(View.VISIBLE);
     }
 
-    private void fragmentNavigation(int currentFragment, int destinationFragment) {
+    private void fragmentNavigation(int previousFragment, int destinationFragment) {
         navController = Navigation.findNavController(MainActivity.this, R.id.fragmentContainerView);
 
         if (destinationFragment == R.id.lessons) {

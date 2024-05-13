@@ -67,11 +67,13 @@ public class TeacherRepositoryImpl implements TeacherRepository, SignTeacherRepo
     @Override
     public void loginTeacher(@NonNull String login, @NonNull String password, Consumer<Status<Void>> callback) {
         credentialsDataSource.updateLogin(login, password);
+        teacherApi = RetrofitFactory.getInstance().getTeacherApi();
         // TODO( DO smth with login data )
         teacherApi.login().enqueue(new CallToConsumer<>(
                 callback,
                 dto -> null
         ));
+
     }
 
     @Override

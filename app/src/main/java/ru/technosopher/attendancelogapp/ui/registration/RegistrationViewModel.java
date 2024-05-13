@@ -71,7 +71,7 @@ public class RegistrationViewModel extends ViewModel {
                 return;
             }
             if (status.getStatusCode() == 200) {
-                mutableErrorLiveData.postValue("This account is already exists. Want to login?");
+                mutableErrorLiveData.postValue("This login is already exists. Want to login?");
                 return;
             }
             if (status.getStatusCode() == 404) {

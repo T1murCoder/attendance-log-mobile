@@ -11,11 +11,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentLoginBinding;
 import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
+import ru.technosopher.attendancelogapp.ui.profile.ProfileViewModel;
 import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
 
 public class LoginFragment extends Fragment {
@@ -40,11 +42,11 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentLoginBinding.bind(view);
+        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         try {
             navigationBarChangeListener.hideNavigationBar();
-        } catch (ClassCastException ignored) {
-        }
+        } catch (ClassCastException ignored) {}
 
         binding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +71,12 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        binding.loginSignUpTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registrationFragment);
+            }
+        });
         subscribe(viewModel);
     }
 
@@ -83,7 +91,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void subscribe(LoginViewModel viewModel) {
-        viewModel.errorLiveData.observe(getViewLifecycleOwner(), error->{
+        viewModel.errorLiveData.observe(getViewLifecycleOwner(), error -> {
             binding.loginAccountErrorTv.setVisibility(View.VISIBLE);
             binding.loginAccountErrorTv.setText(error);
         });

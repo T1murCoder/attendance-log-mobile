@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentRegistrationBinding;
 import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
+import ru.technosopher.attendancelogapp.ui.profile.ProfileViewModel;
 import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
 
 public class RegistrationFragment extends Fragment {
@@ -39,6 +41,7 @@ public class RegistrationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentRegistrationBinding.bind(view);
+        viewModel = new ViewModelProvider(this).get(RegistrationViewModel.class);
 
         try {
             navigationBarChangeListener.hideNavigationBar();
@@ -81,6 +84,12 @@ public class RegistrationFragment extends Fragment {
             }
         });
 
+        binding.registrationSignInTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_registrationFragment_to_loginFragment);
+            }
+        });
         subscribe(viewModel);
     }
 

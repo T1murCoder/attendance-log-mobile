@@ -21,7 +21,7 @@ public class ProfileViewModel extends ViewModel {
     );
 
     public void load(@NonNull String id){
-        mutableStateLiveData.setValue(new State(null, null, true));
+        //mutableStateLiveData.setValue(new State(null, null, true));
         getTeacherByIdUseCase.execute(id, status->{
             mutableStateLiveData.postValue(new State(
                     status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
@@ -36,12 +36,9 @@ public class ProfileViewModel extends ViewModel {
         private final String errorMessage;
         @Nullable
         private final TeacherEntity teacher;
-        private final boolean isLoading;
-
         public State(@Nullable String errorMessage, @Nullable TeacherEntity teacher, boolean isLoading) {
             this.errorMessage = errorMessage;
             this.teacher = teacher;
-            this.isLoading = isLoading;
         }
 
         @Nullable
@@ -54,8 +51,5 @@ public class ProfileViewModel extends ViewModel {
             return errorMessage;
         }
 
-        public boolean isLoading(){
-            return isLoading;
-        }
     }
 }

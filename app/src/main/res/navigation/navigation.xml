@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/registrationFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/lessonsFragment"
@@ -60,10 +60,12 @@
         tools:layout="@layout/fragment_registration">
         <action
             android:id="@+id/action_registrationFragment_to_loginFragment"
-            app:destination="@id/registrationFragment" />
+            app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_registrationFragment_to_lessonsFragment"
-            app:destination="@id/lessonsFragment" />
+            app:destination="@id/lessonsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
 
 
@@ -74,7 +76,9 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_registrationFragment"
-            app:destination="@id/registrationFragment" />
+            app:destination="@id/registrationFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
         <action
             android:id="@+id/action_loginFragment_to_lessonsFragment"
             app:destination="@id/lessonsFragment" />

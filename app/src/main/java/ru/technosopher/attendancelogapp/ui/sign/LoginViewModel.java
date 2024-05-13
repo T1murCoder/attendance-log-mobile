@@ -64,7 +64,7 @@ public class LoginViewModel extends ViewModel {
         isTeacherExistsUseCase.execute(currentLogin, status -> {
 
             if (status.getErrors() != null || status.getValue() == null) {
-                mutableErrorLiveData.postValue("Something went wrong. Try again later");
+                mutableErrorLiveData.postValue("Something went wrong with requests. Try again later");
                 return;
             }
             if (status.getStatusCode() == 404) {
@@ -74,14 +74,36 @@ public class LoginViewModel extends ViewModel {
             if (status.getStatusCode() == 200) {
                 loginTeacher(currentLogin, currentPassword);
             }
+        });
+    }
 
+    public void testIsTeacherExists() {
+        final String currentLogin = login;
+        assert currentLogin != null;
+        isTeacherExistsUseCase.execute(currentLogin, status -> {
+            if (status.getErrors() != null || status.getValue() == null) {
+                System.out.println(status.getErrors().getLocalizedMessage());
+                System.out.println(status.getValue());
+                System.out.println(status.getStatusCode());
+                mutableErrorLiveData.postValue("Something went wrong with requests. Try again later");
+                return;
+            }
+            if (status.getStatusCode() == 404) {
+                mutableErrorLiveData.postValue("This login doesn`t exist. Want to create account?");
+                return;
+            }
+            if (status.getStatusCode() == 200) {
+                System.out.println(status.getValue());
+                System.out.println(status.getStatusCode());
+                mutableErrorLiveData.postValue("This login exists. Its okay");
+                //loginTeacher(currentLogin, currentPassword);
+            }
         });
     }
 
     private void loginTeacher(@NonNull final String currentLogin, @NonNull final String currentPassword) {
         loginTeacherUseCase.execute(currentLogin, currentPassword, status -> {
             if (status.getErrors() == null && status.getStatusCode() == 200) {
-                //TODO(something better with auth data)
                 login = currentLogin;
                 password = currentPassword;
 

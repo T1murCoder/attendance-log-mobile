@@ -78,6 +78,7 @@
 
             <TextView
                 android:id="@+id/login_account_error_tv"
+                android:layout_marginTop="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_regular"
@@ -102,8 +103,7 @@
                 <CheckBox
                     android:id="@+id/login_remember_cb"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -111,7 +111,8 @@
                     android:fontFamily="@font/inter_regular"
                     android:text="Remember me"
                     android:textColor="@color/main_gray"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:layout_weight="1"/>
             </LinearLayout>
 
             <LinearLayout
