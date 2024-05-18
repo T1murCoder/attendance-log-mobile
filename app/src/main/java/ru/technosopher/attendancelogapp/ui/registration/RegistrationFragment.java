@@ -16,10 +16,13 @@ import androidx.navigation.Navigation;
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentRegistrationBinding;
 import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
+import ru.technosopher.attendancelogapp.ui.UpdateSharedPreferences;
 import ru.technosopher.attendancelogapp.ui.profile.ProfileViewModel;
 import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
 
 public class RegistrationFragment extends Fragment {
+
+    private UpdateSharedPreferences prefs;
     private NavigationBarChangeListener navigationBarChangeListener;
     FragmentRegistrationBinding binding;
 
@@ -93,20 +96,25 @@ public class RegistrationFragment extends Fragment {
         subscribe(viewModel);
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            navigationBarChangeListener = (NavigationBarChangeListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString());
-        }
-    }
-
     private void subscribe(RegistrationViewModel viewModel){
         viewModel.errorLiveData.observe(getViewLifecycleOwner(), error ->{
             binding.registrationAccountErrorTv.setVisibility(View.VISIBLE);
             binding.registrationAccountErrorTv.setText(error);
+        });
+
+        viewModel.teacherLiveData.observe(getViewLifecycleOwner(), state -> {
+
+            System.out.println("IM IN FRAGMENT");
+            prefs.updatePrefs(
+                    state.getTeacher().getId(),
+                    state.getTeacher().getUsername(),
+                    state.getPassword(),
+                    state.getTeacher().getName(),
+                    state.getTeacher().getSurname(),
+                    state.getTeacher().getTelegram_url(),
+                    state.getTeacher().getGithub_url(),
+                    state.getTeacher().getPhoto_url()
+            );
         });
 
         viewModel.confirmLiveData.observe(getViewLifecycleOwner(), unused -> {
@@ -115,6 +123,17 @@ public class RegistrationFragment extends Fragment {
             navigationBarChangeListener.showNavigationBar();
             Navigation.findNavController(view).navigate(R.id.action_registrationFragment_to_lessonsFragment);
         });
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            prefs = (UpdateSharedPreferences) context;
+            navigationBarChangeListener = (NavigationBarChangeListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString());
+        }
     }
 
     @Override

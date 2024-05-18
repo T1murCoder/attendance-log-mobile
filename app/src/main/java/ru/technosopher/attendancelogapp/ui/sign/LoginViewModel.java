@@ -10,9 +10,6 @@ import ru.technosopher.attendancelogapp.data.TeacherRepositoryImpl;
 import ru.technosopher.attendancelogapp.domain.entities.TeacherEntity;
 import ru.technosopher.attendancelogapp.domain.sign.IsTeacherExistsUseCase;
 import ru.technosopher.attendancelogapp.domain.sign.LoginTeacherUseCase;
-import ru.technosopher.attendancelogapp.domain.sign.RegisterTeacherUseCase;
-import ru.technosopher.attendancelogapp.domain.sign.SignTeacherRepository;
-import ru.technosopher.attendancelogapp.ui.profile.ProfileViewModel;
 
 public class LoginViewModel extends ViewModel {
 
@@ -20,6 +17,9 @@ public class LoginViewModel extends ViewModel {
     public final LiveData<Void> confirmLiveData = mutableConfirmLiveData;
     private final MutableLiveData<String> mutableErrorLiveData = new MutableLiveData<>();
     public final LiveData<String> errorLiveData = mutableErrorLiveData;
+
+    private final MutableLiveData<State> mutableTeacherLiveData = new MutableLiveData<>();
+    public final LiveData<State> teacherLiveData = mutableTeacherLiveData;
 
     @Nullable
     private String login = null;
@@ -62,9 +62,9 @@ public class LoginViewModel extends ViewModel {
             return;
         }
         isTeacherExistsUseCase.execute(currentLogin, status -> {
-
             if (status.getErrors() != null || status.getValue() == null) {
-                mutableErrorLiveData.postValue("Something went wrong with requests. Try again later");
+                System.out.println(status.getErrors().getLocalizedMessage());
+                mutableErrorLiveData.postValue("Something went wrong with server. Try again later");
                 return;
             }
             if (status.getStatusCode() == 404) {
@@ -82,9 +82,9 @@ public class LoginViewModel extends ViewModel {
         assert currentLogin != null;
         isTeacherExistsUseCase.execute(currentLogin, status -> {
             if (status.getErrors() != null || status.getValue() == null) {
-                System.out.println(status.getErrors().getLocalizedMessage());
-                System.out.println(status.getValue());
-                System.out.println(status.getStatusCode());
+//                System.out.println(status.getErrors().getLocalizedMessage());
+//                System.out.println(status.getValue());
+//                System.out.println(status.getStatusCode());
                 mutableErrorLiveData.postValue("Something went wrong with requests. Try again later");
                 return;
             }
@@ -104,38 +104,50 @@ public class LoginViewModel extends ViewModel {
     private void loginTeacher(@NonNull final String currentLogin, @NonNull final String currentPassword) {
         loginTeacherUseCase.execute(currentLogin, currentPassword, status -> {
             if (status.getErrors() == null && status.getStatusCode() == 200) {
+
                 login = currentLogin;
                 password = currentPassword;
+
+                mutableTeacherLiveData.postValue(new State(new TeacherEntity(
+                        status.getValue().getId(),
+                        status.getValue().getName(),
+                        status.getValue().getSurname(),
+                        status.getValue().getUsername(),
+                        status.getValue().getTelegram_url(),
+                        status.getValue().getGithub_url(),
+                        status.getValue().getPhoto_url()
+
+                ), password));
 
                 mutableConfirmLiveData.postValue(null);
             }
             if (status.getErrors() == null && status.getStatusCode() == 401) {
                 mutableErrorLiveData.postValue("Wrong password");
-            } else {
-                mutableErrorLiveData.postValue("Something went wrong. Try again later");
             }
+//            } else {
+//                mutableErrorLiveData.postValue("Something went wrong. Try again later");
+//            }
         });
     }
 
-//    public class State {
-//        @Nullable
-//        private final String login;
-//        @Nullable
-//        private final String password;
-//
-//        @Nullable
-//        public String getLogin() {
-//            return login;
-//        }
-//
-//        @Nullable
-//        public String getPassword() {
-//            return password;
-//        }
-//
-//        public State(@Nullable String login, @Nullable String password) {
-//            this.login = login;
-//            this.password = password;
-//        }
-//    }
+    public class State {
+
+        @Nullable
+        private final TeacherEntity teacher;
+        @Nullable
+        private final String password;
+
+        public State(@Nullable TeacherEntity teacher, @Nullable String password) {
+            this.teacher = teacher;
+            this.password = password;
+        }
+        @Nullable
+        public String getPassword() {
+            return password;
+        }
+        @Nullable
+        public TeacherEntity getTeacher() {
+            return teacher;
+        }
+    }
 }

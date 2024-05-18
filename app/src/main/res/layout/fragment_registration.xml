@@ -91,6 +91,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/action_elements_background"
                 android:paddingStart="6dp"
+                app:boxStrokeWidth="0dp"
                 app:hintEnabled="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:passwordToggleEnabled="true"
@@ -112,6 +113,7 @@
             <TextView
                 android:layout_marginTop="30dp"
                 android:id="@+id/registration_account_error_tv"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_regular"

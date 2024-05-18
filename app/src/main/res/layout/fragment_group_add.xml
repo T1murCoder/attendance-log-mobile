@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_gray"
+    android:padding="20dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageButton
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/background_gray"
+                android:src="@drawable/ic_back" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:fontFamily="@font/inter_semibold"
+                android:text="@string/fragment_group_add_header_text"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/student_search_view"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/action_elements_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/group_name_input_layout"
+            app:queryHint="Search"
+            app:searchIcon="@drawable/ic_search" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/group_name_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:boxStrokeWidth="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/linearLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/group_name_et"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/action_elements_background"
+                android:padding="17dp"
+                android:hint="@string/fragment_group_add_group_name_hint"
+                android:textColor="@color/main_gray"
+                android:textColorHint="@color/main_gray"
+                android:textCursorDrawable="@color/main_gray"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/students_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/student_search_view"
+            tools:listitem="@layout/groups_add_students_list_item" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/main_blue"
+            android:clickable="true"
+            android:src="@drawable/ic_create_new_group"
+            android:tint="@color/white"
+            app:fabCustomSize="69dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            android:textColor="@color/main_red"
+            android:id="@+id/error_tv"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

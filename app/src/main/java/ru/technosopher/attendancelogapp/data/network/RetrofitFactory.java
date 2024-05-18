@@ -7,6 +7,8 @@ import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
+import ru.technosopher.attendancelogapp.data.source.GroupApi;
+import ru.technosopher.attendancelogapp.data.source.StudentApi;
 import ru.technosopher.attendancelogapp.data.source.TeacherApi;
 
 public class RetrofitFactory {
@@ -39,7 +41,7 @@ public class RetrofitFactory {
             );
 
     private Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.105:8080/")
+            .baseUrl("http://192.168.1.101:8080/")
             .client(client.build())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
@@ -47,4 +49,6 @@ public class RetrofitFactory {
     public TeacherApi getTeacherApi() {
         return retrofit.create(TeacherApi.class);
     }
+    public GroupApi getGroupApi() { return retrofit.create(GroupApi.class); }
+    public StudentApi getStudentApi() { return retrofit.create(StudentApi.class); }
 }

@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import okhttp3.Call;
 import ru.technosopher.attendancelogapp.data.dto.TeacherAccountDto;
+import ru.technosopher.attendancelogapp.data.dto.TeacherRegisterDto;
 import ru.technosopher.attendancelogapp.data.network.RetrofitFactory;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.data.source.TeacherApi;
@@ -14,6 +15,7 @@ import ru.technosopher.attendancelogapp.data.utils.CallToConsumer;
 import ru.technosopher.attendancelogapp.domain.TeacherRepository;
 import ru.technosopher.attendancelogapp.domain.entities.ItemTeacherEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
+import ru.technosopher.attendancelogapp.domain.entities.TeacherAccountEntity;
 import ru.technosopher.attendancelogapp.domain.entities.TeacherEntity;
 import ru.technosopher.attendancelogapp.domain.sign.SignTeacherRepository;
 
@@ -44,7 +46,28 @@ public class TeacherRepositoryImpl implements TeacherRepository, SignTeacherRepo
 
     @Override
     public void getTeacher(@NonNull String id, Consumer<Status<TeacherEntity>> callback) {
-
+        teacherApi = RetrofitFactory.getInstance().getTeacherApi();
+        teacherApi.login().enqueue(new CallToConsumer<>(
+                callback,
+                teacher -> {
+                    if (teacher != null){
+                        if (teacher.id != null && teacher.name != null && teacher.surname != null && teacher.username != null){
+                            final String name = teacher.name;
+                            final String surname = teacher.surname;
+                            final String username = teacher.username;
+                            return new TeacherEntity(
+                                    id,
+                                    name,
+                                    surname,
+                                    username,
+                                    teacher.telegram_url,
+                                    teacher.github_url,
+                                    teacher.photo_url);
+                        }
+                    }
+                    return null;
+                }
+        ));
     }
 
     @Override
@@ -56,22 +79,52 @@ public class TeacherRepositoryImpl implements TeacherRepository, SignTeacherRepo
     }
 
     @Override
-    public void registerTeacher(@NonNull String login, @NonNull String password, @NonNull String name, @NonNull String surname, Consumer<Status<Void>> callback) {
-        teacherApi.register(new TeacherAccountDto(login, password, name, surname)).enqueue(new CallToConsumer<>(
+    public void registerTeacher(@NonNull String login,
+                                @NonNull String password,
+                                @NonNull String name,
+                                @NonNull String surname, Consumer<Status<TeacherAccountEntity>> callback) {
+        teacherApi.register(new TeacherRegisterDto(login, password, name, surname)).enqueue(new CallToConsumer<>(
                 callback,
-                dto -> null
+                teacherAcc -> {
+                    if (teacherAcc != null){
+                        return new TeacherAccountEntity(
+                                teacherAcc.getId(),
+                                teacherAcc.getName(),
+                                teacherAcc.getSurname(),
+                                teacherAcc.getUsername(),
+                                password);
+                    }
+                    return null;
+                }
 
         ));
     }
 
     @Override
-    public void loginTeacher(@NonNull String login, @NonNull String password, Consumer<Status<Void>> callback) {
+    public void loginTeacher(@NonNull String login, @NonNull String password, Consumer<Status<TeacherEntity>> callback) {
         credentialsDataSource.updateLogin(login, password);
         teacherApi = RetrofitFactory.getInstance().getTeacherApi();
-        // TODO( DO smth with login data )
         teacherApi.login().enqueue(new CallToConsumer<>(
                 callback,
-                dto -> null
+                teacher -> {
+                    if (teacher != null){
+                        if (teacher.id != null && teacher.name != null && teacher.surname != null && teacher.username != null){
+                            final String id = teacher.id;
+                            final String name = teacher.name;
+                            final String surname = teacher.surname;
+                            final String username = teacher.username;
+                            return new TeacherEntity(
+                                    id,
+                                    name,
+                                    surname,
+                                    username,
+                                    teacher.telegram_url,
+                                    teacher.github_url,
+                                    teacher.photo_url);
+                        }
+                    }
+                    return null;
+                }
         ));
 
     }

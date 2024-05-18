@@ -1,15 +1,11 @@
 package ru.technosopher.attendancelogapp.data.dto;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class TeacherAccountDto {
+public class TeacherRegisterDto {
 
-    @NonNull
-    @SerializedName("id")
-    public String id;
     @NonNull
     @SerializedName("name")
     public String name;
@@ -43,17 +39,10 @@ public class TeacherAccountDto {
         return password;
     }
 
-    @NonNull
-    public String getId() {
-        return id;
-    }
-
-    public TeacherAccountDto(@NonNull String id, @NonNull String username, @NonNull String password, @NonNull String name, @NonNull String surname) {
-        this.id = id;
+    public TeacherRegisterDto(@NonNull String username, @NonNull String password, @NonNull String name, @NonNull String surname) {
         this.name = name;
         this.surname = surname;
         this.username = username;
         this.password = password;
     }
-
 }

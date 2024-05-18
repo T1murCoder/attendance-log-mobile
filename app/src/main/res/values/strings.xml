@@ -11,6 +11,21 @@
     <string name="grup_list_item_text">Group_name</string>
     <string name="groups_list_item_content_button_description">Open journal</string>
     <string name="groups_fab_content_description">Create new journal</string>
-    <string name="groups_text">Группы</string>
+    <string name="groups_text">Groups</string>
     <string name="password_edit_text_hint">Password</string>
+
+    <string name="SHARED_PREFS_ID">PREFS_ID</string>
+    <string name="SHARED_PREFS_LOGIN">PREFS_LOGIN</string>
+    <string name="SHARED_PREFS_PASSWORD">PREFS_PASSWORD</string>
+
+    <string name="SHARED_PREFS_TELEGRAM">PREFS_TELEGRAM</string>
+    <string name="SHARED_PREFS_GITHUB">PREFS_GITHUB</string>
+    <string name="SHARED_PREFS_PHOTO">PREFS_PHOTO</string>
+
+    <string name="SHARED_PREFS_NAME">PREFS_NAME</string>
+    <string name="SHARED_PREFS_SURNAME">PREFS_SURNAME</string>
+    <string name="fragment_group_add_header_text">Creating a group</string>
+    <string name="fragment_group_add_group_name_hint">Group name</string>
+    <string name="student_list_item_name">Name</string>
+    <string name="studet_list_item_id">student_id</string>
 </resources>

@@ -11,28 +11,14 @@ import retrofit2.http.Path;
 import ru.technosopher.attendancelogapp.data.TeacherRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.dto.TeacherAccountDto;
 import ru.technosopher.attendancelogapp.data.dto.TeacherDto;
+import ru.technosopher.attendancelogapp.data.dto.TeacherRegisterDto;
 import ru.technosopher.attendancelogapp.domain.entities.ItemTeacherEntity;
 
 public interface TeacherApi {
-
-//    @GET("teachers")
-//    Call<List<TeacherDto>> getAllTeachers();
-
-    //TODO(requests to server teacher login, registration)
     @GET("teacher/login")
-    Call<TeacherDto> getTeacherById();
-
-//    @GET("")
-//    Call<TeacherDto> getProfile();
-
+    Call<TeacherDto> login();
     @GET("teacher/username/{username}")
     Call<Void> isExists(@Path("username") String login);
-
     @POST("teacher/register")
-    Call<Void> register(@Body TeacherAccountDto dto);
-
-    @GET("teacher/login")
-    Call<Void> login();
-
-
+    Call<TeacherAccountDto> register(@Body TeacherRegisterDto dto);
 }

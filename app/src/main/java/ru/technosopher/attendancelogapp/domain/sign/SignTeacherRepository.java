@@ -5,7 +5,10 @@ import androidx.annotation.NonNull;
 
 import javax.security.auth.callback.Callback;
 
+import ru.technosopher.attendancelogapp.data.dto.TeacherAccountDto;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
+import ru.technosopher.attendancelogapp.domain.entities.TeacherAccountEntity;
+import ru.technosopher.attendancelogapp.domain.entities.TeacherEntity;
 
 import java.util.function.Consumer;
 
@@ -17,9 +20,9 @@ public interface SignTeacherRepository {
                          @NonNull String password,
                          @NonNull String name,
                          @NonNull String surname,
-                         Consumer<Status<Void>> callback);
+                         Consumer<Status<TeacherAccountEntity>> callback);
 
-    void loginTeacher(@NonNull String login, @NonNull String password, Consumer<Status<Void>> callback);
+    void loginTeacher(@NonNull String login, @NonNull String password, Consumer<Status<TeacherEntity>> callback);
 
     void logout();
 }

@@ -11,7 +11,6 @@ public class TeacherDto {
     @Nullable
     @SerializedName("id")
     public String id;
-
     @Nullable
     @SerializedName("name")
     public String name;
