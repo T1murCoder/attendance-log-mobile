@@ -1,9 +1,8 @@
-package ru.technosopher.attendancelogapp.ui.sign;
+package ru.technosopher.attendancelogapp.ui.login;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +17,14 @@ import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentLoginBinding;
 import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
 import ru.technosopher.attendancelogapp.ui.UpdateSharedPreferences;
-import ru.technosopher.attendancelogapp.ui.profile.ProfileViewModel;
 import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
 
 public class LoginFragment extends Fragment {
 
     private UpdateSharedPreferences prefs;
     private NavigationBarChangeListener navigationBarChangeListener;
-    FragmentLoginBinding binding;
-    LoginViewModel viewModel;
+    private FragmentLoginBinding binding;
+    private LoginViewModel viewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

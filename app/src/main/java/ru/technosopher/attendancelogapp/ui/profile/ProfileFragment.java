@@ -22,11 +22,13 @@ import java.util.Objects;
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentProfileBinding;
 import ru.technosopher.attendancelogapp.domain.entities.TeacherEntity;
+import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
 import ru.technosopher.attendancelogapp.ui.UpdateSharedPreferences;
 
 
 public class ProfileFragment extends Fragment {
 
+    private NavigationBarChangeListener navigationBarChangeListener;
     private UpdateSharedPreferences prefs;
     private FragmentProfileBinding binding;
 
@@ -46,6 +48,7 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentProfileBinding.bind(view);
+        navigationBarChangeListener.changeSelectedItem(R.id.profile);
         viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
         subscribe(viewModel);
         viewModel.loadPrefs(
@@ -87,6 +90,7 @@ public class ProfileFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try{
+            navigationBarChangeListener = (NavigationBarChangeListener) context;
             prefs = (UpdateSharedPreferences) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString());

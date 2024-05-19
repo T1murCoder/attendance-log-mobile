@@ -11,15 +11,22 @@ import java.util.List;
 import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
 import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
+import ru.technosopher.attendancelogapp.domain.groups.DeleteGroupUseCase;
 import ru.technosopher.attendancelogapp.domain.groups.GetGroupsListUseCase;
+import ru.technosopher.attendancelogapp.domain.groups.GroupsRepository;
 
 public class GroupsViewModel extends ViewModel {
 
     private final MutableLiveData<State> mutableStateLiveData = new MutableLiveData<>();
     public final LiveData<State> stateLiveData = mutableStateLiveData;
 
+    private final MutableLiveData<String> mutableDeleteLiveData = new MutableLiveData<>();
+    public final LiveData<String> deleteLiveData = mutableDeleteLiveData;
+
     /* USE CASES */
     private final GetGroupsListUseCase getGroupsListUseCase = new GetGroupsListUseCase(GroupsRepositoryImpl.getInstance());
+
+    private final DeleteGroupUseCase deleteGroupUseCase = new DeleteGroupUseCase(GroupsRepositoryImpl.getInstance());
     /* USE CASES */
 
     public GroupsViewModel() {
@@ -39,6 +46,18 @@ public class GroupsViewModel extends ViewModel {
                 status.getErrors() == null && status.getValue() != null);
     }
 
+    public void deleteGroup(@NonNull String id){
+        deleteGroupUseCase.execute(id, status -> {
+            if (status.getStatusCode() == 200 && status.getErrors() == null){
+                mutableDeleteLiveData.postValue("Группа успешно удалена.");
+                return ;
+            }
+            if(status.getStatusCode() != 200 || status.getErrors() != null){
+                mutableDeleteLiveData.postValue("Что-то пошло не так.");
+                return ;
+            }
+        });
+    }
 
     public class State {
         @Nullable

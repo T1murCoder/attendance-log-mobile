@@ -1,8 +1,9 @@
-package ru.technosopher.attendancelogapp.ui.groups;
+package ru.technosopher.attendancelogapp.ui.group_add;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,15 +13,17 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import ru.technosopher.attendancelogapp.databinding.GroupsAddStudentsListItemBinding;
-import ru.technosopher.attendancelogapp.databinding.GroupsListItemBinding;
-import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 
 public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.ViewHolder>{
-    private final Consumer<String> onItemClick;
+    private final Consumer<String> onItemSelected;
+    private final Consumer<String> onItemUnselected;
     private final List<ItemStudentEntity> data = new ArrayList<>();
-    public StudentListAdapter(Consumer<String> onItemClick) {
-        this.onItemClick = onItemClick;
+    public StudentListAdapter(Consumer<String> onItemSelected, Consumer<String> onItemUnselected) {
+
+        this.onItemSelected = onItemSelected;
+        this.onItemUnselected = onItemUnselected;
+
     }
 
     @NonNull
@@ -60,8 +63,12 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
         public void bind(ItemStudentEntity item) {
             binding.listItemStudentName.setText(item.getName());
             binding.listItemStudentId.setText(item.getId());
-            binding.studentAddCb.setOnClickListener(v -> {
-                onItemClick.accept(item.getId());
+            binding.studentAddCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (b) onItemSelected.accept(item.getId());
+                    else onItemUnselected.accept(item.getId());
+                }
             });
         }
     }

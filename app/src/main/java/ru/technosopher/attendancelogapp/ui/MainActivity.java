@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
         setContentView(R.layout.activity_main);
 
         navigationBar = findViewById(R.id.bottom_navigation_bar);
+        navigationBar.setItemEnabled(R.id.lessons, true);
+        System.out.println(navigationBar.getSelectedItemId());
         navigationBar.setOnItemSelectedListener(destinationFragment -> {
             fragmentNavigation(0, destinationFragment);
         });
@@ -41,16 +43,25 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
         if (navigationBar != null) navigationBar.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void changeSelectedItem(int r) {
+        navigationBar.setItemEnabled(r, true);
+    }
+
+
     private void fragmentNavigation(int previousFragment, int destinationFragment) {
         navController = Navigation.findNavController(MainActivity.this, R.id.fragmentContainerView);
         if (destinationFragment == R.id.lessons) {
             navController.navigate(R.id.lessonsFragment);
+//            navigationBar.setItemEnabled(R.id.lessons, true);
         }
         if (destinationFragment == R.id.groups) {
             navController.navigate(R.id.groupsFragment);
+//            navigationBar.setItemEnabled(R.id.groups, true);
         }
         if (destinationFragment == R.id.profile) {
             navController.navigate(R.id.profileFragment);
+//            navigationBar.setItemEnabled(R.id.profile, true);
         }
     }
 
@@ -63,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
                             String telegram,
                             String github,
                             String photo) {
-        System.out.println("IN UPDATE PREFS");
         updateId(id);
         updateLogin(login);
         updatePassword(password);
@@ -75,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
     }
 
     @Override
-    public Map<String, ?> getPrefs(){
+    public Map<String, ?> getPrefs() {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         return sharedPref.getAll();
     }
@@ -125,7 +135,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
     @Override
     public String getPrefsSurname() {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        return sharedPref.getString(getString(R.string.SHARED_PREFS_SURNAME), null);    }
+        return sharedPref.getString(getString(R.string.SHARED_PREFS_SURNAME), null);
+    }
 
     @Override
     public void updateId(@NonNull String id) {

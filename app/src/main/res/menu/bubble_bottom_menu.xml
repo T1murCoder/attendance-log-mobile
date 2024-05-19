@@ -10,8 +10,7 @@
         app:cnb_iconColor="@color/white"
         app:cnb_backgroundColor="@color/main_blue"
         app:cnb_textColor="@color/white"
-        android:enabled="true"
-        />
+        android:enabled="true"/>
     <item
         android:id="@+id/groups"
         android:icon="@drawable/ic_groups"

@@ -1,6 +1,7 @@
 package ru.technosopher.attendancelogapp.ui.groups;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,13 +19,14 @@ import android.view.ViewGroup;
 import okhttp3.internal.Util;
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentGroupsBinding;
+import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
 import ru.technosopher.attendancelogapp.ui.table.TableFragment;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
 
 public class GroupsFragment extends Fragment {
-
-    FragmentGroupsBinding binding;
+    private NavigationBarChangeListener navigationBarChangeListener;
+    private FragmentGroupsBinding binding;
     private GroupsViewModel viewModel;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class GroupsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentGroupsBinding.bind(view);
+        navigationBarChangeListener.changeSelectedItem(R.id.groups);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         GroupsListAdapter adapter = new GroupsListAdapter(this::openGroup);
@@ -80,5 +83,15 @@ public class GroupsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            navigationBarChangeListener = (NavigationBarChangeListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString());
+        }
     }
 }

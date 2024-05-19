@@ -3,20 +3,23 @@ package ru.technosopher.attendancelogapp.domain.groups;
 import androidx.annotation.NonNull;
 
 import java.util.List;
-
 import java.util.function.Consumer;
 
-import ru.technosopher.attendancelogapp.data.dto.StudentItemDto;
 import ru.technosopher.attendancelogapp.domain.entities.GroupEntity;
 import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
+
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 
-public interface GroupsRepository {
+public class CreateGroupUseCase {
 
-    void getGroups(@NonNull Consumer<Status<List<ItemGroupEntity>>> callback);
-    void getGroupById();
-    void addGroup(@NonNull String name, @NonNull List<ItemStudentEntity> students, @NonNull Consumer<Status<GroupEntity>> callback);
+    private final GroupsRepository repository;
 
-    void deleteGroup(@NonNull String id, @NonNull Consumer<Status<Void>> callback);
+    public CreateGroupUseCase(GroupsRepository repository) {
+        this.repository = repository;
+    }
+
+    public void execute(@NonNull String name, @NonNull List<ItemStudentEntity> students, Consumer<Status<GroupEntity>> callback) {
+        repository.addGroup(name, students, callback);
+    }
 }

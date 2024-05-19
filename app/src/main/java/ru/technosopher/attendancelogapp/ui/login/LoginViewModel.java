@@ -1,4 +1,4 @@
-package ru.technosopher.attendancelogapp.ui.sign;
+package ru.technosopher.attendancelogapp.ui.login;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +17,6 @@ public class LoginViewModel extends ViewModel {
     public final LiveData<Void> confirmLiveData = mutableConfirmLiveData;
     private final MutableLiveData<String> mutableErrorLiveData = new MutableLiveData<>();
     public final LiveData<String> errorLiveData = mutableErrorLiveData;
-
     private final MutableLiveData<State> mutableTeacherLiveData = new MutableLiveData<>();
     public final LiveData<State> teacherLiveData = mutableTeacherLiveData;
 

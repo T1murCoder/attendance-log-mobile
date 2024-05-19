@@ -81,7 +81,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="ru.technosopher.attendancelogapp.ui.sign.LoginFragment"
+        android:name="ru.technosopher.attendancelogapp.ui.login.LoginFragment"
         android:label="RegistrationFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -99,7 +99,7 @@
         android:label="TableFragment" />
     <fragment
         android:id="@+id/groupAddFragment"
-        android:name="ru.technosopher.attendancelogapp.ui.groups.GroupAddFragment"
+        android:name="ru.technosopher.attendancelogapp.ui.group_add.GroupAddFragment"
         android:label="GroupAddFragment" >
         <action
             android:id="@+id/action_groupAddFragment_to_groupsFragment"
