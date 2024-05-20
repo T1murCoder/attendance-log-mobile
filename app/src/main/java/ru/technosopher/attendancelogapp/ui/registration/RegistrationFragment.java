@@ -19,6 +19,7 @@ import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
 import ru.technosopher.attendancelogapp.ui.UpdateSharedPreferences;
 import ru.technosopher.attendancelogapp.ui.profile.ProfileViewModel;
 import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
+import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
 public class RegistrationFragment extends Fragment {
 
@@ -122,6 +123,10 @@ public class RegistrationFragment extends Fragment {
             if (view == null) return;
             navigationBarChangeListener.showNavigationBar();
             Navigation.findNavController(view).navigate(R.id.action_registrationFragment_to_lessonsFragment);
+        });
+
+        viewModel.loadingLiveData.observe(getViewLifecycleOwner(), loading ->{
+            binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(loading));
         });
     }
 

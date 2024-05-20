@@ -20,6 +20,9 @@ public class RegistrationViewModel extends ViewModel {
     private final MutableLiveData<State> mutableTeacherLiveData = new MutableLiveData<>();
     public final LiveData<State> teacherLiveData = mutableTeacherLiveData;
 
+    private final MutableLiveData<Boolean> mutableLoadingLiveData = new MutableLiveData<>();
+    public final LiveData<Boolean> loadingLiveData = mutableLoadingLiveData;
+
     /* USE CASES */
     private IsTeacherExistsUseCase isTeacherExistsUseCase = new IsTeacherExistsUseCase(
             TeacherRepositoryImpl.getInstance()
@@ -77,13 +80,16 @@ public class RegistrationViewModel extends ViewModel {
             mutableErrorLiveData.postValue("Provide all necessary data to fields, please.");
             return;
         }
+        mutableLoadingLiveData.postValue(true);
         isTeacherExistsUseCase.execute(currentLogin, status -> {
             if (status.getErrors() != null || status.getValue() == null) {
                 System.out.println(status.getErrors().getLocalizedMessage());
+                mutableLoadingLiveData.postValue(false);
                 mutableErrorLiveData.postValue("Something went wrong with server. Try again later");
                 return;
             }
             if (status.getStatusCode() == 200) {
+                mutableLoadingLiveData.postValue(false);
                 mutableErrorLiveData.postValue("This login is already exists. Want to login?");
                 return;
             }
@@ -116,8 +122,10 @@ public class RegistrationViewModel extends ViewModel {
                 mutableConfirmLiveData.postValue(null);
             }
             else if (status.getErrors() == null && status.getStatusCode() == 401) {
+
                 mutableErrorLiveData.postValue("This account is already exists. Want to login?");
             }
+            mutableLoadingLiveData.postValue(false);
 //            } else {
 //                //System.out.println(status.getStatusCode());
 //                mutableErrorLiveData.postValue("Something went wrong before reg. Try again later");

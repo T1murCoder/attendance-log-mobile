@@ -83,6 +83,7 @@ public class TeacherRepositoryImpl implements TeacherRepository, SignTeacherRepo
                                 @NonNull String password,
                                 @NonNull String name,
                                 @NonNull String surname, Consumer<Status<TeacherAccountEntity>> callback) {
+        credentialsDataSource.updateLogin(login, password);
         teacherApi.register(new TeacherRegisterDto(login, password, name, surname)).enqueue(new CallToConsumer<>(
                 callback,
                 teacherAcc -> {
@@ -96,7 +97,6 @@ public class TeacherRepositoryImpl implements TeacherRepository, SignTeacherRepo
                     }
                     return null;
                 }
-
         ));
     }
 

@@ -18,6 +18,7 @@ import ru.technosopher.attendancelogapp.databinding.FragmentLoginBinding;
 import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
 import ru.technosopher.attendancelogapp.ui.UpdateSharedPreferences;
 import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
+import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
 public class LoginFragment extends Fragment {
 
@@ -101,6 +102,9 @@ public class LoginFragment extends Fragment {
                     state.getTeacher().getPhoto_url()
 
             );
+        });
+        viewModel.loadingLiveData.observe(getViewLifecycleOwner(), loading ->{
+            binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(loading));
         });
     }
 

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:layout_marginTop="5dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/time_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter_regular"
+
+                    android:textSize="14sp"
+                    tools:text="10:00 - 11:30" />
+
+                <TextView
+                    android:id="@+id/date_tv"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter_regular"
+                    android:textAlignment="center"
+                    android:textSize="12sp"
+                    tools:text="12 янв 2024" />
+
+                <TextView
+                    android:id="@+id/time_start_tv"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter_regular"
+                    android:textAlignment="center"
+                    android:textSize="12sp"
+                    tools:text="5 мин до начала" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Группа"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/group_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_regular"
+                        android:textSize="12sp"
+                        tools:text="M404" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Тема"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/lesson_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_regular"
+                        android:textSize="12sp"
+                        tools:text="Spring Framework" />
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/qr_code_btn"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="2"
+                    android:background="@color/white"
+                    android:src="@drawable/ic_empty_qr" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:id="@+id/qr_code_additional_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:visibility="visible"
+                android:orientation="vertical"
+
+                app:layout_constraintTop_toBottomOf="@id/card_view">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="@string/lesson_deletion_text"
+                        android:textColor="@color/main_gray"
+                        android:textSize="14sp" />
+
+                    <ImageButton
+                        android:id="@+id/lesson_delete_btn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@color/white"
+                        android:src="@drawable/ic_delete" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/qr_code_upload_layout"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="@string/lesson_upload_text"
+                        android:textColor="@color/main_gray"
+                        android:textSize="14sp" />
+                    <ImageButton
+                        android:id="@+id/lesson_upload_btn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@color/white"
+                        android:src="@drawable/ic_upload_qr" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/qr_code_copy_link_layout"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="@string/lesson_copy_link_text"
+                        android:textColor="@color/main_gray"
+                        android:textSize="14sp" />
+                    <ImageButton
+                        android:id="@+id/lesson_copy_link_btn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@color/white"
+                        android:src="@drawable/ic_copy_link" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

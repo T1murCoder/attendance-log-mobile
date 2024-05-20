@@ -70,9 +70,14 @@ public class GroupsFragment extends Fragment {
                 binding.recyclerView.setVisibility(Utils.visibleOrGone(state.getSuccess()));
                 binding.groupsErrorMessage.setVisibility(Utils.visibleOrGone(!state.getSuccess()));
                 binding.groupsErrorMessage.setText(state.getErrorMessage());
-
                 if (state.getSuccess()){
                     adapter.updateData(state.getGroups());
+                    binding.noGroupsTv.setVisibility(Utils.visibleOrGone(false));
+                    if( state.getGroups() != null){
+                        if(state.getGroups().isEmpty()) binding.noGroupsTv.setVisibility(Utils.visibleOrGone(true));
+                    }else{
+                        binding.noGroupsTv.setVisibility(Utils.visibleOrGone(true));
+                    }
                 }
             }
         });

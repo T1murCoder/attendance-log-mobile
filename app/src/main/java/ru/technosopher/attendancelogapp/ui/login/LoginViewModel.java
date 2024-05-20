@@ -1,5 +1,7 @@
 package ru.technosopher.attendancelogapp.ui.login;
 
+import android.text.BoringLayout;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -19,6 +21,9 @@ public class LoginViewModel extends ViewModel {
     public final LiveData<String> errorLiveData = mutableErrorLiveData;
     private final MutableLiveData<State> mutableTeacherLiveData = new MutableLiveData<>();
     public final LiveData<State> teacherLiveData = mutableTeacherLiveData;
+
+    private final MutableLiveData<Boolean> mutableLoadingLiveData = new MutableLiveData<>();
+    public final LiveData<Boolean> loadingLiveData = mutableLoadingLiveData;
 
     @Nullable
     private String login = null;
@@ -60,13 +65,17 @@ public class LoginViewModel extends ViewModel {
             mutableErrorLiveData.postValue("Please, enter password.");
             return;
         }
+        mutableLoadingLiveData.postValue(true);
         isTeacherExistsUseCase.execute(currentLogin, status -> {
             if (status.getErrors() != null || status.getValue() == null) {
                 System.out.println(status.getErrors().getLocalizedMessage());
+                mutableLoadingLiveData.postValue(false);
                 mutableErrorLiveData.postValue("Something went wrong with server. Try again later");
+
                 return;
             }
             if (status.getStatusCode() == 404) {
+                mutableLoadingLiveData.postValue(false);
                 mutableErrorLiveData.postValue("This login doesn`t exist. Want to create account?");
                 return;
             }
@@ -107,6 +116,8 @@ public class LoginViewModel extends ViewModel {
                 login = currentLogin;
                 password = currentPassword;
 
+
+
                 mutableTeacherLiveData.postValue(new State(new TeacherEntity(
                         status.getValue().getId(),
                         status.getValue().getName(),
@@ -123,9 +134,7 @@ public class LoginViewModel extends ViewModel {
             if (status.getErrors() == null && status.getStatusCode() == 401) {
                 mutableErrorLiveData.postValue("Wrong password");
             }
-//            } else {
-//                mutableErrorLiveData.postValue("Something went wrong. Try again later");
-//            }
+            mutableLoadingLiveData.postValue(false);
         });
     }
 
