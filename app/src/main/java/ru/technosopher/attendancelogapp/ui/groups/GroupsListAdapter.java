@@ -2,6 +2,7 @@ package ru.technosopher.attendancelogapp.ui.groups;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -17,11 +18,13 @@ import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
 public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.ViewHolder> {
 
     private final Consumer<String> onItemClick;
+    private final Consumer<String> deleteGroup;
 
     //TODO (add active and inactive to checkboxes)
     private final List<ItemGroupEntity> data = new ArrayList<>();
-    public GroupsListAdapter(Consumer<String> onItemClick) {
+    public GroupsListAdapter(Consumer<String> onItemClick, Consumer<String> deleteGroup) {
         this.onItemClick = onItemClick;
+        this.deleteGroup = deleteGroup;
     }
 
     @NonNull
@@ -60,8 +63,16 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
 
         public void bind(ItemGroupEntity item) {
             binding.groupsListItemGroupName.setText(item.getName());
-            binding.getRoot().setOnClickListener(v -> {
+            binding.openGroupBtn.setOnClickListener(v -> {
                 onItemClick.accept(item.getId());
+            });
+            binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (view == null) return false;
+                    deleteGroup.accept(item.getId());
+                    return true;
+                }
             });
         }
     }

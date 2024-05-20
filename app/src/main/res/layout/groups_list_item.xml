@@ -37,6 +37,7 @@
                 android:fontFamily="@font/inter_regular"/>
 
             <ImageButton
+                android:id="@+id/open_group_btn"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:background="@drawable/ic_open_journal"

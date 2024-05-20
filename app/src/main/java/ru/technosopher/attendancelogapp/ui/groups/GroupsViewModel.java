@@ -13,15 +13,14 @@ import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 import ru.technosopher.attendancelogapp.domain.groups.DeleteGroupUseCase;
 import ru.technosopher.attendancelogapp.domain.groups.GetGroupsListUseCase;
-import ru.technosopher.attendancelogapp.domain.groups.GroupsRepository;
 
 public class GroupsViewModel extends ViewModel {
 
     private final MutableLiveData<State> mutableStateLiveData = new MutableLiveData<>();
     public final LiveData<State> stateLiveData = mutableStateLiveData;
 
-    private final MutableLiveData<String> mutableDeleteLiveData = new MutableLiveData<>();
-    public final LiveData<String> deleteLiveData = mutableDeleteLiveData;
+    private final MutableLiveData<Boolean> mutableDeleteLiveData = new MutableLiveData<>();
+    public final LiveData<Boolean> deleteLiveData = mutableDeleteLiveData;
 
     /* USE CASES */
     private final GetGroupsListUseCase getGroupsListUseCase = new GetGroupsListUseCase(GroupsRepositoryImpl.getInstance());
@@ -32,8 +31,8 @@ public class GroupsViewModel extends ViewModel {
     public GroupsViewModel() {
         update();
     }
-
     public void update() {
+        mutableStateLiveData.postValue(new State(null, null, false, true));
         getGroupsListUseCase.execute(status -> {
             mutableStateLiveData.postValue(fromStatus(status));
         });
@@ -43,17 +42,17 @@ public class GroupsViewModel extends ViewModel {
         return new State(
                 status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
                 status.getValue(),
-                status.getErrors() == null && status.getValue() != null);
+                status.getErrors() == null && status.getValue() != null, false);
     }
 
     public void deleteGroup(@NonNull String id){
         deleteGroupUseCase.execute(id, status -> {
             if (status.getStatusCode() == 200 && status.getErrors() == null){
-                mutableDeleteLiveData.postValue("Группа успешно удалена.");
+                mutableDeleteLiveData.postValue(true);
                 return ;
             }
             if(status.getStatusCode() != 200 || status.getErrors() != null){
-                mutableDeleteLiveData.postValue("Что-то пошло не так.");
+                mutableDeleteLiveData.postValue(false);
                 return ;
             }
         });
@@ -64,14 +63,17 @@ public class GroupsViewModel extends ViewModel {
         private final List<ItemGroupEntity> groups;
         @Nullable
         private final String errorMessage;
-
         @NonNull
         private final Boolean isSuccess;
 
-        public State(@Nullable String errorMessage, @Nullable List<ItemGroupEntity> groups, @NonNull Boolean isSuccess) {
+        @NonNull
+        private final Boolean isLoading;
+
+        public State(@Nullable String errorMessage, @Nullable List<ItemGroupEntity> groups, @NonNull Boolean isSuccess, @NonNull Boolean isLoading) {
             this.groups = groups;
             this.errorMessage = errorMessage;
             this.isSuccess = isSuccess;
+            this.isLoading = isLoading;
         }
 
         @Nullable
@@ -87,6 +89,11 @@ public class GroupsViewModel extends ViewModel {
         @NonNull
         public Boolean getSuccess() {
             return isSuccess;
+        }
+
+        @NonNull
+        public Boolean getLoading() {
+            return isLoading;
         }
     }
 }

@@ -1,7 +1,8 @@
 package ru.technosopher.attendancelogapp.ui.groups;
 
-import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,8 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import okhttp3.internal.Util;
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentGroupsBinding;
 import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
@@ -45,7 +46,7 @@ public class GroupsFragment extends Fragment {
         navigationBarChangeListener.changeSelectedItem(R.id.groups);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        GroupsListAdapter adapter = new GroupsListAdapter(this::openGroup);
+        GroupsListAdapter adapter = new GroupsListAdapter(this::openGroup, this::deleteGroup);
         viewModel = new ViewModelProvider(this).get(GroupsViewModel.class);
 
         binding.recyclerView.setLayoutManager(mLayoutManager);
@@ -58,18 +59,31 @@ public class GroupsFragment extends Fragment {
             }
         });
         subscribe(viewModel, adapter);
-
     }
 
     private void subscribe(GroupsViewModel viewModel, GroupsListAdapter adapter) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), state->{
+            if (state.getLoading()){
+                binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(state.getLoading()));
+            }else{
+                binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(state.getLoading()));
+                binding.recyclerView.setVisibility(Utils.visibleOrGone(state.getSuccess()));
+                binding.groupsErrorMessage.setVisibility(Utils.visibleOrGone(!state.getSuccess()));
+                binding.groupsErrorMessage.setText(state.getErrorMessage());
 
-            binding.recyclerView.setVisibility(Utils.visibleOrGone(state.getSuccess()));
-            binding.groupsErrorMessage.setVisibility(Utils.visibleOrGone(!state.getSuccess()));
-            binding.groupsErrorMessage.setText(state.getErrorMessage());
-
-            if (state.getSuccess()){
-                adapter.updateData(state.getGroups());
+                if (state.getSuccess()){
+                    adapter.updateData(state.getGroups());
+                }
+            }
+        });
+        viewModel.deleteLiveData.observe(getViewLifecycleOwner(), success -> {
+            if (success) {
+                Toast.makeText(getContext(), "Группа успешно удалена", Toast.LENGTH_SHORT).show();
+                viewModel.update();
+            }
+            else{
+                Toast.makeText(getContext(), "Что-то пошло не так", Toast.LENGTH_SHORT).show();
+                viewModel.update();
             }
         });
     }
@@ -80,11 +94,13 @@ public class GroupsFragment extends Fragment {
         Navigation.findNavController(view).navigate(R.id.action_groupsFragment_to_tableFragment, TableFragment.getBundle(id));
     }
 
+    private void deleteGroup(@NonNull String id){
+        createDeletionDialog(id).show();
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
     }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -93,5 +109,20 @@ public class GroupsFragment extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString());
         }
+    }
+
+    private AlertDialog createDeletionDialog(@NonNull String group_id){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Удалить группу?")
+                .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        viewModel.deleteGroup(group_id);
+                    }
+                })
+                .setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        return builder.create();
     }
 }
