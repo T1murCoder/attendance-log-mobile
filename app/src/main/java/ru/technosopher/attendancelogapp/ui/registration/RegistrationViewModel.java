@@ -102,7 +102,6 @@ public class RegistrationViewModel extends ViewModel {
     private void registerTeacher(@NonNull String currentLogin, @NonNull String currentPassword, @NonNull String currentName, @NonNull String currentSurname) {
         registerTeacherUseCase.execute(currentLogin, currentPassword, currentName, currentSurname, status -> {
             if (status.getErrors() == null && status.getStatusCode() == 200) {
-
                 id = status.getValue().getId();
                 login = currentLogin;
                 password = currentPassword;
@@ -122,8 +121,7 @@ public class RegistrationViewModel extends ViewModel {
                 mutableConfirmLiveData.postValue(null);
             }
             else if (status.getErrors() == null && status.getStatusCode() == 401) {
-
-                mutableErrorLiveData.postValue("This account is already exists. Want to login?");
+                mutableErrorLiveData.postValue("This account is already exists. Want to login??????");
             }
             mutableLoadingLiveData.postValue(false);
 //            } else {

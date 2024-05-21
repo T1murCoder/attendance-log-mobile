@@ -8,6 +8,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.data.source.GroupApi;
+import ru.technosopher.attendancelogapp.data.source.LessonApi;
 import ru.technosopher.attendancelogapp.data.source.StudentApi;
 import ru.technosopher.attendancelogapp.data.source.TeacherApi;
 
@@ -51,4 +52,5 @@ public class RetrofitFactory {
     }
     public GroupApi getGroupApi() { return retrofit.create(GroupApi.class); }
     public StudentApi getStudentApi() { return retrofit.create(StudentApi.class); }
+    public LessonApi getLessonApi() { return retrofit.create(LessonApi.class); }
 }
