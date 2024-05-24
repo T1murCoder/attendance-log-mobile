@@ -49,9 +49,18 @@ public class GroupsRepositoryImpl implements GroupsRepository {
     }
 
     @Override
-    public void getGroupById() {
-
+    public void getGroupNameById(@NonNull String id, Consumer<Status<String>> callback) {
+        groupApi.getGroupNameById(id).enqueue(new CallToConsumer<>(
+                callback,
+                group->{
+                    if (group != null){
+                        if (group.id != null && group.name != null) return group.name;
+                    }
+                    return null;
+                }
+        ));
     }
+
 
     @Override
     public void addGroup(@NonNull String name, @NonNull List<ItemStudentEntity> students, @NonNull Consumer<Status<GroupEntity>> callback) {

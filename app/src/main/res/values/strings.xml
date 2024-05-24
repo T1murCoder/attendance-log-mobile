@@ -32,4 +32,6 @@
     <string name="lesson_upload_text">Загрузить QR-code</string>
     <string name="lesson_copy_link_text">Копировать ссылку</string>
     <string name="no_groups_hint">Здесь пока нет групп. Добавьте первую!</string>
+    <string name="create_new_lesson_content_description">Create new lesson</string>
+    <string name="table_group_name_header">Название группы</string>
 </resources>

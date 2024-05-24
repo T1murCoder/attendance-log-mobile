@@ -65,7 +65,6 @@ public class GroupsViewModel extends ViewModel {
         private final String errorMessage;
         @NonNull
         private final Boolean isSuccess;
-
         @NonNull
         private final Boolean isLoading;
 

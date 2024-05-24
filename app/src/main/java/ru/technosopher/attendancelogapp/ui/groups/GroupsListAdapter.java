@@ -19,8 +19,6 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
 
     private final Consumer<String> onItemClick;
     private final Consumer<String> deleteGroup;
-
-    //TODO (add active and inactive to checkboxes)
     private final List<ItemGroupEntity> data = new ArrayList<>();
     public GroupsListAdapter(Consumer<String> onItemClick, Consumer<String> deleteGroup) {
         this.onItemClick = onItemClick;

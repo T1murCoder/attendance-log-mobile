@@ -22,6 +22,7 @@ public class TableFragment extends Fragment {
 
     private static final String KEY_ID = "TABLE_FRAGMENT";
     private FragmentTableBinding binding;
+    private TableViewModel viewModel;
 
     private NavigationBarChangeListener navigationBarChangeListener;
 
@@ -41,14 +42,22 @@ public class TableFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //navigationBarChangeListener.hideNavigationBar();
         binding = FragmentTableBinding.bind(view);
-
         String id = getArguments() != null ? getArguments().getString(KEY_ID) : "Something went wrong";
-
-        binding.testIdTv.setText(id);
-        //TODO(VIEWMODEL and table :/)
-        //viewModel = new ViewModelProvider(this).get(TableViewModel.class);
+        viewModel = new ViewModelProvider(this).get(TableViewModel.class);
+        subscribe(viewModel);
     }
 
+
+    private void subscribe(TableViewModel viewModel){
+        viewModel.stateLiveData.observe(getViewLifecycleOwner(), state->{
+            if (state.getLoading()){
+
+            }
+            else{
+
+            }
+        });
+    }
     @Override
     public void onDestroyView() {
         binding = null;

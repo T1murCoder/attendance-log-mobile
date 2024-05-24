@@ -39,6 +39,7 @@ public class GroupAddFragment extends Fragment {
         binding = FragmentGroupAddBinding.bind(view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         StudentListAdapter adapter = new StudentListAdapter(this::addStudent, this::deleteStudent);
+
         viewModel = new ViewModelProvider(this).get(GroupAddViewModel.class);
         binding.studentsRecyclerView.setLayoutManager(mLayoutManager);
         binding.studentsRecyclerView.setAdapter(adapter);
@@ -82,18 +83,27 @@ public class GroupAddFragment extends Fragment {
 
     private void subscribe(GroupAddViewModel viewModel, StudentListAdapter adapter) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), studentsState -> {
-            binding.studentsRecyclerView.setVisibility(Utils.visibleOrGone(studentsState.getSuccess()));
-            binding.errorTv.setVisibility(Utils.visibleOrGone(!studentsState.getSuccess()));
-            if (studentsState.getSuccess()){
-                adapter.updateData(studentsState.getStudents());
+            if (studentsState.getLoading()){
+                binding.progressBar.setVisibility(Utils.visibleOrGone(true));
+                binding.studentsRecyclerView.setVisibility(Utils.visibleOrGone(false));
+                binding.errorTv.setVisibility(Utils.visibleOrGone(false));
+            }else{
+                binding.progressBar.setVisibility(Utils.visibleOrGone(false));
+                binding.studentsRecyclerView.setVisibility(Utils.visibleOrGone(studentsState.getSuccess()));
+                binding.errorTv.setVisibility(Utils.visibleOrGone(!studentsState.getSuccess()));
+                if (studentsState.getSuccess()){
+                    adapter.updateData(studentsState.getStudents());
+                }
+                else{
+                    binding.errorTv.setText(studentsState.getErrorMessage());
+                }
             }
-            else{
-                binding.errorTv.setText(studentsState.getErrorMessage());
-            }
+
+
         });
         viewModel.errorLiveData.observe(getViewLifecycleOwner(), unused->{
 //            binding.errorTv.setVisibility(View.VISIBLE);
-            binding.groupNameInputLayout.setErrorEnabled(true);
+//            binding.groupNameInputLayout.setErrorEnabled(true);
         });
         viewModel.confirmLiveData.observe(getViewLifecycleOwner(), unused -> {
             View view = getView();

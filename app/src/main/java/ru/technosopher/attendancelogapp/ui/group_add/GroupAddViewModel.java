@@ -15,7 +15,6 @@ import ru.technosopher.attendancelogapp.data.StudentRepositoryImpl;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 import ru.technosopher.attendancelogapp.domain.groups.CreateGroupUseCase;
-import ru.technosopher.attendancelogapp.domain.groups.GroupsRepository;
 import ru.technosopher.attendancelogapp.domain.students.GetStudentsListUseCase;
 
 public class GroupAddViewModel extends ViewModel {
@@ -90,29 +89,33 @@ public class GroupAddViewModel extends ViewModel {
 
     }
     public void loadStudents() {
+        mutableStateLiveData.postValue(new StudentsState(null, null, false, true));
         getStudentsListUseCase.execute(status -> {
             mutableStateLiveData.postValue(fromStatus(status));
         });
     }
     private StudentsState fromStatus(Status<List<ItemStudentEntity>> status) {
+        System.out.println(status.getValue());;
         return new StudentsState(
                 status.getValue(),
                 status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
-                status.getErrors() == null && status.getValue() != null);
+                status.getErrors() == null && status.getValue() != null, false);
     }
     public class StudentsState {
-
         @Nullable
         private final List<ItemStudentEntity> students;
         @Nullable
         private final String errorMessage;
         @NonNull
         private final Boolean isSuccess;
+        @NonNull
+        private final Boolean isLoading;
 
-        public StudentsState(@Nullable List<ItemStudentEntity> students, @Nullable String errorMessage, @NonNull Boolean isSuccess) {
+        public StudentsState(@Nullable List<ItemStudentEntity> students, @Nullable String errorMessage, @NonNull Boolean isSuccess, @NonNull Boolean isLoading) {
             this.students = students;
             this.errorMessage = errorMessage;
             this.isSuccess = isSuccess;
+            this.isLoading = isLoading;
         }
 
         @Nullable
@@ -128,6 +131,11 @@ public class GroupAddViewModel extends ViewModel {
         @NonNull
         public Boolean getSuccess() {
             return isSuccess;
+        }
+
+        @NonNull
+        public Boolean getLoading() {
+            return isLoading;
         }
     }
 

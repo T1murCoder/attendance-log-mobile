@@ -23,4 +23,6 @@ public interface GroupApi {
 
     @DELETE("group/{id}")
     Call<Void> deleteGroup(@Path("id") String id);
+    @GET("group/{id}")
+    Call<GroupDto> getGroupNameById(@Path("id") String id);
 }

@@ -13,4 +13,8 @@ public class StudentItemDto {
     @Nullable
     @SerializedName("name")
     public String name;
+
+    @Nullable
+    @SerializedName("surname")
+    public String surname;
 }
