@@ -49,4 +49,5 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.10")
     implementation("androidx.navigation:navigation-fragment:2.7.7")
     implementation("androidx.navigation:navigation-ui:2.7.7")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 }

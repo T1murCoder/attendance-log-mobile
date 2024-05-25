@@ -55,7 +55,7 @@ public class LessonsFragment extends Fragment {
         navigationBarChangeListener.changeSelectedItem(R.id.lessons);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        LessonsListAdapter adapter = new LessonsListAdapter(this::onItemOpen, this::onItemClose, this::onDelete, this::onOpenJournal, this::onUpload, this::onCopyLink);
+        LessonsListAdapter adapter = new LessonsListAdapter(getContext(), this::onItemOpen, this::onItemClose, this::onDelete, this::onOpenJournal, this::onUpload, this::onCopyLink);
 
         binding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override

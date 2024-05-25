@@ -1,25 +1,40 @@
 package ru.technosopher.attendancelogapp.ui.lessons;
 
+import static android.app.PendingIntent.getActivity;
+import static androidx.core.content.ContextCompat.getCodeCacheDir;
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.function.Consumer;
 
+
 import ru.technosopher.attendancelogapp.databinding.LessonsListItemBinding;
 import ru.technosopher.attendancelogapp.domain.entities.LessonEntity;
+import ru.technosopher.attendancelogapp.ui.MainActivity;
 import ru.technosopher.attendancelogapp.ui.utils.DateFormatter;
+import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
 public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.ViewHolder>{
 
+    private Context context;
     private final Consumer<Boolean> onItemOpen;
     private final Consumer<Boolean> onItemClose;
     private final Consumer<String> onDelete;
@@ -29,7 +44,8 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
 
     //TODO (add active and inactive to checkboxes)
     private final List<LessonEntity> data = new ArrayList<>();
-    public LessonsListAdapter(Consumer<Boolean> onItemOpen, Consumer<Boolean> onItemClose, Consumer<String> onDelete, Consumer<String> onOpenJournal, Consumer<String> onUpload, Consumer<String> onCopyLink) {
+    public LessonsListAdapter(Context context, Consumer<Boolean> onItemOpen, Consumer<Boolean> onItemClose, Consumer<String> onDelete, Consumer<String> onOpenJournal, Consumer<String> onUpload, Consumer<String> onCopyLink) {
+        this.context = context;
         this.onItemOpen = onItemOpen;
         this.onItemClose = onItemClose;
         this.onDelete = onDelete;
@@ -78,7 +94,7 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
             binding.groupName.setText(item.getGroupName());
             binding.dateTv.setText(DateFormatter.getDateStringFromDate(item.getDate(), "dd MMM yyyy"));
             binding.lessonTitle.setText(item.getTheme());
-            //TODO(start time suffer)
+            binding.qrCodeImage.setImageBitmap(Utils.generateQr(item.getId(), 900, 900));
             binding.timeStartTv.setText("smh to do 5 min");
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -108,7 +124,34 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
                     onOpenJournal.accept(item.getId());
                 }
             });
+            binding.lessonUploadBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Bitmap bitmap = Utils.generateQr(item.getId(), 900,900);
+
+                    File imagePath = new File(context.getCacheDir(), "to-share-qr.png");
+                    try {
+                        FileOutputStream fos = new FileOutputStream(imagePath);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Uri imageUri = FileProvider.getUriForFile(view.getContext(), "ru.technosopher.attendancelogapp.fileprovider", imagePath);
+
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+                    shareIntent.setType("image/*");
+                    Intent chooser = Intent.createChooser(shareIntent, "Поделиться с помощью");
+                    if (shareIntent.resolveActivity(context.getPackageManager()) != null) {
+                        context.startActivity(chooser);
+                    }
+                }
+            });
         }
+
         //TODO(Change extract methods. Add field validation)
     }
 }
