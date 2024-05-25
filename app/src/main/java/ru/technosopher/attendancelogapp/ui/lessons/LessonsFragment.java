@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,9 +22,6 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import java.util.List;
-import java.util.Objects;
 
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentLessonsBinding;
@@ -57,7 +55,7 @@ public class LessonsFragment extends Fragment {
         navigationBarChangeListener.changeSelectedItem(R.id.lessons);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        LessonsListAdapter adapter = new LessonsListAdapter(this::onItemOpen, this::onItemClose, this::onDelete, this::onUpload, this::onCopyLink);
+        LessonsListAdapter adapter = new LessonsListAdapter(this::onItemOpen, this::onItemClose, this::onDelete, this::onOpenJournal, this::onUpload, this::onCopyLink);
 
         binding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +67,10 @@ public class LessonsFragment extends Fragment {
         binding.addLessonConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                binding.addLessonLayout.setVisibility(View.GONE);
                 viewModel.createLesson();
+                viewModel.clearAllFields();
+                binding.themeEt.setText(null);
             }
         });
 
@@ -119,8 +120,10 @@ public class LessonsFragment extends Fragment {
             public void onClick(View view) {
                 binding.addLessonLayout.setVisibility(View.GONE);
                 viewModel.clearAllFields();
+                binding.themeEt.setText(null);
             }
         });
+
         viewModel = new ViewModelProvider(this).get(LessonsViewModel.class);
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setAdapter(adapter);
@@ -134,6 +137,12 @@ public class LessonsFragment extends Fragment {
     private void onItemClose(Boolean aBoolean) {
     }
 
+    private void onOpenJournal(String id){
+        View view = getView();
+        if (view == null) return ;
+        Navigation.findNavController(view).navigate(R.id.action_lessonsFragment_to_dummyAttendancesFragment, DummyAttendancesFragment.getBundle(id));
+
+    }
     private void onDelete(@NonNull String id) {
         viewModel.deleteLesson(id);
     }

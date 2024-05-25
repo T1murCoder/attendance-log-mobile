@@ -13,5 +13,8 @@ public interface StudentApi {
     Call<List<StudentItemDto>> getAllStudents();
 
     @GET("student/group/{id}")
-    Call<List<StudentDto>> getStudentsAttendances(@Path("id") String id);
+    Call<List<StudentDto>> getStudentWithAttendancesByGroupId(@Path("id") String id);
+
+    @GET("student/lesson/{id}")
+    Call<List<StudentItemDto>> getStudentWithAttendancesByLessonId(@Path("id") String id);
 }

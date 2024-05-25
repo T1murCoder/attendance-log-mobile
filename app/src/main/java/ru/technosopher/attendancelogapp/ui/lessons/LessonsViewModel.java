@@ -59,7 +59,6 @@ public class LessonsViewModel extends ViewModel {
     /* USE CASES */
     private List<LessonEntity> lessons = new ArrayList<>();
 
-
     @Nullable
     private String groupId = null;
     @Nullable

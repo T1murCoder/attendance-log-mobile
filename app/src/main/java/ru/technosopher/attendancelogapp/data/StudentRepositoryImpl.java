@@ -58,7 +58,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 
     @Override
     public void getStudentsAttendances(@NonNull String groupId, Consumer<Status<List<StudentEntity>>> callback) {
-        studentApi.getStudentsAttendances(groupId).enqueue(new CallToConsumer<>(
+        studentApi.getStudentWithAttendancesByGroupId(groupId).enqueue(new CallToConsumer<>(
                 callback,
                 studentsDto -> {
                     if (studentsDto != null){
@@ -75,6 +75,28 @@ public class StudentRepositoryImpl implements StudentRepository {
                             }
                         }
                         return res;
+                    }
+                    return null;
+                }
+        ));
+    }
+
+    @Override
+    public void getStudentAttendancesByLessonId(@NonNull String id, Consumer<Status<List<ItemStudentEntity>>> callback) {
+        studentApi.getStudentWithAttendancesByLessonId(id).enqueue(new CallToConsumer<>(
+                callback,
+                studentItems -> {
+                    if (studentItems != null) {
+                        ArrayList<ItemStudentEntity> res = new ArrayList<>();
+                        for (StudentItemDto dto : studentItems) {
+                            final String name = dto.name;
+                            final String surname = dto.surname;
+                            if (name != null && surname != null) {
+                                res.add(new ItemStudentEntity(id, name+" "+surname));
+                            }
+                        }
+                        return res;
+
                     }
                     return null;
                 }

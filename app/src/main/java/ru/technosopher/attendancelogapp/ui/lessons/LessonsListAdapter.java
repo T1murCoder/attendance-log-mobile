@@ -17,22 +17,23 @@ import java.util.function.Consumer;
 import ru.technosopher.attendancelogapp.databinding.LessonsListItemBinding;
 import ru.technosopher.attendancelogapp.domain.entities.LessonEntity;
 import ru.technosopher.attendancelogapp.ui.utils.DateFormatter;
-import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
 public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.ViewHolder>{
 
     private final Consumer<Boolean> onItemOpen;
     private final Consumer<Boolean> onItemClose;
     private final Consumer<String> onDelete;
+    private final Consumer<String> onOpenJournal;
     private final Consumer<String> onUpload;
     private final Consumer<String> onCopyLink;
 
     //TODO (add active and inactive to checkboxes)
     private final List<LessonEntity> data = new ArrayList<>();
-    public LessonsListAdapter(Consumer<Boolean> onItemOpen, Consumer<Boolean> onItemClose, Consumer<String> onDelete, Consumer<String> onUpload, Consumer<String> onCopyLink) {
+    public LessonsListAdapter(Consumer<Boolean> onItemOpen, Consumer<Boolean> onItemClose, Consumer<String> onDelete, Consumer<String> onOpenJournal, Consumer<String> onUpload, Consumer<String> onCopyLink) {
         this.onItemOpen = onItemOpen;
         this.onItemClose = onItemClose;
         this.onDelete = onDelete;
+        this.onOpenJournal = onOpenJournal;
         this.onUpload = onUpload;
         this.onCopyLink = onCopyLink;
     }
@@ -79,7 +80,7 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
             binding.lessonTitle.setText(item.getTheme());
             //TODO(start time suffer)
             binding.timeStartTv.setText("smh to do 5 min");
-            binding.qrCodeBtn.setOnClickListener(new View.OnClickListener() {
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (closed){
@@ -101,37 +102,13 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
                     onDelete.accept(item.getId());
                 }
             });
+            binding.qrCodeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onOpenJournal.accept(item.getId());
+                }
+            });
         }
         //TODO(Change extract methods. Add field validation)
-        private String extractDate(GregorianCalendar date) {
-            String year = String.valueOf(date.get(Calendar.YEAR));
-            String month = String.valueOf(date.get(Calendar.MONTH));
-            String day = String.valueOf(date.get(Calendar.DAY_OF_MONTH));
-            return day + " " + getMonthName(Integer.parseInt(month)) + " " + year;
-        }
-
-        private String extractTime(GregorianCalendar timeStart, GregorianCalendar timeEnd){
-            String ts = timeStart.get(Calendar.HOUR_OF_DAY) + ":" + timeStart.get(Calendar.MINUTE);
-            String te = timeEnd.get(Calendar.HOUR_OF_DAY) + ":" + timeEnd.get(Calendar.MINUTE);
-            return ts + " - " + te;
-        }
-
-        private String getMonthName (int monthNum){
-            switch (monthNum){
-                case 0: return "янв";
-                case 1: return "фев";
-                case 2: return "мар";
-                case 3: return "апр";
-                case 4: return "мая";
-                case 5: return "июн";
-                case 6: return "июл";
-                case 7: return "авг";
-                case 8: return "сен";
-                case 9: return "окт";
-                case 10: return"ноя";
-                case 11: return"дек";
-            }
-            return "net";
-        }
     }
 }

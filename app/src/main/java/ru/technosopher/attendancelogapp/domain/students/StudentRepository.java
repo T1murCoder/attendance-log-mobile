@@ -17,4 +17,5 @@ public interface StudentRepository {
     void getAllStudents(@NonNull Consumer<Status<List<ItemStudentEntity>>> callback);
 
     void getStudentsAttendances(@NonNull String id, Consumer<Status<List<StudentEntity>>> callback);
+    void getStudentAttendancesByLessonId(@NonNull String id, Consumer<Status<List<ItemStudentEntity>>> callback);
 }

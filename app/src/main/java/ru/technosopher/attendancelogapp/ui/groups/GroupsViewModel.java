@@ -15,10 +15,8 @@ import ru.technosopher.attendancelogapp.domain.groups.DeleteGroupUseCase;
 import ru.technosopher.attendancelogapp.domain.groups.GetGroupsListUseCase;
 
 public class GroupsViewModel extends ViewModel {
-
     private final MutableLiveData<State> mutableStateLiveData = new MutableLiveData<>();
     public final LiveData<State> stateLiveData = mutableStateLiveData;
-
     private final MutableLiveData<Boolean> mutableDeleteLiveData = new MutableLiveData<>();
     public final LiveData<Boolean> deleteLiveData = mutableDeleteLiveData;
 
