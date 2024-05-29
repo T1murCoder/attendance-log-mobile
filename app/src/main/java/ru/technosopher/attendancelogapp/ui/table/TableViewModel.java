@@ -6,58 +6,124 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
+import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.StudentRepositoryImpl;
-import ru.technosopher.attendancelogapp.domain.entities.LessonEntity;
+import ru.technosopher.attendancelogapp.domain.entities.AttendanceEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
+import ru.technosopher.attendancelogapp.domain.groups.GetGroupNameByIdUseCase;
 import ru.technosopher.attendancelogapp.domain.students.GetStudentsAttendancesUseCase;
-import ru.technosopher.attendancelogapp.ui.group_add.GroupAddViewModel;
+import ru.technosopher.attendancelogapp.ui.utils.DateFormatter;
 
 public class TableViewModel extends ViewModel {
+    private final MutableLiveData<State> mutableStateLiveData = new MutableLiveData<>();
 
-    private final MutableLiveData<State> mutableStateLiveData = new MutableLiveData<State>();
     public LiveData<State> stateLiveData = mutableStateLiveData;
+    private final MutableLiveData<String> mutableErrorLiveData = new MutableLiveData<>();
+    public LiveData<String> errorLiveData = mutableErrorLiveData;
 
     /* USE CASES */
-
-    private GetStudentsAttendancesUseCase getStudentsAttendancesUseCase = new GetStudentsAttendancesUseCase(
+    private final GetStudentsAttendancesUseCase getStudentsAttendancesUseCase = new GetStudentsAttendancesUseCase(
             StudentRepositoryImpl.getInstance()
+    );
+
+    private final GetGroupNameByIdUseCase getGroupNameByIdUseCase = new GetGroupNameByIdUseCase(
+            GroupsRepositoryImpl.getInstance()
     );
 
     /* USE CASES */
 
-    public void update(@NonNull String id){
-        mutableStateLiveData.postValue(new State(null, null, false, true));
-        getStudentsAttendancesUseCase.execute(id, status -> {
-            mutableStateLiveData.postValue(fromStatus(status));
-        });
+    private String groupId;
+    private List<StudentEntity> students = new ArrayList<>();
+
+    public void update(@Nullable String id) {
+        if (id == null && groupId == null) throw new IllegalStateException();
+        if (groupId != null && id == null) {
+            mutableStateLiveData.postValue(new State(null, null, null, false, true));
+            getStudentsAttendancesUseCase.execute(groupId, status -> {
+                getGroupNameByIdUseCase.execute(groupId, groupNameStatus -> {
+                    if (groupNameStatus.getStatusCode() == 200 && groupNameStatus.getErrors() == null && groupNameStatus.getValue() != null) {
+                        List<StudentEntity> students = status.getValue() != null ? status.getValue() : null;
+                        List<StudentEntity> sortedOrNullStudents = sortAttendancesForStudents(students);
+                        this.students = status.getValue() != null ? status.getValue() : null;
+                        mutableStateLiveData.postValue(new State(groupNameStatus.getValue(), status.getValue() != null ? status.getValue() : null,
+                                status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
+                                status.getErrors() == null && status.getValue() != null && !sortedOrNullStudents.isEmpty(), false));
+                    }
+                    else{
+                        mutableErrorLiveData.postValue("Что-то пошло не так. ПОпробуйте еще раз");
+                    }
+                });
+            });
+
+        } else {
+            groupId = id;
+            mutableStateLiveData.postValue(new State(null, null, null, false, true));
+            getStudentsAttendancesUseCase.execute(id, status -> {
+                getGroupNameByIdUseCase.execute(groupId, groupNameStatus -> {
+                    if (groupNameStatus.getStatusCode() == 200 && groupNameStatus.getErrors() == null && groupNameStatus.getValue() != null) {
+                        List<StudentEntity> students = status.getValue() != null ? status.getValue() : null;
+                        List<StudentEntity> sortedOrNullStudents = sortAttendancesForStudents(students);
+                        this.students = status.getValue() != null ? status.getValue() : null;
+                        mutableStateLiveData.postValue(new State(groupNameStatus.getValue(), status.getValue() != null ? status.getValue() : null,
+                                status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
+                                status.getErrors() == null && status.getValue() != null && !sortedOrNullStudents.isEmpty(), false));
+                    }
+                    else{
+                        mutableErrorLiveData.postValue("Что-то пошло не так. ПОпробуйте еще раз");
+                    }
+                });
+            });
+        }
     }
 
-    private State fromStatus(Status<List<StudentEntity>> status) {
-        return new State(
-                status.getValue(),
-                status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
-                status.getErrors() == null && status.getValue() != null, false);
+
+    private List<StudentEntity> sortAttendancesForStudents(@Nullable List<StudentEntity> students) {
+        if (students == null) return new ArrayList<>();
+        for (StudentEntity student : students) {
+            List<AttendanceEntity> attendanceEntities = student.getAttendanceEntityList();
+            attendanceEntities.sort(Comparator.comparing(AttendanceEntity::getLessonTimeStart));
+        }
+        return students;
     }
 
+    private void sortAttendances(@Nullable List<AttendanceEntity> attendances) {
+        if (attendances == null) return;
+        attendances.sort(Comparator.comparing(AttendanceEntity::getLessonTimeStart));
+    }
 
-    public class State{
+    public List<String> extractDates(List<AttendanceEntity> attendances) {
+        List<String> dates = new ArrayList<>();
+        sortAttendances(attendances);
+        for (AttendanceEntity att : attendances) {
+            dates.add(DateFormatter.getDateStringFromDate(att.getLessonTimeStart(), "dd"));
+        }
+        return dates;
+    }
 
+    public List<StudentEntity> getStudents() {
+        return this.students;
+    }
+
+    public class State {
+
+        @Nullable
+        private final String groupName;
         @Nullable
         private final List<StudentEntity> students;
-
         @Nullable
         private final String errorMessage;
-
         @NonNull
         private final Boolean isSuccess;
-
         @NonNull
         private final Boolean isLoading;
 
-        public State(@Nullable List<StudentEntity> students, @Nullable String errorMessage, @NonNull Boolean isSuccess, @NonNull Boolean isLoading) {
+        public State(@Nullable String groupName, @Nullable List<StudentEntity> students, @Nullable String errorMessage, @NonNull Boolean isSuccess, @NonNull Boolean isLoading) {
+            this.groupName = groupName;
             this.students = students;
             this.errorMessage = errorMessage;
             this.isSuccess = isSuccess;
@@ -82,6 +148,11 @@ public class TableViewModel extends ViewModel {
         @NonNull
         public Boolean getLoading() {
             return isLoading;
+        }
+
+        @Nullable
+        public String getGroupName() {
+            return groupName;
         }
     }
 }

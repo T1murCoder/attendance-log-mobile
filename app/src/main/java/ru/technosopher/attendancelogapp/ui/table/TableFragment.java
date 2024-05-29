@@ -10,13 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import ru.technosopher.attendancelogapp.R;
-import ru.technosopher.attendancelogapp.databinding.FragmentProfileBinding;
 import ru.technosopher.attendancelogapp.databinding.FragmentTableBinding;
 import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
-import ru.technosopher.attendancelogapp.ui.UpdateSharedPreferences;
-import ru.technosopher.attendancelogapp.ui.profile.ProfileViewModel;
 
 public class TableFragment extends Fragment {
 
@@ -40,24 +38,84 @@ public class TableFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //navigationBarChangeListener.hideNavigationBar();
+        navigationBarChangeListener.hideNavigationBar();
         binding = FragmentTableBinding.bind(view);
+
+
         String id = getArguments() != null ? getArguments().getString(KEY_ID) : "Something went wrong";
         viewModel = new ViewModelProvider(this).get(TableViewModel.class);
-        subscribe(viewModel);
-    }
 
 
-    private void subscribe(TableViewModel viewModel){
-        viewModel.stateLiveData.observe(getViewLifecycleOwner(), state->{
-            if (state.getLoading()){
+        StudentAttendancesAdapter attendancesAdapter = new StudentAttendancesAdapter(getContext(), true);
+        DatesAdapter datesAdapter = new DatesAdapter();
 
-            }
-            else{
-
+        binding.back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view == null) return;
+                Navigation.findNavController(view).navigate(R.id.action_tableFragment_to_groupsFragment);
             }
         });
+
+        binding.backWithoutLoading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view == null) return;
+                Navigation.findNavController(view).navigate(R.id.action_tableFragment_to_groupsFragment);
+            }
+        });
+
+        binding.pointsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attendancesAdapter.updateState(false);
+                attendancesAdapter.updateData(viewModel.getStudents());
+                datesAdapter.update(viewModel.extractDates(viewModel.getStudents().get(0).getAttendanceEntityList()));
+            }
+        });
+        binding.attendanceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attendancesAdapter.updateState(true);
+                attendancesAdapter.updateData(viewModel.getStudents());
+                datesAdapter.update(viewModel.extractDates(viewModel.getStudents().get(0).getAttendanceEntityList()));
+            }
+        });
+
+        binding.studentsRv.setAdapter(attendancesAdapter);
+        binding.datesRv.setAdapter(datesAdapter);
+
+        subscribe(viewModel, attendancesAdapter, datesAdapter);
+        viewModel.update(id);
     }
+
+
+    private void subscribe(TableViewModel viewModel, StudentAttendancesAdapter attendancesAdapter, DatesAdapter datesAdapter) {
+        viewModel.stateLiveData.observe(getViewLifecycleOwner(), state -> {
+            if (state.getLoading()) {
+                binding.tableContent.setVisibility(View.GONE);
+                binding.tableErrorTv.setVisibility(View.GONE);
+                binding.tableProgressBar.setVisibility(View.VISIBLE);
+                binding.backWithoutLoading.setVisibility(View.VISIBLE);
+            } else {
+                if (state.getSuccess()) {
+                    binding.tableGroupName.setText(state.getGroupName());
+                    binding.tableContent.setVisibility(View.VISIBLE);
+                    binding.tableProgressBar.setVisibility(View.GONE);
+                    binding.backWithoutLoading.setVisibility(View.GONE);
+                    binding.tableErrorTv.setVisibility(View.GONE);
+                    attendancesAdapter.updateData(state.getStudents());
+                    datesAdapter.update(viewModel.extractDates(state.getStudents().get(0).getAttendanceEntityList()));
+                }
+            }
+        });
+
+        viewModel.errorLiveData.observe(getViewLifecycleOwner(), errorMsg ->{
+            binding.tableErrorTv.setVisibility(View.VISIBLE);
+            binding.tableErrorTv.setText(errorMsg);
+        });
+    }
+
     @Override
     public void onDestroyView() {
         binding = null;
@@ -67,14 +125,14 @@ public class TableFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        try{
+        try {
             navigationBarChangeListener = (NavigationBarChangeListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString());
         }
     }
 
-    public static Bundle getBundle(@NonNull String id){
+    public static Bundle getBundle(@NonNull String id) {
         Bundle bundle = new Bundle();
         bundle.putString(KEY_ID, id);
         return bundle;

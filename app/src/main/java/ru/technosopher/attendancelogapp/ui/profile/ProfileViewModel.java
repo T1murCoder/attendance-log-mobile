@@ -33,6 +33,8 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void loadPrefs(String id, String prefsLogin, String prefsName, String prefsSurname, String prefsTelegram, String prefsGithub, String prefsPhotoUrl) {
+        System.out.println(prefsGithub);
+        System.out.println(prefsTelegram);
         // TODO(VALIDATION)
         mutableStateLiveData.postValue(new State(null, new TeacherEntity(
                 id,

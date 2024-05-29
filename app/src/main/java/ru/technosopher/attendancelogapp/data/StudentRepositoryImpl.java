@@ -1,5 +1,7 @@
 package ru.technosopher.attendancelogapp.data;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.function.Consumer;
 import ru.technosopher.attendancelogapp.data.dto.GroupWithoutStudentsDto;
 import ru.technosopher.attendancelogapp.data.dto.StudentDto;
 import ru.technosopher.attendancelogapp.data.dto.StudentItemDto;
+import ru.technosopher.attendancelogapp.data.dto.StudentWithAttendances;
 import ru.technosopher.attendancelogapp.data.network.RetrofitFactory;
 import ru.technosopher.attendancelogapp.data.source.StudentApi;
 import ru.technosopher.attendancelogapp.data.utils.CallToConsumer;
@@ -63,17 +66,18 @@ public class StudentRepositoryImpl implements StudentRepository {
                 studentsDto -> {
                     if (studentsDto != null){
                         ArrayList<StudentEntity> res = new ArrayList<>();
-                        for (StudentDto dto: studentsDto){
+                        for (StudentWithAttendances dto: studentsDto){
                             final String id = dto.id;
                             final String name = dto.name;
                             final String surname = dto.surname;
                             final String points = dto.points;
+                            assert dto.attendanceDtoList != null;
                             List<AttendanceEntity> attendanceEntityList = Mapper.fromAttendanceDtoToAttendanceEntityList(dto.attendanceDtoList);
                             if (id != null && name != null && surname != null){
-                                //TODO(points might be null. Fix this)
                                 res.add(new StudentEntity(id, name, surname, "0", attendanceEntityList));
                             }
                         }
+                        System.out.println(res);
                         return res;
                     }
                     return null;
@@ -88,7 +92,7 @@ public class StudentRepositoryImpl implements StudentRepository {
                 studentItems -> {
                     if (studentItems != null) {
                         ArrayList<ItemStudentEntity> res = new ArrayList<>();
-                        for (StudentItemDto dto : studentItems) {
+                        for (StudentDto dto : studentItems) {
                             final String name = dto.name;
                             final String surname = dto.surname;
                             if (name != null && surname != null) {
@@ -96,7 +100,6 @@ public class StudentRepositoryImpl implements StudentRepository {
                             }
                         }
                         return res;
-
                     }
                     return null;
                 }

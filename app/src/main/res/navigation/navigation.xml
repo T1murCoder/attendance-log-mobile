@@ -101,7 +101,13 @@
     <fragment
         android:id="@+id/tableFragment"
         android:name="ru.technosopher.attendancelogapp.ui.table.TableFragment"
-        android:label="TableFragment" />
+        android:label="TableFragment" >
+        <action
+            android:id="@+id/action_tableFragment_to_groupsFragment"
+            app:destination="@id/groupsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
     <fragment
         android:id="@+id/groupAddFragment"
         android:name="ru.technosopher.attendancelogapp.ui.group_add.GroupAddFragment"

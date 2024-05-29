@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Objects;
 
 import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.LessonRepositoryImpl;
@@ -23,16 +24,16 @@ import ru.technosopher.attendancelogapp.domain.groups.GetGroupsListUseCase;
 import ru.technosopher.attendancelogapp.domain.lessons.CreateLessonUseCase;
 import ru.technosopher.attendancelogapp.domain.lessons.DeleteLessonUseCase;
 import ru.technosopher.attendancelogapp.domain.lessons.GetLessonsListUseCase;
+import ru.technosopher.attendancelogapp.ui.utils.DateFormatter;
 
 public class LessonsViewModel extends ViewModel {
-
     private MutableLiveData<State> mutableStateLiveData = new MutableLiveData<>();
+
     public LiveData<State> stateLiveData = mutableStateLiveData;
     private MutableLiveData<Boolean> mutableDeleteLiveData = new MutableLiveData<>();
     public LiveData<Boolean> deleteLiveData = mutableDeleteLiveData;
     private MutableLiveData<String> mutableAddErrorLiveData = new MutableLiveData<>();
     public LiveData<String> addErrorLiveData = mutableAddErrorLiveData;
-
     private MutableLiveData<GroupsState> mutableGroupsLiveData = new MutableLiveData<>();
     public LiveData<GroupsState> groupsLiveData = mutableGroupsLiveData;
 
@@ -47,10 +48,6 @@ public class LessonsViewModel extends ViewModel {
 
     private final DeleteLessonUseCase deleteLessonUseCase = new DeleteLessonUseCase(
             LessonRepositoryImpl.getINSTANCE()
-    );
-
-    private final GetGroupNameByIdUseCase getGroupNameById = new GetGroupNameByIdUseCase(
-            GroupsRepositoryImpl.getInstance()
     );
 
     private final GetGroupsListUseCase getGroupsListUseCase = new GetGroupsListUseCase(
@@ -76,11 +73,13 @@ public class LessonsViewModel extends ViewModel {
     public LessonsViewModel() {
         update();
     }
+
     public void update() {
-        getLessonsList();
         getGroupsList();
+        getLessonsList();
     }
-    public void getLessonsList(){
+
+    public void getLessonsList() {
         mutableStateLiveData.postValue(new State(null, null, false, true));
         getLessonsListUseCase.execute(
                 status -> {
@@ -88,6 +87,7 @@ public class LessonsViewModel extends ViewModel {
                 }
         );
     }
+
     private State fromLessonStatus(Status<List<LessonEntity>> status) {
         if (status.getErrors() == null && status.getValue() != null) {
             lessons = status.getValue();
@@ -99,6 +99,7 @@ public class LessonsViewModel extends ViewModel {
                 false
         );
     }
+
     public void createLesson() {
         if (groupId == null) {
             mutableAddErrorLiveData.postValue("Выберете группу");
@@ -116,6 +117,7 @@ public class LessonsViewModel extends ViewModel {
             mutableAddErrorLiveData.postValue("Введите тему занятия");
             return;
         }
+
         createLessonUseCase.execute(theme, groupId, "", timeStart, timeEnd, date, lessonStatus -> {
             if (lessonStatus.getStatusCode() == 200) {
                 if (lessonStatus.getValue() != null && lessonStatus.getErrors() == null) {
@@ -135,6 +137,7 @@ public class LessonsViewModel extends ViewModel {
             mutableGroupsLiveData.postValue(fromGroupsStatus(status));
         });
     }
+
     private GroupsState fromGroupsStatus(Status<List<ItemGroupEntity>> status) {
         System.out.println(status.getStatusCode());
         return new GroupsState(
@@ -142,39 +145,59 @@ public class LessonsViewModel extends ViewModel {
                 status.getValue(),
                 status.getErrors() == null && status.getValue() != null);
     }
+
     public void deleteLesson(@NonNull String id) {
         deleteLessonUseCase.execute(id, status -> {
             mutableDeleteLiveData.postValue(status.getStatusCode() == 200);
         });
     }
-    public void generateQrCode(@NonNull String id) {
-        //TODO(QR CODE GENERATION AND LIVE DATA UPDATE)
-    }
+
     private void addNewLesson(LessonEntity lesson) {
         lessons.add(lesson);
     }
+
     public void changeTheme(Editable editable) {
         theme = String.valueOf(editable);
     }
+
     public void changeStartTime(Integer hour, Integer minute) {
-        timeStart = new GregorianCalendar();
+        if (timeStart == null) timeStart = new GregorianCalendar();
         timeStart.set(Calendar.HOUR_OF_DAY, hour);
         timeStart.set(Calendar.MINUTE, minute);
     }
+
     public void changeEndTime(Integer hour, Integer minute) {
-        timeEnd = new GregorianCalendar();
+        if (timeEnd == null) timeEnd = new GregorianCalendar();
         timeEnd.set(Calendar.HOUR_OF_DAY, hour);
         timeEnd.set(Calendar.MINUTE, minute);
     }
+
     public void changeDate(int year, int month, int day) {
-        date = new GregorianCalendar();
+        if (date == null) date = new GregorianCalendar();
         date.set(Calendar.YEAR, year);
         date.set(Calendar.MONTH, month);
         date.set(Calendar.DAY_OF_MONTH, day);
+        changeStartAndEndDate(year, month, day);
+
     }
+
+    public void changeStartAndEndDate(int year, int month, int day) {
+        if (timeStart == null) timeStart = new GregorianCalendar();
+        timeStart.set(Calendar.YEAR, year);
+        timeStart.set(Calendar.MONTH, month);
+        timeStart.set(Calendar.DAY_OF_MONTH, day);
+
+        if (timeEnd == null) timeEnd = new GregorianCalendar();
+        timeEnd.set(Calendar.YEAR, year);
+        timeEnd.set(Calendar.MONTH, month);
+        timeEnd.set(Calendar.DAY_OF_MONTH, day);
+    }
+
     public void changeGroup(String groupId) {
+        if (Objects.equals(groupId, "-1")) return;
         this.groupId = groupId;
     }
+
     public void clearAllFields() {
         date = null;
         timeStart = null;

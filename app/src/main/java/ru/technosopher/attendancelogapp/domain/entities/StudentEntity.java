@@ -54,4 +54,15 @@ public class StudentEntity {
     public List<AttendanceEntity> getAttendanceEntityList() {
         return attendanceEntityList;
     }
+
+    @NonNull
+    public String getFullName() {
+        return getName() + " " +getSurname();
+    }
+
+    public void setAttendanceEntityList(List<AttendanceEntity> attendanceEntities){
+        this.attendanceEntityList.clear();
+        attendanceEntityList.addAll(attendanceEntities);
+    }
+
 }

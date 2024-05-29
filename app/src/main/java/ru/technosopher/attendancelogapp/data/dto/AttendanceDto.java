@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.GregorianCalendar;
+
 public class AttendanceDto {
 
     @Nullable
@@ -16,11 +18,19 @@ public class AttendanceDto {
     public Boolean isVisited;
 
     @Nullable
-    @SerializedName("id")
+    @SerializedName("studentId")
     public String studentId;
 
     @Nullable
-    @SerializedName("id")
+    @SerializedName("lessonId")
     public String lessonId;
+
+    @Nullable
+    @SerializedName("lessonTimeStart")
+    public GregorianCalendar lessonTimeStart;
+
+    @Nullable
+    @SerializedName("points")
+    public String points;
 
 }

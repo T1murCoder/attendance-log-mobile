@@ -168,7 +168,7 @@
                 android:layout_marginBottom="20dp"
                 android:orientation="horizontal">
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/registration_confirm_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -176,6 +176,7 @@
                     android:fontFamily="@font/inter_regular"
                     android:padding="16dp"
                     android:text="Sign up"
+                    android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:backgroundTint="@color/main_blue" />
@@ -183,6 +184,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/registration_sign_in_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">

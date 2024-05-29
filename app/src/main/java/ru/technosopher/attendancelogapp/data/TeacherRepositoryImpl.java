@@ -2,6 +2,7 @@ package ru.technosopher.attendancelogapp.data;
 
 import androidx.annotation.NonNull;
 
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -114,6 +115,8 @@ public class TeacherRepositoryImpl implements TeacherRepository, SignTeacherRepo
                             final String name = teacher.name;
                             final String surname = teacher.surname;
                             final String username = teacher.username;
+                            System.out.println(teacher.telegram_url);
+                            System.out.println(teacher.github_url);
                             return new TeacherEntity(
                                     id,
                                     name,
@@ -127,9 +130,7 @@ public class TeacherRepositoryImpl implements TeacherRepository, SignTeacherRepo
                     return null;
                 }
         ));
-
     }
-
     @Override
     public void logout() {
         credentialsDataSource.logout();

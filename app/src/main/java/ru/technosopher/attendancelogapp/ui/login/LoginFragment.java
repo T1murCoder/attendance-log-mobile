@@ -69,7 +69,7 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        binding.loginSignUpTv.setOnClickListener(new View.OnClickListener() {
+        binding.loginSignUpLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registrationFragment);

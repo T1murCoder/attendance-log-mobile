@@ -23,9 +23,14 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.util.Arrays;
+import java.util.List;
+
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentLessonsBinding;
+import ru.technosopher.attendancelogapp.domain.entities.GroupEntity;
 import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
+import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
 import ru.technosopher.attendancelogapp.ui.utils.DateFormatter;
 import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
@@ -109,6 +114,9 @@ public class LessonsFragment extends Fragment {
                 DatePickerDialog dialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        System.out.println(i);
+                        System.out.println(i1);
+                        System.out.println(i2);
                         viewModel.changeDate(i, i1, i2);
                     }
                 }, DateFormatter.getActualYear(), DateFormatter.getActualMonth(), DateFormatter.getActualDay());
@@ -185,7 +193,11 @@ public class LessonsFragment extends Fragment {
 
         viewModel.groupsLiveData.observe(getViewLifecycleOwner(), groupsState -> {
             if (groupsState.getSuccess()) {
-                ArrayAdapter<ItemGroupEntity> arrayAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, groupsState.getGroups());
+
+                List<ItemGroupEntity> tmp = groupsState.getGroups();
+                tmp.add(0, new ItemGroupEntity("-1", "Не выбрано"));
+
+                ArrayAdapter<ItemGroupEntity> arrayAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, tmp);
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 binding.groupsNamesSpinner.setAdapter(arrayAdapter);
                 binding.groupsNamesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

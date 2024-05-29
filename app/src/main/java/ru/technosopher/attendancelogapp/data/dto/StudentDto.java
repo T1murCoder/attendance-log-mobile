@@ -12,19 +12,14 @@ public class StudentDto {
     public String id;
 
     @Nullable
-    @SerializedName("id")
+    @SerializedName("name")
     public String name;
 
     @Nullable
-    @SerializedName("id")
+    @SerializedName("surname")
     public String surname;
 
     @Nullable
     @SerializedName("points")
     public String points;
-
-    @Nullable
-    @SerializedName("attendanceDtoList")
-    public List<AttendanceDto> attendanceDtoList;
-
 }

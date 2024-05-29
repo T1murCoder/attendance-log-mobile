@@ -86,7 +86,7 @@ public class RegistrationFragment extends Fragment {
             }
         });
 
-        binding.registrationSignInTv.setOnClickListener(new View.OnClickListener() {
+        binding.registrationSignInLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(view).navigate(R.id.action_registrationFragment_to_loginFragment);
@@ -102,8 +102,6 @@ public class RegistrationFragment extends Fragment {
         });
 
         viewModel.teacherLiveData.observe(getViewLifecycleOwner(), state -> {
-
-            System.out.println("IM IN FRAGMENT");
             prefs.updatePrefs(
                     state.getTeacher().getId(),
                     state.getTeacher().getUsername(),
