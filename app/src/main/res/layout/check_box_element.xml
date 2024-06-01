@@ -9,7 +9,7 @@
         android:id="@+id/cb_elementCheckbox"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:theme="@style/ActiveCheckBox"
+        android:theme="@style/InactiveCheckBox"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

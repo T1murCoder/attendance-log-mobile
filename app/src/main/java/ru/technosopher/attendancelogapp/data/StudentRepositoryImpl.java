@@ -47,8 +47,9 @@ public class StudentRepositoryImpl implements StudentRepository {
                         for (StudentItemDto dto : studentItems) {
                             final String id = dto.id;
                             final String name = dto.name;
-                            if (id != null && name != null) {
-                                res.add(new ItemStudentEntity(id, name));
+                            final String surname = dto.surname;
+                            if (id != null && name != null && surname != null) {
+                                res.add(new ItemStudentEntity(id, name, surname));
                             }
                         }
                         return res;
@@ -96,7 +97,7 @@ public class StudentRepositoryImpl implements StudentRepository {
                             final String name = dto.name;
                             final String surname = dto.surname;
                             if (name != null && surname != null) {
-                                res.add(new ItemStudentEntity(id, name+" "+surname));
+                                res.add(new ItemStudentEntity(id, name, surname));
                             }
                         }
                         return res;

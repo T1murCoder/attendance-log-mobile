@@ -20,7 +20,7 @@ public class DateFormatter {
     }
     public static String getFullTimeStringFromDate(GregorianCalendar start, GregorianCalendar end, String pat){
         @SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat(pat);
-        return df.format(start.getTime()) + ":" + df.format(end.getTime());
+        return df.format(start.getTime()) + " - " + df.format(end.getTime());
     }
     public static int getYearFromDate(GregorianCalendar date) {
         return date.get(Calendar.YEAR);

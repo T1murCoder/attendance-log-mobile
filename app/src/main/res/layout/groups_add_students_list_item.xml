@@ -24,7 +24,7 @@
             android:padding="15dp">
 
             <TextView
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:id="@+id/list_item_student_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -33,8 +33,8 @@
                 android:fontFamily="@font/inter_regular"/>
 
             <TextView
-                android:visibility="gone"
-                android:layout_weight="2"
+                android:visibility="visible"
+                android:layout_weight="1"
                 android:id="@+id/list_item_student_id"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -43,8 +43,9 @@
                 android:textColor="@color/main_gray"
                 android:fontFamily="@font/inter_regular"/>
 
-            <CheckBox
+            <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/student_add_cb"
+                android:theme="@style/InactiveCheckBox"
                 android:layout_width="32dp"
                 android:layout_height="32dp" />
         </LinearLayout>

@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +27,6 @@ public class RegistrationFragment extends Fragment {
     private UpdateSharedPreferences prefs;
     private NavigationBarChangeListener navigationBarChangeListener;
     FragmentRegistrationBinding binding;
-
     RegistrationViewModel viewModel;
 
     @Override
@@ -92,6 +92,7 @@ public class RegistrationFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_registrationFragment_to_loginFragment);
             }
         });
+        binding.registrationRememberCb.setChecked(false);
         subscribe(viewModel);
     }
 
@@ -110,7 +111,8 @@ public class RegistrationFragment extends Fragment {
                     state.getTeacher().getSurname(),
                     state.getTeacher().getTelegram_url(),
                     state.getTeacher().getGithub_url(),
-                    state.getTeacher().getPhoto_url()
+                    state.getTeacher().getPhoto_url(),
+                    binding.registrationRememberCb.isChecked()
             );
         });
 

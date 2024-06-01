@@ -8,11 +8,11 @@
         android:gravity="center"
         android:id="@+id/point_et"
         android:layout_width="50dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:textAlignment="center"
         android:hint="1"
         android:textSize="14sp"
-        android:paddingHorizontal="13dp"
+        android:inputType="numberDecimal"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

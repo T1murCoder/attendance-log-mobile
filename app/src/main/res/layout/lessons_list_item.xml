@@ -35,31 +35,30 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/inter_regular"
-
                     android:textSize="14sp"
                     tools:text="10:00 - 11:30" />
 
                 <TextView
                     android:id="@+id/date_tv"
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/inter_regular"
-                    android:textAlignment="center"
-                    android:textSize="12sp"
-                    tools:text="12 янв 2024" />
-
-                <TextView
-                    android:id="@+id/time_start_tv"
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/inter_regular"
                     android:textAlignment="textEnd"
+                    android:textSize="14sp"
+                    tools:text="12 янв 2024" />
+
+                <TextView
+                    android:id="@+id/time_start_tv"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/main_gray"
+                    android:fontFamily="@font/inter_regular"
+                    android:textAlignment="center"
                     android:textSize="12sp"
-                    tools:text="5 мин до начала" />
+                    android:text="Ученики" />
             </LinearLayout>
 
             <LinearLayout
@@ -116,11 +115,11 @@
 
                 <ImageButton
                     android:id="@+id/qr_code_btn"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_weight="0"
                     android:background="@color/white"
-                    android:src="@drawable/ic_empty_qr" />
+                    android:src="@drawable/ic_visited_students" />
 
 
             </LinearLayout>

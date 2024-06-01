@@ -21,10 +21,8 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
     private final Consumer<String> onItemUnselected;
     private final List<ItemStudentEntity> data = new ArrayList<>();
     public StudentListAdapter(Consumer<String> onItemSelected, Consumer<String> onItemUnselected) {
-
         this.onItemSelected = onItemSelected;
         this.onItemUnselected = onItemUnselected;
-
     }
 
     @NonNull
@@ -62,8 +60,8 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
         }
 
         public void bind(ItemStudentEntity item) {
-            binding.listItemStudentName.setText(item.getName());
-            binding.listItemStudentId.setText(item.getId());
+            binding.listItemStudentName.setText(item.getFullName());
+            binding.listItemStudentId.setText(item.getStringId());
             binding.studentAddCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

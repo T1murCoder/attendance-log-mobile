@@ -95,7 +95,6 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
             binding.dateTv.setText(DateFormatter.getDateStringFromDate(item.getDate(), "dd MMM yyyy"));
             binding.lessonTitle.setText(item.getTheme());
             binding.qrCodeImage.setImageBitmap(Utils.generateQr(item.getId(), 900, 900));
-            binding.timeStartTv.setText("smh to do 5 min");
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

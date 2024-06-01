@@ -74,7 +74,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
                             String surname,
                             String telegram,
                             String github,
-                            String photo) {
+                            String photo,
+                            Boolean remember) {
         updateId(id);
         updateLogin(login);
         updatePassword(password);
@@ -83,7 +84,22 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
         updatePhoto(photo);
         updateName(name);
         updateSurname(surname);
+        updateRemember(remember);
     }
+
+    @Override
+    public void clearAll() {
+        updateId("");
+        updateLogin("");
+        updatePassword("");
+        updateTelegram("");
+        updateGithub("");
+        updatePhoto("");
+        updateName("");
+        updateSurname("");
+        updateRemember(false);
+    }
+
 
     @Override
     public Map<String, ?> getPrefs() {
@@ -137,6 +153,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
     public String getPrefsSurname() {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         return sharedPref.getString(getString(R.string.SHARED_PREFS_SURNAME), null);
+    }
+
+    @Override
+    public Boolean getRemember() {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        return sharedPref.getString(getString(R.string.SHARED_PREFS_CHECKED), "").equals("y");
     }
 
     @Override
@@ -200,6 +222,15 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.SHARED_PREFS_SURNAME), surname);
+        editor.apply();
+    }
+
+    @Override
+    public void updateRemember(Boolean b) {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        String s = b ? "y" : "n";
+        editor.putString(getString(R.string.SHARED_PREFS_CHECKED), s);
         editor.apply();
     }
 }

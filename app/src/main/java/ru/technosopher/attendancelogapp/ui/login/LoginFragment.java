@@ -75,6 +75,12 @@ public class LoginFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registrationFragment);
             }
         });
+
+        binding.loginRememberCb.setChecked(prefs.getRemember());
+        if(prefs.getRemember()){
+            binding.loginLoginEt.setText(prefs.getPrefsLogin());
+            binding.loginPasswordEt.setText(prefs.getPrefsPassword());
+        }
         subscribe(viewModel);
     }
 
@@ -99,8 +105,8 @@ public class LoginFragment extends Fragment {
                     state.getTeacher().getSurname(),
                     state.getTeacher().getTelegram_url(),
                     state.getTeacher().getGithub_url(),
-                    state.getTeacher().getPhoto_url()
-
+                    state.getTeacher().getPhoto_url(),
+                    binding.loginRememberCb.isChecked()
             );
         });
         viewModel.loadingLiveData.observe(getViewLifecycleOwner(), loading ->{

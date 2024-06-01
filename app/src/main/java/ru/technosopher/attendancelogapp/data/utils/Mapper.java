@@ -28,8 +28,8 @@ public class Mapper {
     }
 
     public static ItemStudentEntity fromDtoToEntity(@NonNull StudentItemDto dto){
-        if (dto.id == null || dto.name == null) return new ItemStudentEntity("", "");
-        return new ItemStudentEntity(dto.id, dto.name);
+        if (dto.id == null || dto.name == null || dto.surname == null) return new ItemStudentEntity("", "", "");
+        return new ItemStudentEntity(dto.id, dto.name, dto.surname);
     }
 
     public static List<ItemStudentEntity> fromDtoListToEntityList(@NonNull List<StudentItemDto> dtoList){

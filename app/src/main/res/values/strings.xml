@@ -11,8 +11,8 @@
     <string name="grup_list_item_text">Group_name</string>
     <string name="groups_list_item_content_button_description">Open journal</string>
     <string name="groups_fab_content_description">Create new journal</string>
-    <string name="groups_text">Groups</string>
-    <string name="password_edit_text_hint">Password</string>
+    <string name="groups_text">Группы</string>
+    <string name="password_edit_text_hint">Пароль</string>
 
     <string name="SHARED_PREFS_ID">PREFS_ID</string>
     <string name="SHARED_PREFS_LOGIN">PREFS_LOGIN</string>
@@ -24,8 +24,12 @@
 
     <string name="SHARED_PREFS_NAME">PREFS_NAME</string>
     <string name="SHARED_PREFS_SURNAME">PREFS_SURNAME</string>
-    <string name="fragment_group_add_header_text">Creating a group</string>
-    <string name="fragment_group_add_group_name_hint">Group name</string>
+
+    <string name="SHARED_PREFS_CHECKED">false</string>
+
+
+    <string name="fragment_group_add_header_text">Добавление группы</string>
+    <string name="fragment_group_add_group_name_hint">Имя группы</string>
     <string name="student_list_item_name">Name</string>
     <string name="studet_list_item_id">student_id</string>
     <string name="lesson_deletion_text">Удалить занятие</string>
