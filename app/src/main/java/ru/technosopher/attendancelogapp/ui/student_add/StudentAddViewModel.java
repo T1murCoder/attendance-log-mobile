@@ -1,4 +1,4 @@
-package ru.technosopher.attendancelogapp.ui.group_add;
+package ru.technosopher.attendancelogapp.ui.student_add;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,47 +14,49 @@ import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.StudentRepositoryImpl;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
+import ru.technosopher.attendancelogapp.domain.groups.AddStudentsToGroupUseCase;
 import ru.technosopher.attendancelogapp.domain.groups.CreateGroupUseCase;
 import ru.technosopher.attendancelogapp.domain.students.GetStudentsListUseCase;
+import ru.technosopher.attendancelogapp.ui.group_add.GroupAddViewModel;
 
-public class GroupAddViewModel extends ViewModel {
-
+public class StudentAddViewModel extends ViewModel {
     /* LIVEDATA */
     private final MutableLiveData<StudentsState> mutableStateLiveData = new MutableLiveData<>();
 
     public final LiveData<StudentsState> stateLiveData = mutableStateLiveData;
-    private final MutableLiveData<Void> mutableErrorLiveData = new MutableLiveData<>();
-    public final LiveData<Void> errorLiveData = mutableErrorLiveData;
+    private final MutableLiveData<String> mutableErrorLiveData = new MutableLiveData<>();
+    public final LiveData<String> errorLiveData = mutableErrorLiveData;
     private final MutableLiveData<Void> mutableConfirmLiveData = new MutableLiveData<>();
     public final LiveData<Void> confirmLiveData = mutableConfirmLiveData;
 
     /* LIVEDATA */
     public List<ItemStudentEntity> selectedStudents = new ArrayList<>();
-    @Nullable
-    private String name;
     /* USE CASES */
     private final GetStudentsListUseCase getStudentsListUseCase = new GetStudentsListUseCase(
             StudentRepositoryImpl.getInstance()
     );
-    private final CreateGroupUseCase createGroupUseCase = new CreateGroupUseCase(
+    private final AddStudentsToGroupUseCase addStudentsToGroupUseCase = new AddStudentsToGroupUseCase(
             GroupsRepositoryImpl.getInstance()
     );
 
     /* USE CASES */
+    private String id;
 
 
     /* LOGIC */
-    public void createGroup() {
-        if (name == null) {
-            mutableErrorLiveData.postValue(null);
-            return;
-        } else {
-            createGroupUseCase.execute(name, selectedStudents, status -> {
-                System.out.println(status.getStatusCode());
+    public void addStudentsToGroup() {
+        if (id != null){
+            addStudentsToGroupUseCase.execute(id, selectedStudents, status -> {
                 if (status.getStatusCode() == 200) {
                     mutableConfirmLiveData.postValue(null);
                 }
+                else{
+
+                    System.out.println(status.getErrors());
+                }
             });
+        }else{
+            mutableErrorLiveData.setValue("Group id is null");
         }
     }
 
@@ -66,22 +68,17 @@ public class GroupAddViewModel extends ViewModel {
     }
 
     private StudentsState fromStatus(Status<List<ItemStudentEntity>> status) {
-        System.out.println(status.getValue());
-        ;
         return new StudentsState(
                 status.getValue(),
                 status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
                 status.getErrors() == null && status.getValue() != null, false);
     }
-
-
     public void addStudent(@NonNull String id) {
         selectedStudents.add(new ItemStudentEntity(
                 id,
                 ""
         ));
     }
-
     public void deleteStudent(@NonNull String id) {
         if (selectedStudents != null) {
             Iterator<ItemStudentEntity> itr = selectedStudents.iterator();
@@ -94,16 +91,15 @@ public class GroupAddViewModel extends ViewModel {
             }
         }
     }
-
     public void clearStudents() {
         selectedStudents = new ArrayList<>();
     }
-
-
-    public void changeName(String string) {
-        this.name = string;
+    public void saveGroupId(@NonNull String id) {
+        this.id = id;
     }
-
+    public String getGroupId() {
+        return this.id;
+    }
     public class StudentsState {
         @Nullable
         private final List<ItemStudentEntity> students;
@@ -125,12 +121,10 @@ public class GroupAddViewModel extends ViewModel {
         public List<ItemStudentEntity> getStudents() {
             return students;
         }
-
         @Nullable
         public String getErrorMessage() {
             return errorMessage;
         }
-
         @NonNull
         public Boolean getSuccess() {
             return isSuccess;
@@ -142,18 +136,3 @@ public class GroupAddViewModel extends ViewModel {
         }
     }
 }
-//    public class SelectedStudentsState{
-//
-//        @Nullable
-//        private final List<ItemStudentEntity> students;
-//
-//        public SelectedStudentsState(@Nullable List<ItemStudentEntity> students) {
-//            this.students = students;
-//        }
-//
-//        @Nullable
-//        public List<ItemStudentEntity> getStudents() {
-//            return students;
-//        }
-//    }
-

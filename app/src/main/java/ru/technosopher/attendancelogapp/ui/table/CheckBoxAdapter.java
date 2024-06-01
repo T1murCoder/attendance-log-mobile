@@ -3,32 +3,27 @@ package ru.technosopher.attendancelogapp.ui.table;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
-import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.CheckBoxElementBinding;
-import ru.technosopher.attendancelogapp.databinding.StudentTableItemBinding;
 import ru.technosopher.attendancelogapp.domain.entities.AttendanceEntity;
-import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
 
 public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.ViewHolder>{
     private final Context context;
     private final List<AttendanceEntity> data = new ArrayList<>();
+    private final Consumer<AttendanceEntity> changeStudent;
 
-    //TODO(update attendance consumer)
-
-    public CheckBoxAdapter(Context context) {
+    public CheckBoxAdapter(Context context, Consumer<AttendanceEntity> changeStudent) {
         this.context = context;
+        this.changeStudent = changeStudent;
     }
 
     @NonNull
@@ -70,7 +65,7 @@ public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.ViewHo
             binding.cbElementCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    //todo(request to server)
+                    changeStudent.accept(new AttendanceEntity(item.getId(), b, item.getStudentId(), item.getLessonId(), item.getLessonTimeStart(), item.getPoints()));
                 }
             });
         }

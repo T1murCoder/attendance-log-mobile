@@ -52,8 +52,8 @@ public class GroupsRepositoryImpl implements GroupsRepository {
     public void getGroupNameById(@NonNull String id, Consumer<Status<String>> callback) {
         groupApi.getGroupNameById(id).enqueue(new CallToConsumer<>(
                 callback,
-                group->{
-                    if (group != null){
+                group -> {
+                    if (group != null) {
                         if (group.id != null && group.name != null) return group.name;
                     }
                     return null;
@@ -87,4 +87,13 @@ public class GroupsRepositoryImpl implements GroupsRepository {
                 dto -> null
         ));
     }
+
+    @Override
+    public void addStudentsToGroup(@NonNull String id, @NonNull List<ItemStudentEntity> students, Consumer<Status<Void>> callback) {
+        groupApi.addStudentsToGroup(id, new GroupDto(id, "", Mapper.fromEntityListToDtoList(students))).enqueue(new CallToConsumer<>(
+                callback,
+                dto -> null
+        ));
+    }
+
 }

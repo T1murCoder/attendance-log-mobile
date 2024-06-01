@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import ru.technosopher.attendancelogapp.data.AttendanceRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.StudentRepositoryImpl;
+import ru.technosopher.attendancelogapp.domain.attendance.ChangeStudentAttAndPointsUseCase;
 import ru.technosopher.attendancelogapp.domain.entities.AttendanceEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
@@ -35,11 +37,12 @@ public class TableViewModel extends ViewModel {
             GroupsRepositoryImpl.getInstance()
     );
 
+    private final ChangeStudentAttAndPointsUseCase changeStudentAttAndPointsUseCase = new ChangeStudentAttAndPointsUseCase(
+            AttendanceRepositoryImpl.getINSTANCE()
+    );
     /* USE CASES */
-
     private String groupId;
     private List<StudentEntity> students = new ArrayList<>();
-
     public void update(@Nullable String id) {
         if (id == null && groupId == null) throw new IllegalStateException();
         if (groupId != null && id == null) {
@@ -53,9 +56,11 @@ public class TableViewModel extends ViewModel {
                         mutableStateLiveData.postValue(new State(groupNameStatus.getValue(), status.getValue() != null ? status.getValue() : null,
                                 status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
                                 status.getErrors() == null && status.getValue() != null && !sortedOrNullStudents.isEmpty(), false));
-                    }
-                    else{
-                        mutableErrorLiveData.postValue("Что-то пошло не так. ПОпробуйте еще раз");
+                    } else {
+
+                        System.out.println(status.getErrors());
+                        System.out.println(status.getStatusCode());
+                        mutableErrorLiveData.postValue("Что-то пошло не так. Попробуйте еще раз");
                     }
                 });
             });
@@ -72,16 +77,15 @@ public class TableViewModel extends ViewModel {
                         mutableStateLiveData.postValue(new State(groupNameStatus.getValue(), status.getValue() != null ? status.getValue() : null,
                                 status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
                                 status.getErrors() == null && status.getValue() != null && !sortedOrNullStudents.isEmpty(), false));
-                    }
-                    else{
-                        mutableErrorLiveData.postValue("Что-то пошло не так. ПОпробуйте еще раз");
+                    } else {
+                        System.out.println(status.getErrors());
+                        System.out.println(status.getStatusCode());
+                        mutableErrorLiveData.postValue("Что-то пошло не так. Попробуйте еще раз");
                     }
                 });
             });
         }
     }
-
-
     private List<StudentEntity> sortAttendancesForStudents(@Nullable List<StudentEntity> students) {
         if (students == null) return new ArrayList<>();
         for (StudentEntity student : students) {
@@ -90,12 +94,10 @@ public class TableViewModel extends ViewModel {
         }
         return students;
     }
-
     private void sortAttendances(@Nullable List<AttendanceEntity> attendances) {
         if (attendances == null) return;
         attendances.sort(Comparator.comparing(AttendanceEntity::getLessonTimeStart));
     }
-
     public List<String> extractDates(List<AttendanceEntity> attendances) {
         List<String> dates = new ArrayList<>();
         sortAttendances(attendances);
@@ -104,11 +106,32 @@ public class TableViewModel extends ViewModel {
         }
         return dates;
     }
-
     public List<StudentEntity> getStudents() {
         return this.students;
     }
-
+    public void setAttAndPointsToStudent(AttendanceEntity attendance) {
+        changeStudentAttAndPointsUseCase.execute(
+                attendance.getId(),
+                attendance.getLessonId(),
+                attendance.getStudentId(),
+                attendance.getVisited(),
+                attendance.getPoints(),
+                status -> {
+                    if (status.getStatusCode() == 200){
+                        System.out.println("IN SUCCESS");
+                    }
+                    else{
+                        if(status.getErrors() != null) mutableErrorLiveData.postValue(status.getErrors().getLocalizedMessage());
+                        else mutableErrorLiveData.postValue("Something went wrong");
+                    }
+                });
+    }
+    public void saveGroupId(@NonNull String id) {
+        groupId = id;
+    }
+    public String getGroupId() {
+        return groupId;
+    }
     public class State {
 
         @Nullable

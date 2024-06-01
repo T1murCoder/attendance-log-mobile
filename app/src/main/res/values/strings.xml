@@ -34,4 +34,5 @@
     <string name="no_groups_hint">Здесь пока нет групп. Добавьте первую!</string>
     <string name="create_new_lesson_content_description">Create new lesson</string>
     <string name="table_group_name_header">Название группы</string>
+    <string name="fragment_students_add_header_text">Добавление учеников</string>
 </resources>

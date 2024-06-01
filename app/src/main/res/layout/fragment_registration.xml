@@ -146,12 +146,20 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-                <CheckBox
-                    android:id="@+id/registration_remember_cb"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/registration_remember_cb"
+                        android:theme="@style/InactiveCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -179,7 +187,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    app:backgroundTint="@color/main_blue" />
+                    android:backgroundTint="@color/main_blue" />
 
             </LinearLayout>
 

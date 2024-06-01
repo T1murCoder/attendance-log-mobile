@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:fontFamily="@font/inter_semibold"
-                android:text="@string/fragment_group_add_header_text"
+                android:text="@string/fragment_students_add_header_text"
                 android:textAlignment="center"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -47,7 +47,7 @@
             android:background="@drawable/action_elements_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/group_name_input_layout"
+            app:layout_constraintTop_toTopOf="parent"
             app:queryHint="Search"
             app:searchIcon="@drawable/ic_search" />
 
@@ -61,31 +61,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/group_name_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:boxStrokeWidth="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linearLayout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/group_name_et"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/action_elements_background"
-                android:hint="@string/fragment_group_add_group_name_hint"
-                android:padding="17dp"
-                android:textColor="@color/main_gray"
-                android:textColorHint="@color/main_gray"
-                android:textCursorDrawable="@color/main_gray"
-                android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/students_recycler_view"
@@ -106,7 +81,7 @@
             android:layout_marginBottom="12dp"
             android:backgroundTint="@color/main_blue"
             android:clickable="true"
-            android:src="@drawable/ic_add_new_journal"
+            android:src="@drawable/ic_commit_button"
             android:tint="@color/white"
             app:fabCustomSize="69dp"
             app:layout_constraintBottom_toBottomOf="parent"

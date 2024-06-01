@@ -7,6 +7,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import ru.technosopher.attendancelogapp.data.dto.GroupDto;
 import ru.technosopher.attendancelogapp.data.dto.GroupWithoutStudentsDto;
@@ -25,4 +26,6 @@ public interface GroupApi {
     Call<Void> deleteGroup(@Path("id") String id);
     @GET("group/{id}")
     Call<GroupDto> getGroupNameById(@Path("id") String id);
+    @PUT("group/{id}")
+    Call<Void> addStudentsToGroup(@Path("id") String id, @Body GroupDto dto);
 }

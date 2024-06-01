@@ -18,4 +18,5 @@ public interface GroupsRepository {
     void getGroupNameById(@NonNull String id, Consumer<Status<String>> callback);
     void addGroup(@NonNull String name, @NonNull List<ItemStudentEntity> students, @NonNull Consumer<Status<GroupEntity>> callback);
     void deleteGroup(@NonNull String id, @NonNull Consumer<Status<Void>> callback);
+    void addStudentsToGroup(@NonNull String id, @NonNull List<ItemStudentEntity> students, Consumer<Status<Void>> callback);
 }

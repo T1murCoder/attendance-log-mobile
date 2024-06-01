@@ -14,23 +14,29 @@ public class AttendanceDto {
     public String id;
 
     @Nullable
-    @SerializedName("isVisited")
-    public Boolean isVisited;
-
-    @Nullable
     @SerializedName("studentId")
     public String studentId;
 
     @Nullable
     @SerializedName("lessonId")
     public String lessonId;
-
     @Nullable
-    @SerializedName("lessonTimeStart")
-    public GregorianCalendar lessonTimeStart;
+    @SerializedName("isVisited")
+    public Boolean isVisited;
 
     @Nullable
     @SerializedName("points")
     public String points;
+    @Nullable
+    @SerializedName("lessonTimeStart")
+    public GregorianCalendar lessonTimeStart;
 
+    public AttendanceDto(@Nullable String id, @Nullable String studentId, @Nullable String lessonId, @Nullable Boolean isVisited, @Nullable String points, @Nullable GregorianCalendar lessonTimeStart) {
+        this.id = id;
+        this.studentId = studentId;
+        this.lessonId = lessonId;
+        this.isVisited = isVisited;
+        this.points = points;
+        this.lessonTimeStart = lessonTimeStart;
+    }
 }

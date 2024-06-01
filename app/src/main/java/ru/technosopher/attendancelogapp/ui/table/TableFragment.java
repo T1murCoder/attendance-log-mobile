@@ -14,14 +14,15 @@ import androidx.navigation.Navigation;
 
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentTableBinding;
+import ru.technosopher.attendancelogapp.domain.entities.AttendanceEntity;
 import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
+import ru.technosopher.attendancelogapp.ui.student_add.StudentAddFragment;
 
 public class TableFragment extends Fragment {
 
     private static final String KEY_ID = "TABLE_FRAGMENT";
     private FragmentTableBinding binding;
     private TableViewModel viewModel;
-
     private NavigationBarChangeListener navigationBarChangeListener;
 
     @Override
@@ -44,9 +45,9 @@ public class TableFragment extends Fragment {
 
         String id = getArguments() != null ? getArguments().getString(KEY_ID) : "Something went wrong";
         viewModel = new ViewModelProvider(this).get(TableViewModel.class);
+        viewModel.saveGroupId(id);
 
-
-        StudentAttendancesAdapter attendancesAdapter = new StudentAttendancesAdapter(getContext(), true);
+        StudentAttendancesAdapter attendancesAdapter = new StudentAttendancesAdapter(getContext(), true, this::setAttAndPointsToStudent);
         DatesAdapter datesAdapter = new DatesAdapter();
 
         binding.back.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +69,7 @@ public class TableFragment extends Fragment {
         binding.pointsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                viewModel.update(null);
                 attendancesAdapter.updateState(false);
                 attendancesAdapter.updateData(viewModel.getStudents());
                 datesAdapter.update(viewModel.extractDates(viewModel.getStudents().get(0).getAttendanceEntityList()));
@@ -76,9 +78,18 @@ public class TableFragment extends Fragment {
         binding.attendanceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                viewModel.update(null);
                 attendancesAdapter.updateState(true);
                 attendancesAdapter.updateData(viewModel.getStudents());
                 datesAdapter.update(viewModel.extractDates(viewModel.getStudents().get(0).getAttendanceEntityList()));
+            }
+        });
+
+        binding.addStudent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view == null) return;
+                Navigation.findNavController(view).navigate(R.id.action_tableFragment_to_studentAddFragment, StudentAddFragment.getBundle(id));
             }
         });
 
@@ -89,6 +100,9 @@ public class TableFragment extends Fragment {
         viewModel.update(id);
     }
 
+    private void setAttAndPointsToStudent(AttendanceEntity attendanceToStudent){
+        viewModel.setAttAndPointsToStudent(attendanceToStudent);
+    }
 
     private void subscribe(TableViewModel viewModel, StudentAttendancesAdapter attendancesAdapter, DatesAdapter datesAdapter) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), state -> {

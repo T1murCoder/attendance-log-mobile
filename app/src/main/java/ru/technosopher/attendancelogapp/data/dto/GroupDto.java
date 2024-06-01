@@ -9,13 +9,11 @@ import java.util.List;
 public class GroupDto {
 
     @Nullable
-    @SerializedName("name")
-    public String name;
-
-    @Nullable
     @SerializedName("id")
     public String id;
-
+    @Nullable
+    @SerializedName("name")
+    public String name;
     @Nullable
     @SerializedName("studentList")
     public List<StudentItemDto> studentList;

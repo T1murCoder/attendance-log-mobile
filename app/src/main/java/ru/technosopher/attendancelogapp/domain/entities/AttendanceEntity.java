@@ -6,24 +6,16 @@ import java.util.Comparator;
 import java.util.GregorianCalendar;
 
 public class AttendanceEntity implements Comparable<AttendanceEntity> {
-
     @NonNull
     private final String id;
-
     @NonNull
     private final Boolean isVisited;
-
     @NonNull
     private final String studentId;
-
     @NonNull
     private final String lessonId;
-
     @NonNull
     private final GregorianCalendar lessonTimeStart;
-
-
-
     @NonNull
     private final String points;
 

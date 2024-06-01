@@ -5,12 +5,14 @@ import android.content.Context;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import ru.technosopher.attendancelogapp.databinding.PointEtElementBinding;
 import ru.technosopher.attendancelogapp.domain.entities.AttendanceEntity;
@@ -20,8 +22,11 @@ public class PointsAdapter extends RecyclerView.Adapter<PointsAdapter.ViewHolder
 
     private final Context context;
     private final List<AttendanceEntity> data = new ArrayList<>();
-    public PointsAdapter(Context context) {
+
+    private final Consumer<AttendanceEntity> changeStudent;
+    public PointsAdapter(Context context, Consumer<AttendanceEntity> changeStudent) {
         this.context = context;
+        this.changeStudent = changeStudent;
     }
 
     @NonNull
@@ -61,12 +66,16 @@ public class PointsAdapter extends RecyclerView.Adapter<PointsAdapter.ViewHolder
         }
 
         public void bind(AttendanceEntity item) {
-            binding.pointEt.setText(String.valueOf(Math.round(Float.valueOf(item.getPoints()))));
+            Integer point = Math.round(Float.valueOf(item.getPoints()));
+            if (point == 0) binding.pointEt.setHint(String.valueOf(point));
+            else binding.pointEt.setText(String.valueOf(point));
+
             binding.pointEt.addTextChangedListener(new OnChangeText() {
                 @Override
                 public void afterTextChanged(Editable editable) {
                     super.afterTextChanged(editable);
-                    //todo(request to server)
+                    //TODO (entered data validation)
+                        changeStudent.accept(new AttendanceEntity(item.getId(), item.getVisited(), item.getStudentId(), item.getLessonId(), item.getLessonTimeStart(), editable.toString()));
                 }
             });
         }

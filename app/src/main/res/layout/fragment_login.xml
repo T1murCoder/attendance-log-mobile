@@ -110,12 +110,20 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-                <CheckBox
-                    android:id="@+id/login_remember_cb"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:theme="@style/InactiveCheckBox"
+                        android:id="@+id/login_remember_cb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -140,8 +148,8 @@
                     android:background="@drawable/action_elements_background"
                     android:fontFamily="@font/inter_regular"
                     android:padding="16dp"
-                    android:textAllCaps="false"
                     android:text="Sign in"
+                    android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:backgroundTint="@color/main_blue" />

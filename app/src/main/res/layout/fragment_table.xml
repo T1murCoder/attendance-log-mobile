@@ -70,7 +70,7 @@
 
             <ImageButton
                 android:id="@+id/add_student"
-                android:layout_width="50dp"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@color/background_gray"
@@ -81,7 +81,8 @@
             android:id="@+id/buttonsAttPointsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <Button
                 android:id="@+id/attendance_btn"
