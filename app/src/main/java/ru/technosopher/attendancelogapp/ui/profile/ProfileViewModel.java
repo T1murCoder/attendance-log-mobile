@@ -11,13 +11,22 @@ import java.util.Map;
 import ru.technosopher.attendancelogapp.data.TeacherRepositoryImpl;
 import ru.technosopher.attendancelogapp.domain.GetTeacherByIdUseCase;
 import ru.technosopher.attendancelogapp.domain.entities.TeacherEntity;
+import ru.technosopher.attendancelogapp.domain.sign.LogoutUseCase;
 
 public class ProfileViewModel extends ViewModel {
     private final MutableLiveData<State> mutableStateLiveData = new MutableLiveData<>();
     public final LiveData<State> stateLiveData = mutableStateLiveData;
-    public final GetTeacherByIdUseCase getTeacherByIdUseCase = new GetTeacherByIdUseCase(
+
+    private final MutableLiveData<Void> mutableLogoutLiveData = new MutableLiveData<>();
+    public final LiveData<Void> logoutLiveData = mutableLogoutLiveData;
+    private final GetTeacherByIdUseCase getTeacherByIdUseCase = new GetTeacherByIdUseCase(
             TeacherRepositoryImpl.getInstance()
     );
+
+    private final LogoutUseCase logoutUseCase = new LogoutUseCase(
+            TeacherRepositoryImpl.getInstance()
+    );
+
 
     public void load(@NonNull String id) {
         getTeacherByIdUseCase.execute(id, status -> {
@@ -45,6 +54,11 @@ public class ProfileViewModel extends ViewModel {
                 prefsGithub,
                 prefsPhotoUrl
         )));
+    }
+
+    public void logout() {
+        logoutUseCase.execute();
+        mutableLogoutLiveData.postValue(null);
     }
 
 

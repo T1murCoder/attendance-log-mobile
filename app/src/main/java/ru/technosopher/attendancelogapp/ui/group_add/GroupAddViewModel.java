@@ -79,8 +79,8 @@ public class GroupAddViewModel extends ViewModel {
         selectedStudents.add(new ItemStudentEntity(
                 id,
                 "",
-                ""
-        ));
+                "",
+                ""));
     }
 
     public void deleteStudent(@NonNull String id) {

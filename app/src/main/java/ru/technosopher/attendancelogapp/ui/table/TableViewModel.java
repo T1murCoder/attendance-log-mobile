@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import ru.technosopher.attendancelogapp.data.AttendanceRepositoryImpl;
@@ -57,14 +58,10 @@ public class TableViewModel extends ViewModel {
                                 status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
                                 status.getErrors() == null && status.getValue() != null && !sortedOrNullStudents.isEmpty(), false));
                     } else {
-
-                        System.out.println(status.getErrors());
-                        System.out.println(status.getStatusCode());
                         mutableErrorLiveData.postValue("Что-то пошло не так. Попробуйте еще раз");
                     }
                 });
             });
-
         } else {
             groupId = id;
             mutableStateLiveData.postValue(new State(null, null, null, false, true));
@@ -78,8 +75,6 @@ public class TableViewModel extends ViewModel {
                                 status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
                                 status.getErrors() == null && status.getValue() != null && !sortedOrNullStudents.isEmpty(), false));
                     } else {
-                        System.out.println(status.getErrors());
-                        System.out.println(status.getStatusCode());
                         mutableErrorLiveData.postValue("Что-то пошло не так. Попробуйте еще раз");
                     }
                 });

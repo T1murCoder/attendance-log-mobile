@@ -111,6 +111,7 @@
         </LinearLayout>
 
         <HorizontalScrollView
+            android:id="@+id/rvs_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -122,6 +123,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/dates_layout"
                     android:visibility="visible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -194,16 +196,26 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:visibility="visible"
                     android:id="@+id/students_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/student_table_item" />
-
             </LinearLayout>
 
         </HorizontalScrollView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
+            android:id="@+id/students_empty_lessons_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/dummy_item_list"
+            tools:itemCount="10"/>
 
     </LinearLayout>
 

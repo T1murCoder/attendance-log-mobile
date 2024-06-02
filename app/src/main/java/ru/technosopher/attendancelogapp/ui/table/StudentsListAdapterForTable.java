@@ -1,8 +1,7 @@
-package ru.technosopher.attendancelogapp.ui.lessons;
+package ru.technosopher.attendancelogapp.ui.table;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -12,18 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.technosopher.attendancelogapp.databinding.DummyItemListBinding;
-import ru.technosopher.attendancelogapp.databinding.GroupsListItemBinding;
-import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
-import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
-import ru.technosopher.attendancelogapp.ui.groups.GroupsListAdapter;
+import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
 
-public class DummyAdapter extends RecyclerView.Adapter<DummyAdapter.ViewHolder> {
-
-    private final List<ItemStudentEntity> data = new ArrayList<>();
+public class StudentsListAdapterForTable extends RecyclerView.Adapter<StudentsListAdapterForTable.ViewHolder> {
+    private final List<StudentEntity> data = new ArrayList<>();
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new DummyAdapter.ViewHolder(
+    public StudentsListAdapterForTable.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ViewHolder(
                 DummyItemListBinding.inflate(LayoutInflater.from(
                                 parent.getContext()),
                         parent,
@@ -41,7 +36,7 @@ public class DummyAdapter extends RecyclerView.Adapter<DummyAdapter.ViewHolder> 
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void updateData(List<ItemStudentEntity> newData){
+    public void updateData(List<StudentEntity> newData){
         data.clear();
         data.addAll(newData);
         notifyDataSetChanged();
@@ -52,7 +47,8 @@ public class DummyAdapter extends RecyclerView.Adapter<DummyAdapter.ViewHolder> 
             super(binding.getRoot());
             this.binding = binding;
         }
-        public void bind(ItemStudentEntity item) {
+
+        public void bind(StudentEntity item) {
             binding.studentName.setText(item.getFullName());
         }
     }

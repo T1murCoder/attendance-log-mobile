@@ -7,21 +7,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import java.util.Objects;
+
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentLoginBinding;
-import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
-import ru.technosopher.attendancelogapp.ui.UpdateSharedPreferences;
+import ru.technosopher.attendancelogapp.ui.utils.NavigationBarChangeListener;
+import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
-public class LoginFragment extends Fragment {
-
+public class LoginFragment extends Fragment{
     private UpdateSharedPreferences prefs;
     private NavigationBarChangeListener navigationBarChangeListener;
     private FragmentLoginBinding binding;
@@ -81,9 +83,17 @@ public class LoginFragment extends Fragment {
             binding.loginLoginEt.setText(prefs.getPrefsLogin());
             binding.loginPasswordEt.setText(prefs.getPrefsPassword());
         }
-        subscribe(viewModel);
-    }
 
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+            }
+        });
+
+        subscribe(viewModel);
+
+    }
     private void subscribe(LoginViewModel viewModel) {
         viewModel.errorLiveData.observe(getViewLifecycleOwner(), error -> {
             binding.loginAccountErrorTv.setVisibility(View.VISIBLE);
@@ -130,6 +140,4 @@ public class LoginFragment extends Fragment {
         binding = null;
         super.onDestroyView();
     }
-
-
 }

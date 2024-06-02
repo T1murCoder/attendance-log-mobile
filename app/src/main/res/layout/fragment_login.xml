@@ -44,10 +44,11 @@
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/action_elements_background"
                 android:ems="10"
-                android:hint="Login"
+                android:hint="Логин"
                 android:inputType="text"
+                android:cursorVisible="true"
                 android:padding="20dp"
-                android:textColor="@color/main_gray"
+                android:textColor="@color/black"
                 android:textCursorDrawable="@color/main_gray"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/password_edit_text_layout" />
@@ -70,7 +71,7 @@
                     android:background="@drawable/action_elements_background"
                     android:hint="@string/password_edit_text_hint"
                     android:inputType="textPassword"
-                    android:textColor="@color/main_gray"
+                    android:textColor="@color/black"
                     android:textColorHint="@color/main_gray"
                     android:textCursorDrawable="@color/main_gray"
                     android:textSize="16sp" />

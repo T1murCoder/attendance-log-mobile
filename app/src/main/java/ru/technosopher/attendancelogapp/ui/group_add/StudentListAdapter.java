@@ -61,7 +61,8 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
 
         public void bind(ItemStudentEntity item) {
             binding.listItemStudentName.setText(item.getFullName());
-            binding.listItemStudentId.setText(item.getStringId());
+//            binding.listItemStudentId.setText(item.getStringId());
+            binding.listItemStudentId.setText(item.getUsername());
             binding.studentAddCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

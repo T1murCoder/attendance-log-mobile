@@ -6,7 +6,6 @@ import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,9 +15,8 @@ import androidx.navigation.Navigation;
 
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentRegistrationBinding;
-import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
-import ru.technosopher.attendancelogapp.ui.UpdateSharedPreferences;
-import ru.technosopher.attendancelogapp.ui.profile.ProfileViewModel;
+import ru.technosopher.attendancelogapp.ui.utils.NavigationBarChangeListener;
+import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 

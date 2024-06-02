@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentGroupsBinding;
-import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
+import ru.technosopher.attendancelogapp.ui.utils.NavigationBarChangeListener;
 import ru.technosopher.attendancelogapp.ui.table.TableFragment;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 

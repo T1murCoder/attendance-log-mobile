@@ -23,15 +23,12 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.util.Arrays;
 import java.util.List;
 
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentLessonsBinding;
-import ru.technosopher.attendancelogapp.domain.entities.GroupEntity;
 import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
-import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
-import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
+import ru.technosopher.attendancelogapp.ui.utils.NavigationBarChangeListener;
 import ru.technosopher.attendancelogapp.ui.utils.DateFormatter;
 import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
@@ -75,6 +72,10 @@ public class LessonsFragment extends Fragment {
                 binding.addLessonLayout.setVisibility(View.GONE);
                 viewModel.createLesson();
                 viewModel.clearAllFields();
+                viewModel.changeGroup(null);
+                binding.datePickerTv.setText("Выберите дату");
+                binding.timePickerTv.setText("Выберите время");
+                binding.groupsNamesSpinner.setSelected(true);
                 binding.themeEt.setText(null);
             }
         });
@@ -93,15 +94,16 @@ public class LessonsFragment extends Fragment {
                 TimePickerDialog dialog = new TimePickerDialog(getContext(), callback, 0, 0, true);
                 dialog.show();
             }
-
             private TimePickerDialog.OnTimeSetListener callback = new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+
                     viewModel.changeStartTime(hour, minute);
                     TimePickerDialog dialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                             viewModel.changeEndTime(hour, minute);
+                            binding.timePickerTv.setText(viewModel.getFullTime());
                         }
                     }, 0, 0, true);
                     dialog.show();
@@ -114,10 +116,8 @@ public class LessonsFragment extends Fragment {
                 DatePickerDialog dialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        System.out.println(i);
-                        System.out.println(i1);
-                        System.out.println(i2);
                         viewModel.changeDate(i, i1, i2);
+                        binding.datePickerTv.setText(viewModel.getDate());
                     }
                 }, DateFormatter.getActualYear(), DateFormatter.getActualMonth(), DateFormatter.getActualDay());
                 dialog.show();
@@ -128,6 +128,10 @@ public class LessonsFragment extends Fragment {
             public void onClick(View view) {
                 binding.addLessonLayout.setVisibility(View.GONE);
                 viewModel.clearAllFields();
+                viewModel.changeGroup(null);
+                binding.datePickerTv.setText("Выберите дату");
+                binding.timePickerTv.setText("Выберите время");
+                binding.groupsNamesSpinner.setSelected(true);
                 binding.themeEt.setText(null);
             }
         });
@@ -167,12 +171,24 @@ public class LessonsFragment extends Fragment {
                 binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(true));
                 binding.recyclerView.setVisibility(Utils.visibleOrGone(false));
                 binding.floatingActionButton.setVisibility(Utils.visibleOrGone(false));
+                binding.noLessonsTv.setVisibility(View.GONE);
             } else {
                 binding.floatingActionButton.setVisibility(Utils.visibleOrGone(true));
                 binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(false));
                 binding.recyclerView.setVisibility(Utils.visibleOrGone(state.getSuccess()));
-                System.out.println(state.getLessons());
-                if (state.getSuccess()) adapter.updateData(state.getLessons());
+//                System.out.println(state.getLessons());
+                if (state.getSuccess()){
+                    if (state.getLessons().isEmpty()){
+                        binding.noLessonsTv.setVisibility(View.VISIBLE);
+                        binding.recyclerView.setVisibility(View.GONE);
+                    }
+                    else{
+                        binding.recyclerView.setVisibility(View.VISIBLE);
+                        binding.noLessonsTv.setVisibility(View.GONE);
+                    }
+                    adapter.updateData(state.getLessons());
+
+                }
                 //binding..setVisibility(Utils.visibleOrGone(state.getSuccess()));
             }
         });
@@ -189,6 +205,13 @@ public class LessonsFragment extends Fragment {
 
         viewModel.addErrorLiveData.observe(getViewLifecycleOwner(), message -> {
             Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+            binding.addLessonLayout.setVisibility(View.GONE);
+            viewModel.clearAllFields();
+            viewModel.changeGroup(null);
+            binding.datePickerTv.setText("Выберите дату");
+            binding.timePickerTv.setText("Выберите время");
+            binding.groupsNamesSpinner.setSelected(false);
+            binding.themeEt.setText(null);
         });
 
         viewModel.groupsLiveData.observe(getViewLifecycleOwner(), groupsState -> {

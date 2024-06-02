@@ -12,10 +12,13 @@ public class ItemStudentEntity {
     @NonNull
     private final String surname;
 
-    public ItemStudentEntity(@NonNull String id, @NonNull String name, @NonNull String surname) {
+    @NonNull
+    private final String username;
+    public ItemStudentEntity(@NonNull String id, @NonNull String name, @NonNull String surname, @NonNull String username) {
         this.id = id;
         this.name = name;
         this.surname = surname;
+        this.username = username;
     }
 
     @NonNull
@@ -41,5 +44,10 @@ public class ItemStudentEntity {
     @NonNull
     public String getStringId(){
         return "ID: " + getId();
+    }
+
+    @NonNull
+    public String getUsername() {
+        return username;
     }
 }

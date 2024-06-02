@@ -20,6 +20,10 @@ public class StudentDto {
     public String surname;
 
     @Nullable
+    @SerializedName("username")
+    public String username;
+
+    @Nullable
     @SerializedName("points")
     public String points;
 }

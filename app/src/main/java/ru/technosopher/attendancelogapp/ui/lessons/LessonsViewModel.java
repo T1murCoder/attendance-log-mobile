@@ -170,6 +170,13 @@ public class LessonsViewModel extends ViewModel {
         if (timeEnd == null) timeEnd = new GregorianCalendar();
         timeEnd.set(Calendar.HOUR_OF_DAY, hour);
         timeEnd.set(Calendar.MINUTE, minute);
+
+        if (timeStart == null) {
+            mutableAddErrorLiveData.postValue("Время начала не заполнено");
+            return;
+        }
+        if (timeEnd.compareTo(timeStart) <= 0)
+            mutableAddErrorLiveData.postValue("Некорректное время конца занятия");
     }
 
     public void changeDate(int year, int month, int day) {
@@ -178,8 +185,26 @@ public class LessonsViewModel extends ViewModel {
         date.set(Calendar.MONTH, month);
         date.set(Calendar.DAY_OF_MONTH, day);
         changeStartAndEndDate(year, month, day);
-
     }
+
+    public String getFullTime() {
+        if (timeEnd != null && timeStart != null) {
+            return DateFormatter.getFullTimeStringFromDate(timeStart, timeEnd, "HH:mm");
+        } else {
+            mutableAddErrorLiveData.postValue("Некорректное время");
+            return "";
+        }
+    }
+
+    public String getDate() {
+        if (date != null) return DateFormatter.getDateStringFromDate(date, "dd MMM yyyy");
+        else {
+            mutableAddErrorLiveData.postValue("Некорректная дата");
+            return "";
+        }
+    }
+
+
 
     public void changeStartAndEndDate(int year, int month, int day) {
         if (timeStart == null) timeStart = new GregorianCalendar();

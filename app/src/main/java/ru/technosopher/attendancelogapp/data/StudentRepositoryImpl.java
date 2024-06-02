@@ -1,15 +1,11 @@
 package ru.technosopher.attendancelogapp.data;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
-import ru.technosopher.attendancelogapp.data.dto.GroupWithoutStudentsDto;
 import ru.technosopher.attendancelogapp.data.dto.StudentDto;
 import ru.technosopher.attendancelogapp.data.dto.StudentItemDto;
 import ru.technosopher.attendancelogapp.data.dto.StudentWithAttendances;
@@ -18,7 +14,6 @@ import ru.technosopher.attendancelogapp.data.source.StudentApi;
 import ru.technosopher.attendancelogapp.data.utils.CallToConsumer;
 import ru.technosopher.attendancelogapp.data.utils.Mapper;
 import ru.technosopher.attendancelogapp.domain.entities.AttendanceEntity;
-import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
@@ -48,8 +43,9 @@ public class StudentRepositoryImpl implements StudentRepository {
                             final String id = dto.id;
                             final String name = dto.name;
                             final String surname = dto.surname;
-                            if (id != null && name != null && surname != null) {
-                                res.add(new ItemStudentEntity(id, name, surname));
+                            final String username = dto.username;
+                            if (id != null && name != null && surname != null && username != null) {
+                                res.add(new ItemStudentEntity(id, name, surname, username));
                             }
                         }
                         return res;
@@ -96,8 +92,9 @@ public class StudentRepositoryImpl implements StudentRepository {
                         for (StudentDto dto : studentItems) {
                             final String name = dto.name;
                             final String surname = dto.surname;
-                            if (name != null && surname != null) {
-                                res.add(new ItemStudentEntity(id, name, surname));
+                            final String username = dto.username;
+                            if (name != null && surname != null && username != null) {
+                                res.add(new ItemStudentEntity(id, name, surname, username));
                             }
                         }
                         return res;

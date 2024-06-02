@@ -1,4 +1,4 @@
-package ru.technosopher.attendancelogapp.ui;
+package ru.technosopher.attendancelogapp.ui.utils;
 
 import java.util.Map;
 

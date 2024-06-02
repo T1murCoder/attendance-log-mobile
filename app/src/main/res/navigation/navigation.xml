@@ -65,6 +65,11 @@
             app:destination="@id/lessonsFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
 
 
@@ -126,7 +131,13 @@
     <fragment
         android:id="@+id/dummyAttendancesFragment"
         android:name="ru.technosopher.attendancelogapp.ui.lessons.DummyAttendancesFragment"
-        android:label="DummyAttendancesFragment" />
+        android:label="DummyAttendancesFragment" >
+        <action
+            android:id="@+id/action_dummyAttendancesFragment_to_lessonsFragment"
+            app:destination="@id/lessonsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
     <fragment
         android:id="@+id/studentAddFragment"
         android:name="ru.technosopher.attendancelogapp.ui.student_add.StudentAddFragment"

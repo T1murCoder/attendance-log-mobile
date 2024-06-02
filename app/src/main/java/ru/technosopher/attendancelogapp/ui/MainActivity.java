@@ -13,9 +13,10 @@ import android.view.View;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import java.util.Map;
-import java.util.Objects;
 
 import ru.technosopher.attendancelogapp.R;
+import ru.technosopher.attendancelogapp.ui.utils.NavigationBarChangeListener;
+import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarChangeListener, UpdateSharedPreferences {
     private NavController navController;
@@ -232,5 +233,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
         String s = b ? "y" : "n";
         editor.putString(getString(R.string.SHARED_PREFS_CHECKED), s);
         editor.apply();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

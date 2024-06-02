@@ -41,14 +41,14 @@
                 android:id="@+id/registration_name_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/action_elements_background"
+                android:cursorVisible="true"
                 android:ems="10"
-                android:hint="First Name"
+                android:hint="Имя"
                 android:inputType="text"
                 android:padding="20dp"
-                android:textColor="@color/main_gray"
+                android:textColor="@color/black"
                 android:textCursorDrawable="@color/main_gray"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/editTextText2"
@@ -60,14 +60,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/action_elements_background"
+                android:cursorVisible="true"
                 android:ems="10"
-                android:hint="Last Name"
+                android:hint="Фамилия"
                 android:inputType="text"
                 android:padding="20dp"
-                android:textColor="@color/main_gray"
+                android:textColor="@color/black"
                 android:textCursorDrawable="@color/main_gray"
                 android:textSize="16sp"
-
                 app:layout_constraintBottom_toTopOf="@+id/editTextText3" />
 
             <EditText
@@ -76,11 +76,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/action_elements_background"
+                android:cursorVisible="true"
                 android:ems="10"
-                android:hint="Login"
+                android:hint="Логин"
                 android:inputType="text"
                 android:padding="20dp"
-                android:textColor="@color/main_gray"
+                android:textColor="@color/black"
                 android:textCursorDrawable="@color/main_gray"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/password_edit_text_layout" />
@@ -104,18 +105,18 @@
                     android:background="@drawable/action_elements_background"
                     android:hint="@string/password_edit_text_hint"
                     android:inputType="textPassword"
-                    android:textColor="@color/main_gray"
+                    android:textColor="@color/black"
                     android:textColorHint="@color/main_gray"
                     android:textCursorDrawable="@color/main_gray"
                     android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:layout_marginTop="30dp"
                 android:id="@+id/registration_account_error_tv"
-
                 android:layout_width="wrap_content"
+
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/inter_regular"
                 android:textColor="@color/main_red"
                 android:textSize="16sp"
@@ -123,16 +124,16 @@
                 tools:text="This account is already exists" />
 
             <ProgressBar
-                android:layout_marginTop="30dp"
-                android:layout_gravity="center"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:id="@+id/loading_progress_bar"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
                 android:visibility="gone"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </LinearLayout>
 
@@ -146,8 +147,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -156,9 +157,9 @@
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/registration_remember_cb"
-                        android:theme="@style/InactiveCheckBox"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:theme="@style/InactiveCheckBox" />
                 </LinearLayout>
 
                 <TextView
@@ -181,13 +182,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/action_elements_background"
+                    android:backgroundTint="@color/main_blue"
                     android:fontFamily="@font/inter_regular"
                     android:padding="16dp"
                     android:text="Sign up"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:backgroundTint="@color/main_blue" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 

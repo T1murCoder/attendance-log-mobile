@@ -1,15 +1,14 @@
 package ru.technosopher.attendancelogapp.ui.profile;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +16,11 @@ import android.view.ViewGroup;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.Objects;
-
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentProfileBinding;
 import ru.technosopher.attendancelogapp.domain.entities.TeacherEntity;
-import ru.technosopher.attendancelogapp.ui.NavigationBarChangeListener;
-import ru.technosopher.attendancelogapp.ui.UpdateSharedPreferences;
+import ru.technosopher.attendancelogapp.ui.utils.NavigationBarChangeListener;
+import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 
 
 public class ProfileFragment extends Fragment {
@@ -50,6 +47,16 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.bind(view);
         navigationBarChangeListener.changeSelectedItem(R.id.profile);
         viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+
+
+        binding.profileLogoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewModel.logout();
+            }
+        });
+
+
         subscribe(viewModel);
         viewModel.loadPrefs(
                 prefs.getPrefsId(),
@@ -62,7 +69,8 @@ public class ProfileFragment extends Fragment {
         );
 
     }
-    private void subscribe(ProfileViewModel viewModel){
+
+    private void subscribe(ProfileViewModel viewModel) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), state -> {
             TeacherEntity teacher = state.getTeacher();
 
@@ -74,9 +82,19 @@ public class ProfileFragment extends Fragment {
             binding.profileTelegramEt.setText(teacher.getTelegram_url() != null ? teacher.getTelegram_url() : "Provide your telegram");
             binding.profileGithubEt.setText(teacher.getGithub_url() != null ? teacher.getGithub_url() : "Provide your github");
             // TODO (validate link)
-            if (teacher.getPhoto_url() != null) Picasso.get().load(teacher.getPhoto_url()).into(binding.profileAvatarIv);
+            if (teacher.getPhoto_url() != null)
+                Picasso.get().load(teacher.getPhoto_url()).into(binding.profileAvatarIv);
 
-            //TODO (Do something with notifications)
+        });
+        viewModel.logoutLiveData.observe(getViewLifecycleOwner(), unused -> {
+            prefs.clearAll();
+            View view = getView();
+            if (view == null) return;
+            Navigation.findNavController(view).navigate(R.id.action_profileFragment_to_loginFragment);
+//            Navigation.findNavController(view).navigate(
+//                    R.id.action_profileFragment_to_loginFragment,
+//                    null,
+//                    new NavOptions.Builder().setPopUpTo(R.id.profileFragment, true).build());
         });
     }
 
@@ -89,7 +107,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        try{
+        try {
             navigationBarChangeListener = (NavigationBarChangeListener) context;
             prefs = (UpdateSharedPreferences) context;
         } catch (ClassCastException e) {

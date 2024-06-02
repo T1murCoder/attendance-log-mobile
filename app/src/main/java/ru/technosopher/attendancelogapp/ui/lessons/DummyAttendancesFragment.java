@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.DummyAttendanceFragmentBinding;
@@ -39,6 +40,15 @@ public class DummyAttendancesFragment extends Fragment {
         String id = getArguments() != null ? getArguments().getString(KEY_ID) : "Something went wrong";
         binding.studentRv.setAdapter(adapter);
         subscribe(viewModel, adapter);
+
+
+        binding.back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view == null) return;
+                Navigation.findNavController(view).navigate(R.id.action_dummyAttendancesFragment_to_lessonsFragment);
+            }
+        });
         viewModel.load(id);
     }
 

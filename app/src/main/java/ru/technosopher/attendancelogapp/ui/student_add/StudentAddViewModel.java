@@ -15,9 +15,7 @@ import ru.technosopher.attendancelogapp.data.StudentRepositoryImpl;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 import ru.technosopher.attendancelogapp.domain.groups.AddStudentsToGroupUseCase;
-import ru.technosopher.attendancelogapp.domain.groups.CreateGroupUseCase;
 import ru.technosopher.attendancelogapp.domain.students.GetStudentsListUseCase;
-import ru.technosopher.attendancelogapp.ui.group_add.GroupAddViewModel;
 
 public class StudentAddViewModel extends ViewModel {
     /* LIVEDATA */
@@ -77,8 +75,8 @@ public class StudentAddViewModel extends ViewModel {
         selectedStudents.add(new ItemStudentEntity(
                 id,
                 "",
-                ""
-        ));
+                "",
+                ""));
     }
     public void deleteStudent(@NonNull String id) {
         if (selectedStudents != null) {

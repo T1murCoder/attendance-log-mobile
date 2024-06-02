@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/background_gray"
     android:padding="20dp">
 
@@ -12,10 +12,32 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Ученики, посетившие занятие"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/student_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/dummy_item_list" />
 
