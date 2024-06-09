@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.LessonRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.QrCodeRepositoryImpl;
 import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
 import ru.technosopher.attendancelogapp.domain.entities.LessonEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
@@ -24,6 +25,7 @@ import ru.technosopher.attendancelogapp.domain.groups.GetGroupsListUseCase;
 import ru.technosopher.attendancelogapp.domain.lessons.CreateLessonUseCase;
 import ru.technosopher.attendancelogapp.domain.lessons.DeleteLessonUseCase;
 import ru.technosopher.attendancelogapp.domain.lessons.GetLessonsListUseCase;
+import ru.technosopher.attendancelogapp.domain.qrcode.CheckQrCodeIsAliveUseCase;
 import ru.technosopher.attendancelogapp.ui.utils.DateFormatter;
 
 public class LessonsViewModel extends ViewModel {
@@ -52,6 +54,10 @@ public class LessonsViewModel extends ViewModel {
 
     private final GetGroupsListUseCase getGroupsListUseCase = new GetGroupsListUseCase(
             GroupsRepositoryImpl.getInstance()
+    );
+
+    private final CheckQrCodeIsAliveUseCase checkQrCodeIsAliveUseCase = new CheckQrCodeIsAliveUseCase(
+            QrCodeRepositoryImpl.getInstance()
     );
     /* USE CASES */
     private List<LessonEntity> lessons = new ArrayList<>();
@@ -152,6 +158,16 @@ public class LessonsViewModel extends ViewModel {
         });
     }
 
+
+    public void checkQRCodeIsAlive(@NonNull String lessonId){
+
+        checkQrCodeIsAliveUseCase.execute(lessonId, qrCodeEntityStatus ->{
+            if (qrCodeEntityStatus.getStatusCode() == 409){
+
+            }
+        });
+
+    }
     private void addNewLesson(LessonEntity lesson) {
         lessons.add(lesson);
     }
@@ -203,8 +219,6 @@ public class LessonsViewModel extends ViewModel {
             return "";
         }
     }
-
-
 
     public void changeStartAndEndDate(int year, int month, int day) {
         if (timeStart == null) timeStart = new GregorianCalendar();

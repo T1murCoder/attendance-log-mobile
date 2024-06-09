@@ -5,13 +5,10 @@ import androidx.annotation.NonNull;
 public class ItemStudentEntity {
     @NonNull
     private final String id;
-
     @NonNull
     private final String name;
-
     @NonNull
     private final String surname;
-
     @NonNull
     private final String username;
     public ItemStudentEntity(@NonNull String id, @NonNull String name, @NonNull String surname, @NonNull String username) {

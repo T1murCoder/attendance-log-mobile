@@ -34,7 +34,11 @@ public class LessonDto {
     @SerializedName("groupName")
     public String groupName;
 
-    public LessonDto(@Nullable String id, @Nullable String theme, @Nullable String groupId, @Nullable String groupName, @Nullable GregorianCalendar timeStart, @Nullable GregorianCalendar timeEnd, @Nullable GregorianCalendar date) {
+    @Nullable
+    @SerializedName("activeQRCode")
+    public QrCodeDto activeQRCode;
+
+    public LessonDto(@Nullable String id, @Nullable String theme, @Nullable String groupId, @Nullable String groupName, @Nullable GregorianCalendar timeStart, @Nullable GregorianCalendar timeEnd, @Nullable GregorianCalendar date, @Nullable QrCodeDto activeQRCode) {
         this.id = id;
         this.theme = theme;
         this.groupId = groupId;
@@ -42,5 +46,6 @@ public class LessonDto {
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
         this.date = date;
+        this.activeQRCode = activeQRCode;
     }
 }

@@ -89,6 +89,15 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
     }
 
     @Override
+    public void profileUpdate(String name, String surname, String telegram, String github, String photo) {
+        updateName(name);
+        updateSurname(surname);
+        updateTelegram(telegram);
+        updateGithub(github);
+        updatePhoto(photo);
+    }
+
+    @Override
     public void clearAll() {
         updateId("");
         updateLogin("");

@@ -17,6 +17,14 @@ public interface UpdateSharedPreferences {
             String photo,
             Boolean remember
     );
+
+    public void profileUpdate(
+            String name,
+            String surname,
+            String telegram,
+            String github,
+            String photo
+    );
     public void clearAll();
     public Map<String, ?> getPrefs();
     public String getPrefsId();

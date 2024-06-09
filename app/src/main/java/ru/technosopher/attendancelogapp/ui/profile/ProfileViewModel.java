@@ -6,45 +6,41 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.Map;
-
 import ru.technosopher.attendancelogapp.data.TeacherRepositoryImpl;
-import ru.technosopher.attendancelogapp.domain.GetTeacherByIdUseCase;
+import ru.technosopher.attendancelogapp.domain.teacher.GetTeacherByIdUseCase;
 import ru.technosopher.attendancelogapp.domain.entities.TeacherEntity;
 import ru.technosopher.attendancelogapp.domain.sign.LogoutUseCase;
+import ru.technosopher.attendancelogapp.domain.teacher.UpdateTeacherProfileUseCase;
 
 public class ProfileViewModel extends ViewModel {
     private final MutableLiveData<State> mutableStateLiveData = new MutableLiveData<>();
-    public final LiveData<State> stateLiveData = mutableStateLiveData;
 
+    public final LiveData<State> stateLiveData = mutableStateLiveData;
     private final MutableLiveData<Void> mutableLogoutLiveData = new MutableLiveData<>();
     public final LiveData<Void> logoutLiveData = mutableLogoutLiveData;
-    private final GetTeacherByIdUseCase getTeacherByIdUseCase = new GetTeacherByIdUseCase(
-            TeacherRepositoryImpl.getInstance()
-    );
-
     private final LogoutUseCase logoutUseCase = new LogoutUseCase(
             TeacherRepositoryImpl.getInstance()
     );
+    private final UpdateTeacherProfileUseCase updateTeacherProfileUseCase = new UpdateTeacherProfileUseCase(
+            TeacherRepositoryImpl.getInstance()
+    );
 
+    @Nullable
+    private String name;
 
-    public void load(@NonNull String id) {
-        getTeacherByIdUseCase.execute(id, status -> {
-            mutableStateLiveData.postValue(new State(
-                    status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
-                    status.getValue()
-            ));
-        });
-    }
+    @Nullable
+    private String surname;
 
-    public void updatePrefs() {
-        //TODO(SUFFER.............)
-    }
+    @Nullable
+    private String telegram;
+
+    @Nullable
+    private String github;
+
+    @Nullable
+    private String photo;
 
     public void loadPrefs(String id, String prefsLogin, String prefsName, String prefsSurname, String prefsTelegram, String prefsGithub, String prefsPhotoUrl) {
-        System.out.println(prefsGithub);
-        System.out.println(prefsTelegram);
-        // TODO(VALIDATION)
         mutableStateLiveData.postValue(new State(null, new TeacherEntity(
                 id,
                 prefsName,
@@ -53,7 +49,41 @@ public class ProfileViewModel extends ViewModel {
                 prefsTelegram,
                 prefsGithub,
                 prefsPhotoUrl
-        )));
+        ), false));
+        changeName(prefsName);
+        changeSurname(prefsSurname);
+        changeTelegram(prefsTelegram);
+        changeGithub(prefsGithub);
+    }
+
+    public void updateProfile(String id, String prefsLogin) {
+        if (name == null || surname == null || name.isEmpty() || surname.isEmpty()) {
+            mutableStateLiveData.postValue(new State("Имя и фамилия не могут быть пустыми", null, false));
+        } else {
+            //TODO(fix untouched fields update)
+            mutableStateLiveData.postValue(new State(null, null, true));
+            updateTeacherProfileUseCase.execute(
+                    id,
+                    new TeacherEntity(
+                            id,
+                            name,
+                            surname,
+                            prefsLogin,
+                            telegram,
+                            github,
+                            photo),
+                    tstatus -> {
+                        System.out.println(tstatus.getStatusCode());
+                        System.out.println(tstatus.getValue());
+                        if (tstatus.getStatusCode() == 200) {
+                            loadPrefs(id, prefsLogin, name, surname, telegram, prefsLogin, photo);
+                        } else {
+                            mutableStateLiveData.postValue(new State("Что то пошло не так. Попробуйте еще раз", null, false));
+                        }
+
+
+                    });
+        }
     }
 
     public void logout() {
@@ -61,6 +91,20 @@ public class ProfileViewModel extends ViewModel {
         mutableLogoutLiveData.postValue(null);
     }
 
+    public void changeName(String name){
+        this.name = name;
+    }
+    public void changeSurname(String surname){
+        this.surname = surname;
+    }
+    public void changeTelegram(String telegram){
+        this.telegram = telegram;
+    }
+    public void changeGithub(String github){
+        this.github = github;
+    }
+
+    //TODO(PHOTO LOADING)
 
     public class State {
         @Nullable
@@ -68,9 +112,12 @@ public class ProfileViewModel extends ViewModel {
         @Nullable
         private final TeacherEntity teacher;
 
-        public State(@Nullable String errorMessage, @Nullable TeacherEntity teacher) {
+        @Nullable
+        private final Boolean loading;
+        public State(@Nullable String errorMessage, @Nullable TeacherEntity teacher, @Nullable Boolean loading) {
             this.errorMessage = errorMessage;
             this.teacher = teacher;
+            this.loading = loading;
         }
 
         @Nullable
@@ -83,5 +130,9 @@ public class ProfileViewModel extends ViewModel {
             return errorMessage;
         }
 
+        @Nullable
+        public Boolean getLoading() {
+            return loading;
+        }
     }
 }

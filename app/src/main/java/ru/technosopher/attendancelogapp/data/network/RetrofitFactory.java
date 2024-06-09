@@ -25,6 +25,7 @@ import ru.technosopher.attendancelogapp.data.source.AttendanceApi;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.data.source.GroupApi;
 import ru.technosopher.attendancelogapp.data.source.LessonApi;
+import ru.technosopher.attendancelogapp.data.source.QrCodeApi;
 import ru.technosopher.attendancelogapp.data.source.StudentApi;
 import ru.technosopher.attendancelogapp.data.source.TeacherApi;
 
@@ -61,8 +62,8 @@ public class RetrofitFactory {
             .create();
 
     private Retrofit retrofit = new Retrofit.Builder()
-//            .baseUrl("http://192.168.1.103:8080/")
-            .baseUrl("http://193.164.149.209:8080/")
+            .baseUrl("http://192.168.1.105:8085/") // local server
+//            .baseUrl("http://193.164.149.209:8080/") // remote server
             .client(client.build())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build();
@@ -75,7 +76,7 @@ public class RetrofitFactory {
     public StudentApi getStudentApi() { return retrofit.create(StudentApi.class); }
     public LessonApi getLessonApi() { return retrofit.create(LessonApi.class); }
     public AttendanceApi getAttendanceApi() { return retrofit.create(AttendanceApi.class); }
-
+    public QrCodeApi getQrCodeApi() { return retrofit.create(QrCodeApi.class); }
     public class DateTypeAdapter implements JsonDeserializer<GregorianCalendar>, JsonSerializer<GregorianCalendar> {
 
         @SuppressLint("SimpleDateFormat")

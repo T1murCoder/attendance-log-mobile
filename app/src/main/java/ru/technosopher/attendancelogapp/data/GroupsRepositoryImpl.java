@@ -96,4 +96,20 @@ public class GroupsRepositoryImpl implements GroupsRepository {
         ));
     }
 
+    @Override
+    public void putStudentsToGroup(@NonNull String id, @NonNull List<ItemStudentEntity> students, Consumer<Status<Void>> callback) {
+        groupApi.putStudentsToGroup(id, Mapper.fromEntityListToDtoList(students)).enqueue(new CallToConsumer<>(
+                callback,
+                dto -> null
+        ));
+    }
+
+    @Override
+    public void deleteStudentFromGroup(@NonNull String groupId,  @NonNull String studentId, Consumer<Status<Void>> callback) {
+        groupApi.deleteStudentFromGroup(groupId, studentId).enqueue(new CallToConsumer<>(
+                callback,
+                dto -> null
+        ));
+    }
+
 }

@@ -1,4 +1,4 @@
-package ru.technosopher.attendancelogapp.domain;
+package ru.technosopher.attendancelogapp.domain.teacher;
 
 import androidx.annotation.NonNull;
 
@@ -7,7 +7,6 @@ import java.util.function.Consumer;
 
 import ru.technosopher.attendancelogapp.domain.entities.ItemTeacherEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
-import ru.technosopher.attendancelogapp.domain.entities.TeacherEntity;
 
 public class GetTeachersListUseCase {
 

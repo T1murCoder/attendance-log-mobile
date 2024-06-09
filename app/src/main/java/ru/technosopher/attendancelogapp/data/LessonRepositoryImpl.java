@@ -1,20 +1,18 @@
 package ru.technosopher.attendancelogapp.data;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
-import ru.technosopher.attendancelogapp.data.dto.GroupWithoutStudentsDto;
 import ru.technosopher.attendancelogapp.data.dto.LessonDto;
 import ru.technosopher.attendancelogapp.data.network.RetrofitFactory;
 import ru.technosopher.attendancelogapp.data.source.LessonApi;
 import ru.technosopher.attendancelogapp.data.utils.CallToConsumer;
-import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
+import ru.technosopher.attendancelogapp.data.utils.Mapper;
 import ru.technosopher.attendancelogapp.domain.entities.LessonEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 import ru.technosopher.attendancelogapp.domain.lessons.LessonRepository;
@@ -35,7 +33,6 @@ public class LessonRepositoryImpl implements LessonRepository {
         lessonApi.getAllLessons().enqueue(new CallToConsumer<>(
                 callback,
                 lessonsDto -> {
-//                    Log.e("LESSONS DTO", "something went wrong");
                     if (lessonsDto != null) {
                         ArrayList<LessonEntity> res = new ArrayList<>();
                         for (LessonDto dto : lessonsDto) {
@@ -47,7 +44,15 @@ public class LessonRepositoryImpl implements LessonRepository {
                             final GregorianCalendar timeEnd = dto.timeEnd;
                             final GregorianCalendar date = dto.date;
                             if (id != null && theme != null && groupId != null && groupName != null && timeStart != null && timeEnd != null && date != null) {
-                                res.add(new LessonEntity(id, theme, groupId, groupName, timeStart, timeEnd, date));
+                                res.add(new LessonEntity(
+                                        id,
+                                        theme,
+                                        groupId,
+                                        groupName,
+                                        timeStart,
+                                        timeEnd,
+                                        date,
+                                        Mapper.fromQrDtoToEntity(dto.activeQRCode)));
                             }
                         }
                         return res;
@@ -63,7 +68,7 @@ public class LessonRepositoryImpl implements LessonRepository {
 
     @Override
     public void createLesson(@NonNull String theme, @NonNull String groupId, @NonNull String groupName, @NonNull GregorianCalendar timeStart, @NonNull GregorianCalendar timeEnd, @NonNull GregorianCalendar date, Consumer<Status<LessonEntity>> callback) {
-        lessonApi.createLesson(new LessonDto("0", theme, groupId, groupName, timeStart, timeEnd, date)).enqueue(new CallToConsumer<>(
+        lessonApi.createLesson(new LessonDto("0", theme, groupId, groupName, timeStart, timeEnd, date, null)).enqueue(new CallToConsumer<>(
                 callback,
                 lessonDto -> {
                     if (lessonDto != null) {
@@ -75,7 +80,7 @@ public class LessonRepositoryImpl implements LessonRepository {
                         final GregorianCalendar _timeEnd = lessonDto.timeEnd;
                         final GregorianCalendar _date = lessonDto.date;
                         if (id != null && _theme != null && _groupId != null && _groupName != null && _timeStart != null && _timeEnd != null && _date != null) {
-                            return new LessonEntity(id, theme, groupId, groupName, timeStart, timeEnd, date);
+                            return new LessonEntity(id, theme, groupId, groupName, timeStart, timeEnd, date, Mapper.fromQrDtoToEntity(lessonDto.activeQRCode));
                         }
                     }
                     return null;

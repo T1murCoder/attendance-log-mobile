@@ -40,4 +40,6 @@
     <string name="table_group_name_header">Название группы</string>
     <string name="fragment_students_add_header_text">Добавление учеников</string>
     <string name="no_lessons_tv">У вас пока нет занятий. Добавьте первое!</string>
+    <string name="qr_code_genaration_text">Сгенерировать</string>
+    <string name="empty_qr_code_state">QR-code еще не сгенерирован или просрочен. Сгенерируйте новый!</string>
 </resources>

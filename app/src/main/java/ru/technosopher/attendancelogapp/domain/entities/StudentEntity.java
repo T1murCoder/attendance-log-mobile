@@ -11,7 +11,6 @@ import java.util.List;
 import ru.technosopher.attendancelogapp.data.dto.AttendanceDto;
 
 public class StudentEntity {
-
     @NonNull
     private final String id;
     @NonNull
@@ -57,7 +56,7 @@ public class StudentEntity {
 
     @NonNull
     public String getFullName() {
-        return getName() + " " +getSurname();
+        return getSurname() + " " +getName();
     }
 
     public void setAttendanceEntityList(List<AttendanceEntity> attendanceEntities){

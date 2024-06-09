@@ -51,7 +51,6 @@ public class GroupsViewModel extends ViewModel {
             }
             if(status.getStatusCode() != 200 || status.getErrors() != null){
                 mutableDeleteLiveData.postValue(false);
-                return ;
             }
         });
     }

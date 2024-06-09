@@ -2,18 +2,16 @@ package ru.technosopher.attendancelogapp.data;
 
 import androidx.annotation.NonNull;
 
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.function.Consumer;
 
-import okhttp3.Call;
-import ru.technosopher.attendancelogapp.data.dto.TeacherAccountDto;
 import ru.technosopher.attendancelogapp.data.dto.TeacherRegisterDto;
 import ru.technosopher.attendancelogapp.data.network.RetrofitFactory;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.data.source.TeacherApi;
 import ru.technosopher.attendancelogapp.data.utils.CallToConsumer;
-import ru.technosopher.attendancelogapp.domain.TeacherRepository;
+import ru.technosopher.attendancelogapp.data.utils.Mapper;
+import ru.technosopher.attendancelogapp.domain.teacher.TeacherRepository;
 import ru.technosopher.attendancelogapp.domain.entities.ItemTeacherEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 import ru.technosopher.attendancelogapp.domain.entities.TeacherAccountEntity;
@@ -68,6 +66,14 @@ public class TeacherRepositoryImpl implements TeacherRepository, SignTeacherRepo
                     }
                     return null;
                 }
+        ));
+    }
+
+    @Override
+    public void updateProfile(@NonNull String id, @NonNull TeacherEntity updatedTeacher, Consumer<Status<TeacherEntity>> callback) {
+        teacherApi.update(id, Mapper.fromTeacherEntityToDto(updatedTeacher)).enqueue(new CallToConsumer<>(
+                callback,
+                Mapper::fromTeacherDtoToEntity
         ));
     }
 

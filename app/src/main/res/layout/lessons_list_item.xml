@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
-    android:layout_marginTop="5dp">
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
@@ -50,15 +50,15 @@
 
                 <TextView
                     android:id="@+id/time_start_tv"
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="@color/main_gray"
                     android:fontFamily="@font/inter_regular"
+                    android:text="Ученики"
                     android:textAlignment="center"
+                    android:textColor="@color/main_gray"
                     android:textSize="12sp"
-                    android:text="Ученики" />
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
@@ -125,13 +125,13 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="20dp"
                 android:id="@+id/qr_code_additional_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:background="@color/white"
-                android:visibility="gone"
                 android:orientation="vertical"
+                android:visibility="visible"
 
                 app:layout_constraintTop_toBottomOf="@id/card_view">
 
@@ -160,9 +160,10 @@
 
                 <LinearLayout
                     android:id="@+id/qr_code_upload_layout"
-                    android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp">
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -171,6 +172,7 @@
                         android:text="@string/lesson_upload_text"
                         android:textColor="@color/main_gray"
                         android:textSize="14sp" />
+
                     <ImageButton
                         android:id="@+id/lesson_upload_btn"
                         android:layout_width="30dp"
@@ -181,9 +183,10 @@
 
                 <LinearLayout
                     android:id="@+id/qr_code_copy_link_layout"
-                    android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp">
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -192,6 +195,7 @@
                         android:text="@string/lesson_copy_link_text"
                         android:textColor="@color/main_gray"
                         android:textSize="14sp" />
+
                     <ImageButton
                         android:id="@+id/lesson_copy_link_btn"
                         android:layout_width="30dp"
@@ -203,12 +207,48 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
 
                     <ImageView
+                        android:visibility="gone"
+                        android:id="@+id/qr_code_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ProgressBar
+                        android:visibility="gone"
+                        android:id="@+id/lesson_item_image_checking_pb"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/qr_code_image"/>
+                        android:layout_gravity="center_horizontal" />
+
+                    <TextView
+                        android:id="@+id/empty_qr_code_state"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/main_gray"
+                        android:textAlignment="center"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="30dp"
+                        android:text="@string/empty_qr_code_state"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/generate_qr_code_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/action_elements_background"
+                        android:backgroundTint="@color/main_blue"
+                        android:fontFamily="@font/inter_regular"
+                        android:padding="10dp"
+                        android:text="@string/qr_code_genaration_text"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
 
                 </LinearLayout>
 

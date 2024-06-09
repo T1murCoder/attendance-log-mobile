@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 
 import java.util.function.Consumer;
 
-import ru.technosopher.attendancelogapp.data.dto.TeacherAccountDto;
-import ru.technosopher.attendancelogapp.domain.TeacherRepository;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 import ru.technosopher.attendancelogapp.domain.entities.TeacherAccountEntity;
 

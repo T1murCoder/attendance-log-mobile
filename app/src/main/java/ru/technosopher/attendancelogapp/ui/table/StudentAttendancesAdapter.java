@@ -3,6 +3,7 @@ package ru.technosopher.attendancelogapp.ui.table;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -18,14 +19,16 @@ import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
 
 public class StudentAttendancesAdapter extends RecyclerView.Adapter<StudentAttendancesAdapter.ViewHolder> {
     private final List<StudentEntity> data = new ArrayList<>();
-
     private boolean state = true;
     private final Context context;
     private final Consumer<AttendanceEntity> setAttendanceAndPointsToStudent;
-    public StudentAttendancesAdapter(Context context, boolean state, Consumer<AttendanceEntity> setAttendanceAndPointsToStudent) {
+
+    private final Consumer<String> onStudentDelete;
+    public StudentAttendancesAdapter(Context context, boolean state, Consumer<AttendanceEntity> setAttendanceAndPointsToStudent, Consumer<String> onStudentDelete) {
         this.context = context;
         this.state = state;
         this.setAttendanceAndPointsToStudent = setAttendanceAndPointsToStudent;
+        this.onStudentDelete = onStudentDelete;
     }
 
     @NonNull
@@ -80,6 +83,14 @@ public class StudentAttendancesAdapter extends RecyclerView.Adapter<StudentAtten
                 binding.attAndBallsRv.setAdapter(adapter);
                 adapter.update(item.getAttendanceEntityList());
             }
+            binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (view == null) return false;
+                    onStudentDelete.accept(item.getId());
+                    return true;
+                }
+            });
         }
         private void changeStudent(AttendanceEntity attendance){
             setAttendanceAndPointsToStudent.accept(attendance);

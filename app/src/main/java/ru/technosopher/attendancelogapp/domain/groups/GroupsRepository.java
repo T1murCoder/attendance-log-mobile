@@ -1,5 +1,7 @@
 package ru.technosopher.attendancelogapp.domain.groups;
 
+import android.content.ClipData;
+
 import androidx.annotation.NonNull;
 
 import java.util.List;
@@ -19,4 +21,6 @@ public interface GroupsRepository {
     void addGroup(@NonNull String name, @NonNull List<ItemStudentEntity> students, @NonNull Consumer<Status<GroupEntity>> callback);
     void deleteGroup(@NonNull String id, @NonNull Consumer<Status<Void>> callback);
     void addStudentsToGroup(@NonNull String id, @NonNull List<ItemStudentEntity> students, Consumer<Status<Void>> callback);
+    void putStudentsToGroup(@NonNull String id, @NonNull List<ItemStudentEntity> students, Consumer<Status<Void>> callback);
+    void deleteStudentFromGroup(@NonNull String groupId, @NonNull String studentId, Consumer<Status<Void>> callback);
 }

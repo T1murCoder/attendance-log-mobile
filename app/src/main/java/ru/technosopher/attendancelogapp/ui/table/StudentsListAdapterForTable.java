@@ -2,6 +2,7 @@ package ru.technosopher.attendancelogapp.ui.table;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -9,12 +10,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import ru.technosopher.attendancelogapp.databinding.DummyItemListBinding;
 import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
 
 public class StudentsListAdapterForTable extends RecyclerView.Adapter<StudentsListAdapterForTable.ViewHolder> {
     private final List<StudentEntity> data = new ArrayList<>();
+
+    private final Consumer<String> onStudentDelete;
+
+    public StudentsListAdapterForTable(Consumer<String> onStudentDelete){
+        this.onStudentDelete = onStudentDelete;
+    }
     @NonNull
     @Override
     public StudentsListAdapterForTable.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,6 +58,14 @@ public class StudentsListAdapterForTable extends RecyclerView.Adapter<StudentsLi
 
         public void bind(StudentEntity item) {
             binding.studentName.setText(item.getFullName());
+            binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (view == null) return false;
+                    onStudentDelete.accept(item.getId());
+                    return true;
+                }
+            });
         }
     }
 }

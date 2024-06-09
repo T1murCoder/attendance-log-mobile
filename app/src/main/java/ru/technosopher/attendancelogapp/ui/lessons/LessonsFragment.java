@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -28,13 +29,14 @@ import java.util.List;
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentLessonsBinding;
 import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
+import ru.technosopher.attendancelogapp.domain.entities.QrCodeEntity;
 import ru.technosopher.attendancelogapp.ui.utils.NavigationBarChangeListener;
 import ru.technosopher.attendancelogapp.ui.utils.DateFormatter;
 import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
 
-public class LessonsFragment extends Fragment {
+public class LessonsFragment extends Fragment{
 
     private NavigationBarChangeListener navigationBarChangeListener;
     private LessonsViewModel viewModel;
@@ -54,10 +56,10 @@ public class LessonsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentLessonsBinding.bind(view);
-        navigationBarChangeListener.changeSelectedItem(R.id.lessons);
+        //navigationBarChangeListener.changeSelectedItem(R.id.lessons);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        LessonsListAdapter adapter = new LessonsListAdapter(getContext(), this::onItemOpen, this::onItemClose, this::onDelete, this::onOpenJournal, this::onUpload, this::onCopyLink);
+        LessonsListAdapter adapter = new LessonsListAdapter(getContext(), this::checkQrCodeIsAlive, this::onDelete, this::onOpenJournal);
 
         binding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +77,7 @@ public class LessonsFragment extends Fragment {
                 viewModel.changeGroup(null);
                 binding.datePickerTv.setText("Выберите дату");
                 binding.timePickerTv.setText("Выберите время");
-                binding.groupsNamesSpinner.setSelected(true);
+                binding.groupsNamesSpinner.setSelection(0);
                 binding.themeEt.setText(null);
             }
         });
@@ -131,7 +133,7 @@ public class LessonsFragment extends Fragment {
                 viewModel.changeGroup(null);
                 binding.datePickerTv.setText("Выберите дату");
                 binding.timePickerTv.setText("Выберите время");
-                binding.groupsNamesSpinner.setSelected(true);
+                binding.groupsNamesSpinner.setSelection(0);
                 binding.themeEt.setText(null);
             }
         });
@@ -143,10 +145,16 @@ public class LessonsFragment extends Fragment {
 
     }
 
-    private void onItemOpen(Boolean aBoolean) {
-    }
+//    private void onItemOpen(String lessonId) {
+//
+//    }
+//
+//    private void onItemClose(Boolean aBoolean) {
+//    }
 
-    private void onItemClose(Boolean aBoolean) {
+    private void checkQrCodeIsAlive(@NonNull String lessonId){
+        viewModel.checkQRCodeIsAlive(lessonId);
+//        return new QrCodeEntity(null, null, null, null);
     }
 
     private void onOpenJournal(String id){
@@ -159,13 +167,13 @@ public class LessonsFragment extends Fragment {
         viewModel.deleteLesson(id);
     }
 
-    private void onUpload(@NonNull String id) {
-    }
-
-    private void onCopyLink(@NonNull String id) {
-    }
-
+//    private void onUpload(@NonNull String id) {
+//    }
+//
+//    private void onCopyLink(@NonNull String id) {
+//    }
     private void subscribe(LessonsViewModel viewModel, LessonsListAdapter adapter) {
+
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), state -> {
             if (state.getLoading()) {
                 binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(true));
@@ -176,7 +184,6 @@ public class LessonsFragment extends Fragment {
                 binding.floatingActionButton.setVisibility(Utils.visibleOrGone(true));
                 binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(false));
                 binding.recyclerView.setVisibility(Utils.visibleOrGone(state.getSuccess()));
-//                System.out.println(state.getLessons());
                 if (state.getSuccess()){
                     if (state.getLessons().isEmpty()){
                         binding.noLessonsTv.setVisibility(View.VISIBLE);
@@ -187,7 +194,6 @@ public class LessonsFragment extends Fragment {
                         binding.noLessonsTv.setVisibility(View.GONE);
                     }
                     adapter.updateData(state.getLessons());
-
                 }
                 //binding..setVisibility(Utils.visibleOrGone(state.getSuccess()));
             }
@@ -211,6 +217,7 @@ public class LessonsFragment extends Fragment {
             binding.datePickerTv.setText("Выберите дату");
             binding.timePickerTv.setText("Выберите время");
             binding.groupsNamesSpinner.setSelected(false);
+            binding.groupsNamesSpinner.setSelection(0);
             binding.themeEt.setText(null);
         });
 
@@ -249,4 +256,5 @@ public class LessonsFragment extends Fragment {
             throw new ClassCastException(context.toString());
         }
     }
+
 }

@@ -1,10 +1,13 @@
 package ru.technosopher.attendancelogapp.ui.table;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,12 +46,11 @@ public class TableFragment extends Fragment {
         navigationBarChangeListener.hideNavigationBar();
         binding = FragmentTableBinding.bind(view);
 
-
         String id = getArguments() != null ? getArguments().getString(KEY_ID) : "Something went wrong";
         viewModel = new ViewModelProvider(this).get(TableViewModel.class);
         viewModel.saveGroupId(id);
 
-        StudentAttendancesAdapter attendancesAdapter = new StudentAttendancesAdapter(getContext(), true, this::setAttAndPointsToStudent);
+        StudentAttendancesAdapter attendancesAdapter = new StudentAttendancesAdapter(getContext(), true, this::setAttAndPointsToStudent, this::deleteStudentFromGroup);
         DatesAdapter datesAdapter = new DatesAdapter();
 
         binding.back.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +107,10 @@ public class TableFragment extends Fragment {
         viewModel.setAttAndPointsToStudent(attendanceToStudent);
     }
 
+    private void deleteStudentFromGroup(String studentId){
+        createDeletionDialog(studentId).show();
+    }
+
     private void subscribe(TableViewModel viewModel, StudentAttendancesAdapter attendancesAdapter, DatesAdapter datesAdapter) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), state -> {
             if (state.getLoading()) {
@@ -127,7 +133,7 @@ public class TableFragment extends Fragment {
                         binding.studentsRv.setVisibility(View.GONE);
                         binding.studentsEmptyLessonsRv.setVisibility(View.VISIBLE);
 
-                        StudentsListAdapterForTable adapter = new StudentsListAdapterForTable();
+                        StudentsListAdapterForTable adapter = new StudentsListAdapterForTable(this::deleteStudentFromGroup);
                         binding.studentsEmptyLessonsRv.setAdapter(adapter);
                         adapter.updateData(state.getStudents());
                     }
@@ -142,6 +148,17 @@ public class TableFragment extends Fragment {
                         datesAdapter.update(viewModel.extractDates(state.getStudents().get(0).getAttendanceEntityList()));
                     }
                 }
+            }
+        });
+
+        viewModel.deleteLiveData.observe(getViewLifecycleOwner(), success -> {
+            if (success) {
+                Toast.makeText(getContext(), "Ученик успешно удален", Toast.LENGTH_SHORT).show();
+                viewModel.update(null);
+            }
+            else{
+                Toast.makeText(getContext(), "Что-то пошло не так", Toast.LENGTH_SHORT).show();
+                viewModel.update(null);
             }
         });
 
@@ -165,6 +182,21 @@ public class TableFragment extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString());
         }
+    }
+
+    private AlertDialog createDeletionDialog(@NonNull String studentId){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Удалить ученика?")
+                .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        viewModel.deleteStudent(studentId);
+                    }
+                })
+                .setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        return builder.create();
     }
 
     public static Bundle getBundle(@NonNull String id) {

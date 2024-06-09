@@ -19,6 +19,7 @@ import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentStudentsAddBinding;
 import ru.technosopher.attendancelogapp.ui.group_add.GroupAddViewModel;
 import ru.technosopher.attendancelogapp.ui.group_add.StudentListAdapter;
+import ru.technosopher.attendancelogapp.ui.table.TableFragment;
 import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
@@ -46,14 +47,13 @@ public class StudentAddFragment extends Fragment {
         binding.studentsRecyclerView.setLayoutManager(mLayoutManager);
         binding.studentsRecyclerView.setAdapter(adapter);
 
-        String id = getArguments() != null ? getArguments().getString(KEY_ID) : "Something went wrong";
+        String id = getArguments() != null ? getArguments().getString(KEY_ID) : "-1";
         viewModel.saveGroupId(id);
-
         binding.back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (view == null) return;
-                Navigation.findNavController(view).navigate(R.id.action_studentAddFragment_to_tableFragment);
+                Navigation.findNavController(view).navigate(R.id.action_studentAddFragment_to_tableFragment, TableFragment.getBundle(id));
             }
         });
 
@@ -64,7 +64,7 @@ public class StudentAddFragment extends Fragment {
             }
         });
         subscribe(viewModel, adapter);
-        viewModel.loadStudents();
+        viewModel.update();
     }
 
     private void addStudent(@NonNull String id) {
@@ -96,13 +96,14 @@ public class StudentAddFragment extends Fragment {
                 }
             }
         });
-        viewModel.errorLiveData.observe(getViewLifecycleOwner(), unused->{
-            Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+        viewModel.errorLiveData.observe(getViewLifecycleOwner(), error->{
+            Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+            viewModel.update();
         });
         viewModel.confirmLiveData.observe(getViewLifecycleOwner(), unused -> {
             View view = getView();
             if (view == null) return;
-            Navigation.findNavController(view).navigate(R.id.action_studentAddFragment_to_tableFragment);
+            Navigation.findNavController(view).navigate(R.id.action_studentAddFragment_to_tableFragment, TableFragment.getBundle(viewModel.getGroupId()));
         });
     }
     public static Bundle getBundle(@NonNull String id) {

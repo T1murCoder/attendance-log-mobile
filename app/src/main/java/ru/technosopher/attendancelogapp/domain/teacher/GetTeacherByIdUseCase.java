@@ -1,4 +1,4 @@
-package ru.technosopher.attendancelogapp.domain;
+package ru.technosopher.attendancelogapp.domain.teacher;
 
 import androidx.annotation.NonNull;
 

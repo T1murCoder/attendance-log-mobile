@@ -20,17 +20,10 @@ public class LessonEntity {
     private final GregorianCalendar timeEnd;
     @NonNull
     private final GregorianCalendar date;
+    @Nullable
+    private final QrCodeEntity activeQrCode;
 
-//    public LessonEntity(@NonNull String id, @NonNull String theme, @NonNull String groupId, @NonNull GregorianCalendar timeStart, @NonNull GregorianCalendar timeEnd, @NonNull GregorianCalendar date) {
-//        this.id = id;
-//        this.theme = theme;
-//        this.groupId = groupId;
-//        this.timeStart = timeStart;
-//        this.timeEnd = timeEnd;
-//        this.date = date;
-//    }
-
-    public  LessonEntity(@NonNull String id, @NonNull String theme, @NonNull String groupId, @NonNull String groupName, @NonNull GregorianCalendar timeStart, @NonNull GregorianCalendar timeEnd, @NonNull GregorianCalendar date){
+    public  LessonEntity(@NonNull String id, @NonNull String theme, @NonNull String groupId, @NonNull String groupName, @NonNull GregorianCalendar timeStart, @NonNull GregorianCalendar timeEnd, @NonNull GregorianCalendar date, @Nullable QrCodeEntity activeQrCode){
         this.id = id;
         this.theme = theme;
         this.groupId = groupId;
@@ -38,40 +31,39 @@ public class LessonEntity {
         this.timeEnd = timeEnd;
         this.date = date;
         this.groupName = groupName;
+        this.activeQrCode = activeQrCode;
     }
 
     @NonNull
     public String getId() {
         return id;
     }
-
     @NonNull
     public String getTheme() {
         return theme;
     }
-
     @NonNull
     public String getGroupId() {
         return groupId;
     }
-
     @NonNull
     public GregorianCalendar getTimeStart() {
         return timeStart;
     }
-
     @NonNull
     public GregorianCalendar getTimeEnd() {
         return timeEnd;
     }
-
     @NonNull
     public GregorianCalendar getDate() {
         return date;
     }
-
     @NonNull
     public String getGroupName() {
         return groupName;
+    }
+    @Nullable
+    public QrCodeEntity getActiveQrCode() {
+        return activeQrCode;
     }
 }

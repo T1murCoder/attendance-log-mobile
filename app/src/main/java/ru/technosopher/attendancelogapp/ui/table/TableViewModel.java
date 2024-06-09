@@ -1,5 +1,7 @@
 package ru.technosopher.attendancelogapp.ui.table;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ru.technosopher.attendancelogapp.data.AttendanceRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
@@ -18,6 +21,7 @@ import ru.technosopher.attendancelogapp.domain.attendance.ChangeStudentAttAndPoi
 import ru.technosopher.attendancelogapp.domain.entities.AttendanceEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
+import ru.technosopher.attendancelogapp.domain.groups.DeleteStudentFromGroupUseCase;
 import ru.technosopher.attendancelogapp.domain.groups.GetGroupNameByIdUseCase;
 import ru.technosopher.attendancelogapp.domain.students.GetStudentsAttendancesUseCase;
 import ru.technosopher.attendancelogapp.ui.utils.DateFormatter;
@@ -28,6 +32,8 @@ public class TableViewModel extends ViewModel {
     public LiveData<State> stateLiveData = mutableStateLiveData;
     private final MutableLiveData<String> mutableErrorLiveData = new MutableLiveData<>();
     public LiveData<String> errorLiveData = mutableErrorLiveData;
+    private final MutableLiveData<Boolean> mutableDeleteLiveData = new MutableLiveData<>();
+    public LiveData<Boolean> deleteLiveData = mutableDeleteLiveData;
 
     /* USE CASES */
     private final GetStudentsAttendancesUseCase getStudentsAttendancesUseCase = new GetStudentsAttendancesUseCase(
@@ -41,6 +47,9 @@ public class TableViewModel extends ViewModel {
     private final ChangeStudentAttAndPointsUseCase changeStudentAttAndPointsUseCase = new ChangeStudentAttAndPointsUseCase(
             AttendanceRepositoryImpl.getINSTANCE()
     );
+    private final DeleteStudentFromGroupUseCase deleteStudentFromGroupUseCase = new DeleteStudentFromGroupUseCase(
+            GroupsRepositoryImpl.getInstance()
+    );
     /* USE CASES */
     private String groupId;
     private List<StudentEntity> students = new ArrayList<>();
@@ -51,13 +60,16 @@ public class TableViewModel extends ViewModel {
             getStudentsAttendancesUseCase.execute(groupId, status -> {
                 getGroupNameByIdUseCase.execute(groupId, groupNameStatus -> {
                     if (groupNameStatus.getStatusCode() == 200 && groupNameStatus.getErrors() == null && groupNameStatus.getValue() != null) {
-                        List<StudentEntity> students = status.getValue() != null ? status.getValue() : null;
-                        List<StudentEntity> sortedOrNullStudents = sortAttendancesForStudents(students);
+                        List<StudentEntity> students = status.getValue() != null ? status.getValue() : new ArrayList<>();
+                        List<StudentEntity> sortedByNames = sortFullNames(students);
+                        List<StudentEntity> sortedByDatesAndNames = sortAttendancesForStudents(sortedByNames);
                         this.students = status.getValue() != null ? status.getValue() : null;
                         mutableStateLiveData.postValue(new State(groupNameStatus.getValue(), status.getValue() != null ? status.getValue() : null,
                                 status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
-                                status.getErrors() == null && status.getValue() != null && !sortedOrNullStudents.isEmpty(), false));
+                                status.getErrors() == null && status.getValue() != null && !sortedByDatesAndNames.isEmpty(), false));
                     } else {
+                        System.out.println(status.getValue());
+                        System.out.println(status.getStatusCode());
                         mutableErrorLiveData.postValue("Что-то пошло не так. Попробуйте еще раз");
                     }
                 });
@@ -65,21 +77,35 @@ public class TableViewModel extends ViewModel {
         } else {
             groupId = id;
             mutableStateLiveData.postValue(new State(null, null, null, false, true));
-            getStudentsAttendancesUseCase.execute(id, status -> {
+            getStudentsAttendancesUseCase.execute(groupId, status -> {
                 getGroupNameByIdUseCase.execute(groupId, groupNameStatus -> {
                     if (groupNameStatus.getStatusCode() == 200 && groupNameStatus.getErrors() == null && groupNameStatus.getValue() != null) {
-                        List<StudentEntity> students = status.getValue() != null ? status.getValue() : null;
-                        List<StudentEntity> sortedOrNullStudents = sortAttendancesForStudents(students);
+                        List<StudentEntity> students = status.getValue() != null ? status.getValue() : new ArrayList<>();
+                        List<StudentEntity> sortedByNames = sortFullNames(students);
+                        List<StudentEntity> sortedByDatesAndNames = sortAttendancesForStudents(sortedByNames);
                         this.students = status.getValue() != null ? status.getValue() : null;
                         mutableStateLiveData.postValue(new State(groupNameStatus.getValue(), status.getValue() != null ? status.getValue() : null,
                                 status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
-                                status.getErrors() == null && status.getValue() != null && !sortedOrNullStudents.isEmpty(), false));
+                                status.getErrors() == null && status.getValue() != null && !sortedByDatesAndNames.isEmpty(), false));
                     } else {
+                        System.out.println(status.getValue());
+                        System.out.println(status.getStatusCode());
                         mutableErrorLiveData.postValue("Что-то пошло не так. Попробуйте еще раз");
                     }
                 });
             });
         }
+    }
+
+    public void deleteStudent(@NonNull String studentId){
+        deleteStudentFromGroupUseCase.execute(groupId, studentId, status -> {
+            if (status.getStatusCode() == 200){
+                mutableDeleteLiveData.postValue(true);
+            }
+            else{
+                mutableDeleteLiveData.postValue(false);
+            }
+        });
     }
     private List<StudentEntity> sortAttendancesForStudents(@Nullable List<StudentEntity> students) {
         if (students == null) return new ArrayList<>();
@@ -92,6 +118,12 @@ public class TableViewModel extends ViewModel {
     private void sortAttendances(@Nullable List<AttendanceEntity> attendances) {
         if (attendances == null) return;
         attendances.sort(Comparator.comparing(AttendanceEntity::getLessonTimeStart));
+    }
+    private List<StudentEntity> sortFullNames(@Nullable List<StudentEntity> students){
+        if (students == null) return new ArrayList<>();
+        students.sort(Comparator.comparing(StudentEntity::getFullName));
+        return students;
+
     }
     public List<String> extractDates(List<AttendanceEntity> attendances) {
         List<String> dates = new ArrayList<>();
@@ -117,7 +149,7 @@ public class TableViewModel extends ViewModel {
                     }
                     else{
                         if(status.getErrors() != null) mutableErrorLiveData.postValue(status.getErrors().getLocalizedMessage());
-                        else mutableErrorLiveData.postValue("Something went wrong");
+                        else mutableErrorLiveData.postValue("Что-то пошло не так");
                     }
                 });
     }
