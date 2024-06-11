@@ -21,7 +21,7 @@ public class LessonEntity {
     @NonNull
     private final GregorianCalendar date;
     @Nullable
-    private final QrCodeEntity activeQrCode;
+    private QrCodeEntity activeQrCode;
 
     public  LessonEntity(@NonNull String id, @NonNull String theme, @NonNull String groupId, @NonNull String groupName, @NonNull GregorianCalendar timeStart, @NonNull GregorianCalendar timeEnd, @NonNull GregorianCalendar date, @Nullable QrCodeEntity activeQrCode){
         this.id = id;
@@ -65,5 +65,9 @@ public class LessonEntity {
     @Nullable
     public QrCodeEntity getActiveQrCode() {
         return activeQrCode;
+    }
+
+    public void setActiveQrCode(@NonNull QrCodeEntity qrCodeEntity){
+        this.activeQrCode = qrCodeEntity;
     }
 }

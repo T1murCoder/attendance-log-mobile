@@ -1,5 +1,7 @@
 package ru.technosopher.attendancelogapp.ui.profile;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -76,12 +78,11 @@ public class ProfileViewModel extends ViewModel {
                         System.out.println(tstatus.getStatusCode());
                         System.out.println(tstatus.getValue());
                         if (tstatus.getStatusCode() == 200) {
-                            loadPrefs(id, prefsLogin, name, surname, telegram, prefsLogin, photo);
+                            loadPrefs(id, prefsLogin, name, surname, telegram, github, photo);
                         } else {
+                            Log.e("ProfileViewModel", ""+tstatus.getStatusCode());
                             mutableStateLiveData.postValue(new State("Что то пошло не так. Попробуйте еще раз", null, false));
                         }
-
-
                     });
         }
     }

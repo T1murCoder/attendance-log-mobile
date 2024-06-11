@@ -42,7 +42,6 @@ public class StudentAddViewModel extends ViewModel {
     private final PutStudentsToGroupUseCase putStudentsToGroupUseCase = new PutStudentsToGroupUseCase(
             GroupsRepositoryImpl.getInstance()
     );
-
     /* USE CASES */
     private String id;
     /* LOGIC */
@@ -54,7 +53,6 @@ public class StudentAddViewModel extends ViewModel {
                 }
                 else{
                     System.out.println(status.getStatusCode());
-                    System.out.println(status.getErrors().getLocalizedMessage());
                     mutableErrorLiveData.setValue("Что-то пошло не так. Попробуйте ещё раз");
                 }
             });
@@ -72,21 +70,6 @@ public class StudentAddViewModel extends ViewModel {
             mutableStateLiveData.postValue(fromStatus(status));
         });
     }
-
-//    private void loadCurrentGroupStudents(){
-//        getStudentsAttendancesUseCase.execute(id, status -> {
-//            getGroupNameByIdUseCase.execute(id, groupNameStatus -> {
-//                if (groupNameStatus.getStatusCode() == 200 && groupNameStatus.getErrors() == null && groupNameStatus.getValue() != null) {
-//                    List<StudentEntity> students = status.getValue() != null ? status.getValue() : null;
-//                    this.selectedStudents = fromStudentEntityListToItemStudentEntityList(students);
-//
-//                } else {
-//                    mutableErrorLiveData.postValue("Не удалось загрузить текущих учеников");
-//                }
-//            });
-//        });
-//    }
-
     private List<ItemStudentEntity> fromStudentEntityListToItemStudentEntityList(List<StudentEntity> students){
         if (students == null || students.isEmpty()) return new ArrayList<>();
         List<ItemStudentEntity> studentsItems = new ArrayList<>();

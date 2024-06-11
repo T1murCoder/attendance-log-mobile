@@ -22,7 +22,6 @@ public interface TeacherApi {
     Call<Void> isExists(@Path("username") String login);
     @POST("teacher/register")
     Call<TeacherAccountDto> register(@Body TeacherRegisterDto dto);
-
     @PUT("teacher/{id}")
     Call<TeacherDto> update(@Path("id") String id, @Body TeacherDto dto);
 }

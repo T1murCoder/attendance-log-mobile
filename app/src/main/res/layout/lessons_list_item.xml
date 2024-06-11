@@ -131,7 +131,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:visibility="visible"
+                android:visibility="gone"
 
                 app:layout_constraintTop_toBottomOf="@id/card_view">
 
@@ -222,7 +222,8 @@
                         android:id="@+id/lesson_item_image_checking_pb"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal" />
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"/>
 
                     <TextView
                         android:id="@+id/empty_qr_code_state"

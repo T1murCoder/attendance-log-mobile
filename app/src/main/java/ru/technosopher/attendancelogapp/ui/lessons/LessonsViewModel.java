@@ -19,6 +19,7 @@ import ru.technosopher.attendancelogapp.data.LessonRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.QrCodeRepositoryImpl;
 import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
 import ru.technosopher.attendancelogapp.domain.entities.LessonEntity;
+import ru.technosopher.attendancelogapp.domain.entities.QrCodeEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 import ru.technosopher.attendancelogapp.domain.groups.GetGroupNameByIdUseCase;
 import ru.technosopher.attendancelogapp.domain.groups.GetGroupsListUseCase;
@@ -38,8 +39,9 @@ public class LessonsViewModel extends ViewModel {
     public LiveData<String> addErrorLiveData = mutableAddErrorLiveData;
     private MutableLiveData<GroupsState> mutableGroupsLiveData = new MutableLiveData<>();
     public LiveData<GroupsState> groupsLiveData = mutableGroupsLiveData;
+    private MutableLiveData<QrCodeEntity> mutableItemQrCodeLiveData = new MutableLiveData<>();
+    public LiveData<QrCodeEntity> itemQrCodeLiveData = mutableItemQrCodeLiveData;
 
-    /* USE CASES */
     private final GetLessonsListUseCase getLessonsListUseCase = new GetLessonsListUseCase(
             LessonRepositoryImpl.getINSTANCE()
     );
@@ -160,13 +162,17 @@ public class LessonsViewModel extends ViewModel {
 
 
     public void checkQRCodeIsAlive(@NonNull String lessonId){
-
         checkQrCodeIsAliveUseCase.execute(lessonId, qrCodeEntityStatus ->{
-            if (qrCodeEntityStatus.getStatusCode() == 409){
-
+            if (qrCodeEntityStatus.getStatusCode() == 200){
+                mutableItemQrCodeLiveData.postValue(qrCodeEntityStatus.getValue());
             }
+            else{
+                System.out.println(qrCodeEntityStatus.getStatusCode());
+            }
+//            if (qrCodeEntityStatus.getStatusCode() == 409){
+//                //error live data
+//            }
         });
-
     }
     private void addNewLesson(LessonEntity lesson) {
         lessons.add(lesson);
