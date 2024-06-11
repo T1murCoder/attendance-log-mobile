@@ -149,6 +149,22 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onRefresh() {
                 viewModel.updateProfile(prefs.getPrefsId(), prefs.getPrefsLogin());
+
+                binding.profileGithubEt.setFocusable(false);
+                binding.profileGithubEt.setFocusableInTouchMode(false);
+                binding.profileGithubEt.setEnabled(false);
+
+                binding.profileSurnameEt.setFocusable(false);
+                binding.profileSurnameEt.setFocusableInTouchMode(false);
+                binding.profileSurnameEt.setEnabled(false);
+
+                binding.profileNameEt.setFocusable(false);
+                binding.profileNameEt.setFocusableInTouchMode(false);
+                binding.profileNameEt.setEnabled(false);
+
+                binding.profileTelegramEt.setFocusable(false);
+                binding.profileTelegramEt.setFocusableInTouchMode(false);
+                binding.profileTelegramEt.setEnabled(false);
             }
         });
 

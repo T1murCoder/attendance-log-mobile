@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.LessonRepositoryImpl;
@@ -126,6 +127,8 @@ public class LessonsViewModel extends ViewModel {
             return;
         }
 
+
+
         createLessonUseCase.execute(theme, groupId, "", timeStart, timeEnd, date, lessonStatus -> {
             if (lessonStatus.getStatusCode() == 200) {
                 if (lessonStatus.getValue() != null && lessonStatus.getErrors() == null) {
@@ -186,12 +189,14 @@ public class LessonsViewModel extends ViewModel {
         if (timeStart == null) timeStart = new GregorianCalendar();
         timeStart.set(Calendar.HOUR_OF_DAY, hour);
         timeStart.set(Calendar.MINUTE, minute);
+        timeStart.setTimeZone(TimeZone.getDefault());
     }
 
     public void changeEndTime(Integer hour, Integer minute) {
         if (timeEnd == null) timeEnd = new GregorianCalendar();
         timeEnd.set(Calendar.HOUR_OF_DAY, hour);
         timeEnd.set(Calendar.MINUTE, minute);
+        timeEnd.setTimeZone(TimeZone.getDefault());
 
         if (timeStart == null) {
             mutableAddErrorLiveData.postValue("Время начала не заполнено");
@@ -206,6 +211,7 @@ public class LessonsViewModel extends ViewModel {
         date.set(Calendar.YEAR, year);
         date.set(Calendar.MONTH, month);
         date.set(Calendar.DAY_OF_MONTH, day);
+        date.setTimeZone(TimeZone.getDefault());
         changeStartAndEndDate(year, month, day);
     }
 
@@ -231,11 +237,13 @@ public class LessonsViewModel extends ViewModel {
         timeStart.set(Calendar.YEAR, year);
         timeStart.set(Calendar.MONTH, month);
         timeStart.set(Calendar.DAY_OF_MONTH, day);
+        timeStart.setTimeZone(TimeZone.getDefault());
 
         if (timeEnd == null) timeEnd = new GregorianCalendar();
         timeEnd.set(Calendar.YEAR, year);
         timeEnd.set(Calendar.MONTH, month);
         timeEnd.set(Calendar.DAY_OF_MONTH, day);
+        timeEnd.setTimeZone(TimeZone.getDefault());
     }
 
     public void changeGroup(String groupId) {

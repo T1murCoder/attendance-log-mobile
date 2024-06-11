@@ -2,6 +2,7 @@ package ru.technosopher.attendancelogapp.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -26,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         navigationBar = findViewById(R.id.bottom_navigation_bar);
         navigationBar.setItemSelected(R.id.lessons, true);
         System.out.println(navigationBar.getSelectedItemId());

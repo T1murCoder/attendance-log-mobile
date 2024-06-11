@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -95,15 +96,12 @@ public class GroupAddFragment extends Fragment {
                     adapter.updateData(studentsState.getStudents());
                 }
                 else{
-                    binding.errorTv.setText(studentsState.getErrorMessage());
+                    binding.errorTv.setText("Учеников без группы нет");
                 }
             }
-
-
         });
-        viewModel.errorLiveData.observe(getViewLifecycleOwner(), unused->{
-//            binding.errorTv.setVisibility(View.VISIBLE);
-//            binding.groupNameInputLayout.setErrorEnabled(true);
+        viewModel.errorLiveData.observe(getViewLifecycleOwner(), error->{
+            Toast.makeText(getContext(), error, Toast.LENGTH_SHORT ).show();
         });
         viewModel.confirmLiveData.observe(getViewLifecycleOwner(), unused -> {
             View view = getView();

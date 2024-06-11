@@ -4,5 +4,20 @@
     <style name="CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="colorControlNormal">@color/main_blue</item>
     </style>
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/main_blue</item>
+        <item name="android:colorAccent">@color/main_blue</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/DialogPositiveButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/DialogNegativeButtonStyle</item>
+    </style>
+
+    <style name="DialogNegativeButtonStyle" parent="Theme.MaterialComponents.Light">
+        <item name="android:textColor">@color/main_gray</item>
+    </style>
+
+    <style name="DialogPositiveButtonStyle" parent="Theme.MaterialComponents.Light">
+        <item name="android:textColor">@color/main_blue</item>
+    </style>
     
 </resources>

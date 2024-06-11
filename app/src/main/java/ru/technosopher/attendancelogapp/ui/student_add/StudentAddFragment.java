@@ -92,7 +92,7 @@ public class StudentAddFragment extends Fragment {
                     adapter.updateData(studentsState.getStudents());
                 }
                 else{
-                    binding.errorTv.setText(studentsState.getErrorMessage());
+                    binding.errorTv.setText("Учеников без группы нет");
                 }
             }
         });

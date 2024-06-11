@@ -100,7 +100,7 @@
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:fontFamily="@font/inter_regular"
-                            android:text="login"
+                            tools:text="login"
                             android:textAlignment="textEnd"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
@@ -132,7 +132,7 @@
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:fontFamily="@font/inter_regular"
-                            android:text="Surname"
+                            tools:text="Surname"
                             android:textAlignment="textEnd"
                             android:textSize="14sp" />
 
@@ -169,7 +169,7 @@
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:fontFamily="@font/inter_regular"
-                            android:text="Name"
+                            tools:text="Name"
 
                             android:textAlignment="textEnd"
                             android:textSize="14sp" />
@@ -206,7 +206,7 @@
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:fontFamily="@font/inter_regular"
-                            android:text="telegram"
+                            tools:text="telegram"
 
                             android:textAlignment="textEnd"
                             android:textSize="14sp" />
@@ -243,7 +243,7 @@
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:fontFamily="@font/inter_regular"
-                            android:text="github_link"
+                            tools:text="github_link"
                             android:textAlignment="textEnd"
                             android:textSize="14sp" />
 

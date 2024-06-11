@@ -98,6 +98,10 @@ public class TableViewModel extends ViewModel {
     }
 
     public void deleteStudent(@NonNull String studentId){
+        if (students.size() == 1){
+            mutableErrorLiveData.postValue("В группе должен быть хотя бы 1 ученик");
+            return;
+        }
         deleteStudentFromGroupUseCase.execute(groupId, studentId, status -> {
             if (status.getStatusCode() == 200){
                 mutableDeleteLiveData.postValue(true);

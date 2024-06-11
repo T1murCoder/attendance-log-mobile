@@ -23,8 +23,8 @@ public class GroupAddViewModel extends ViewModel {
     private final MutableLiveData<StudentsState> mutableStateLiveData = new MutableLiveData<>();
 
     public final LiveData<StudentsState> stateLiveData = mutableStateLiveData;
-    private final MutableLiveData<Void> mutableErrorLiveData = new MutableLiveData<>();
-    public final LiveData<Void> errorLiveData = mutableErrorLiveData;
+    private final MutableLiveData<String> mutableErrorLiveData = new MutableLiveData<>();
+    public final LiveData<String> errorLiveData = mutableErrorLiveData;
     private final MutableLiveData<Void> mutableConfirmLiveData = new MutableLiveData<>();
     public final LiveData<Void> confirmLiveData = mutableConfirmLiveData;
 
@@ -46,15 +46,18 @@ public class GroupAddViewModel extends ViewModel {
     /* LOGIC */
     public void createGroup() {
         if (name == null) {
-            mutableErrorLiveData.postValue(null);
-            return;
+            mutableErrorLiveData.postValue("Введите имя группы");
         } else {
-            createGroupUseCase.execute(name, selectedStudents, status -> {
-                System.out.println(status.getStatusCode());
-                if (status.getStatusCode() == 200) {
-                    mutableConfirmLiveData.postValue(null);
-                }
-            });
+            if (selectedStudents != null && !selectedStudents.isEmpty()){
+                createGroupUseCase.execute(name, selectedStudents, status -> {
+                    System.out.println(status.getStatusCode());
+                    if (status.getStatusCode() == 200) {
+                        mutableConfirmLiveData.postValue(null);
+                    }
+                });
+            }else{
+                mutableErrorLiveData.postValue("Добавьте учеников");
+            }
         }
     }
 
@@ -66,15 +69,11 @@ public class GroupAddViewModel extends ViewModel {
     }
 
     private StudentsState fromStatus(Status<List<ItemStudentEntity>> status) {
-        System.out.println(status.getValue());
-        ;
         return new StudentsState(
                 status.getValue(),
                 status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
-                status.getErrors() == null && status.getValue() != null, false);
+                status.getErrors() == null && status.getValue() != null && !status.getValue().isEmpty(), false);
     }
-
-
     public void addStudent(@NonNull String id) {
         selectedStudents.add(new ItemStudentEntity(
                 id,
@@ -82,7 +81,6 @@ public class GroupAddViewModel extends ViewModel {
                 "",
                 ""));
     }
-
     public void deleteStudent(@NonNull String id) {
         if (selectedStudents != null) {
             Iterator<ItemStudentEntity> itr = selectedStudents.iterator();
@@ -95,16 +93,12 @@ public class GroupAddViewModel extends ViewModel {
             }
         }
     }
-
     public void clearStudents() {
         selectedStudents = new ArrayList<>();
     }
-
-
     public void changeName(String string) {
         this.name = string;
     }
-
     public class StudentsState {
         @Nullable
         private final List<ItemStudentEntity> students;
@@ -143,18 +137,4 @@ public class GroupAddViewModel extends ViewModel {
         }
     }
 }
-//    public class SelectedStudentsState{
-//
-//        @Nullable
-//        private final List<ItemStudentEntity> students;
-//
-//        public SelectedStudentsState(@Nullable List<ItemStudentEntity> students) {
-//            this.students = students;
-//        }
-//
-//        @Nullable
-//        public List<ItemStudentEntity> getStudents() {
-//            return students;
-//        }
-//    }
 

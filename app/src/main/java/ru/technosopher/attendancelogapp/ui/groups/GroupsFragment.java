@@ -65,8 +65,10 @@ public class GroupsFragment extends Fragment {
     private void subscribe(GroupsViewModel viewModel, GroupsListAdapter adapter) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), state->{
             if (state.getLoading()){
+                binding.groupsContent.setVisibility(View.GONE);
                 binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(state.getLoading()));
             }else{
+                binding.groupsContent.setVisibility(View.VISIBLE);
                 binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(state.getLoading()));
                 binding.recyclerView.setVisibility(Utils.visibleOrGone(state.getSuccess()));
                 binding.groupsErrorMessage.setVisibility(Utils.visibleOrGone(!state.getSuccess()));
@@ -119,7 +121,7 @@ public class GroupsFragment extends Fragment {
     }
 
     private AlertDialog createDeletionDialog(@NonNull String group_id){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
         builder.setMessage("Удалить группу?")
                 .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

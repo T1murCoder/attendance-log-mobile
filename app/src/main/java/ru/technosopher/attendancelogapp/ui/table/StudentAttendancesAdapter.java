@@ -74,6 +74,7 @@ public class StudentAttendancesAdapter extends RecyclerView.Adapter<StudentAtten
 
         public void bind(StudentEntity item, boolean att) {
             binding.tableStudentName.setText(item.getFullName());
+            binding.tableStudentPoints.setText(item.getPoints());
             if (att) {
                 CheckBoxAdapter adapter = new CheckBoxAdapter(context, this::changeStudent);
                 binding.attAndBallsRv.setAdapter(adapter);

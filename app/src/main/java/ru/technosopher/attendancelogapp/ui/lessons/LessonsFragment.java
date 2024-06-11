@@ -200,7 +200,7 @@ public class LessonsFragment extends Fragment{
             binding.timePickerTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    TimePickerDialog dialog = new TimePickerDialog(getContext(), callback, 0, 0, true);
+                    TimePickerDialog dialog = new TimePickerDialog(getContext(), R.style.DialogTheme, callback, 0, 0, true);
                     dialog.show();
                 }
                 private TimePickerDialog.OnTimeSetListener callback = new TimePickerDialog.OnTimeSetListener() {
@@ -208,7 +208,7 @@ public class LessonsFragment extends Fragment{
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
 
                         lessonsViewModel.changeStartTime(hour, minute);
-                        TimePickerDialog dialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                        TimePickerDialog dialog = new TimePickerDialog(getContext(), R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                                 lessonsViewModel.changeEndTime(hour, minute);
@@ -222,7 +222,7 @@ public class LessonsFragment extends Fragment{
             binding.datePickerTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DatePickerDialog dialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
+                    DatePickerDialog dialog = new DatePickerDialog(requireContext(), R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                             lessonsViewModel.changeDate(i, i1, i2);
@@ -232,18 +232,6 @@ public class LessonsFragment extends Fragment{
                     dialog.show();
                 }
             });
-//            binding.closeCreateLesson.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    lessonsViewModel.clearAllFields();
-//                    lessonsViewModel.changeGroup(null);
-//                    binding.datePickerTv.setText("Выберите дату");
-//                    binding.timePickerTv.setText("Выберите время");
-//                    binding.groupsNamesSpinner.setSelection(0);
-//                    binding.themeEt.setText(null);
-//                    dismiss();
-//                }
-//            });
             binding.groupsNamesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -262,95 +250,6 @@ public class LessonsFragment extends Fragment{
 
             return binding.getRoot();
         }
-
-//        @Override
-//        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//            super.onViewCreated(view, savedInstanceState);
-//            binding = DialogCreateLessonBinding.bind(view);
-//            binding.addLessonConfirmButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    binding.addLessonLayout.setVisibility(View.GONE);
-//                    lessonsViewModel.createLesson();
-//                    lessonsViewModel.clearAllFields();
-//                    lessonsViewModel.changeGroup(null);
-//                    binding.datePickerTv.setText("Выберите дату");
-//                    binding.timePickerTv.setText("Выберите время");
-//                    binding.groupsNamesSpinner.setSelection(0);
-//                    binding.themeEt.setText(null);
-//                }
-//            });
-//            binding.themeEt.addTextChangedListener(new OnChangeText() {
-//                @Override
-//                public void afterTextChanged(Editable editable) {
-//                    super.afterTextChanged(editable);
-//                    lessonsViewModel.changeTheme(editable);
-//                }
-//            });
-//            binding.timePickerTv.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    TimePickerDialog dialog = new TimePickerDialog(getContext(), callback, 0, 0, true);
-//                    dialog.show();
-//                }
-//                private TimePickerDialog.OnTimeSetListener callback = new TimePickerDialog.OnTimeSetListener() {
-//                    @Override
-//                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-//
-//                        lessonsViewModel.changeStartTime(hour, minute);
-//                        TimePickerDialog dialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-//                            @Override
-//                            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-//                                lessonsViewModel.changeEndTime(hour, minute);
-//                                binding.timePickerTv.setText(lessonsViewModel.getFullTime());
-//                            }
-//                        }, 0, 0, true);
-//                        dialog.show();
-//                    }
-//                };
-//            });
-//            binding.datePickerTv.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    DatePickerDialog dialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
-//                        @Override
-//                        public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-//                            lessonsViewModel.changeDate(i, i1, i2);
-//                            binding.datePickerTv.setText(lessonsViewModel.getDate());
-//                        }
-//                    }, DateFormatter.getActualYear(), DateFormatter.getActualMonth(), DateFormatter.getActualDay());
-//                    dialog.show();
-//                }
-//            });
-//            binding.closeCreateLesson.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    lessonsViewModel.clearAllFields();
-//                    lessonsViewModel.changeGroup(null);
-//                    binding.datePickerTv.setText("Выберите дату");
-//                    binding.timePickerTv.setText("Выберите время");
-//                    binding.groupsNamesSpinner.setSelection(0);
-//                    binding.themeEt.setText(null);
-//                    dismiss();
-//                }
-//            });
-//            binding.groupsNamesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                @Override
-//                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                    ItemGroupEntity group = (ItemGroupEntity) adapterView.getItemAtPosition(i);
-//                    lessonsViewModel.changeGroup(group.getId());
-//                }
-//                @Override
-//                public void onNothingSelected(AdapterView<?> adapterView) {
-//                    lessonsViewModel.changeGroup(null);
-//                }
-//            });
-//
-//            ArrayAdapter<ItemGroupEntity> arrayAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, this.groups);
-//            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//            binding.groupsNamesSpinner.setAdapter(arrayAdapter);
-//
-//        }
         public void saveGroupsData(List<ItemGroupEntity> groups){
             this.groups = new ArrayList<>();
             this.groups.add(0, new ItemGroupEntity("-1", "Не выбрано"));

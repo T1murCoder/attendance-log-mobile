@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import ru.technosopher.attendancelogapp.data.TeacherRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.domain.entities.TeacherEntity;
 import ru.technosopher.attendancelogapp.domain.sign.IsTeacherExistsUseCase;
 import ru.technosopher.attendancelogapp.domain.sign.LoginTeacherUseCase;
@@ -68,6 +69,7 @@ public class RegistrationViewModel extends ViewModel {
     }
 
     public void confirm() {
+        CredentialsDataSource.getInstance().logout();
         final String currentName = name;
         final String currentSurname = surname;
         final String currentLogin = login;

@@ -82,7 +82,7 @@ public class StudentAddViewModel extends ViewModel {
         return new StudentsState(
                 status.getValue(),
                 status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
-                status.getErrors() == null && status.getValue() != null, false);
+                status.getErrors() == null && status.getValue() != null && !status.getValue().isEmpty(), false);
     }
     public void addStudent(@NonNull String id) {
         selectedStudents.add(new ItemStudentEntity(

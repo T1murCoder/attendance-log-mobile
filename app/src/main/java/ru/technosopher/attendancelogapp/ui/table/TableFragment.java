@@ -163,8 +163,8 @@ public class TableFragment extends Fragment {
         });
 
         viewModel.errorLiveData.observe(getViewLifecycleOwner(), errorMsg ->{
-            binding.tableErrorTv.setVisibility(View.VISIBLE);
-            binding.tableErrorTv.setText(errorMsg);
+            Toast.makeText(getContext(), errorMsg, Toast.LENGTH_SHORT).show();
+            viewModel.update(null);
         });
     }
 
@@ -185,7 +185,7 @@ public class TableFragment extends Fragment {
     }
 
     private AlertDialog createDeletionDialog(@NonNull String studentId){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),  R.style.DialogTheme);
         builder.setMessage("Удалить ученика?")
                 .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
