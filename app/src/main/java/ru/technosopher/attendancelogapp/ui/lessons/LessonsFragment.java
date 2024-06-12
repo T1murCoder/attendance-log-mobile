@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.Editable;
 import android.view.LayoutInflater;
@@ -74,6 +75,13 @@ public class LessonsFragment extends Fragment{
                 dialog.show(getChildFragmentManager(), TAG);
             }
         });
+
+        binding.swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                viewModel.update();
+            }
+        });
         subscribe(viewModel, adapter);
     }
 
@@ -98,10 +106,18 @@ public class LessonsFragment extends Fragment{
                 binding.recyclerView.setVisibility(Utils.visibleOrGone(false));
                 binding.floatingActionButton.setVisibility(Utils.visibleOrGone(false));
                 binding.noLessonsTv.setVisibility(View.GONE);
+
+                binding.swipe.setEnabled(false);
+                binding.swipe.setVisibility(View.GONE);
             } else {
                 binding.floatingActionButton.setVisibility(Utils.visibleOrGone(true));
                 binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(false));
                 binding.recyclerView.setVisibility(Utils.visibleOrGone(state.getSuccess()));
+
+                binding.swipe.setVisibility(View.VISIBLE);
+                binding.swipe.setEnabled(true);
+                binding.swipe.setRefreshing(false);
+
                 if (state.getSuccess()){
                     if (state.getLessons().isEmpty()){
                         binding.noLessonsTv.setVisibility(View.VISIBLE);

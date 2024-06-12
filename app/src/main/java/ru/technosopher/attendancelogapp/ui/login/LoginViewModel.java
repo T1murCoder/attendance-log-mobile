@@ -1,6 +1,7 @@
 package ru.technosopher.attendancelogapp.ui.login;
 
 import android.text.BoringLayout;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,7 +41,6 @@ public class LoginViewModel extends ViewModel {
             TeacherRepositoryImpl.getInstance()
     );
     /*  USE CASES  */
-
 
     public void changeLogin(@NonNull String login) {
         this.login = login;
@@ -92,8 +92,6 @@ public class LoginViewModel extends ViewModel {
 
                 login = currentLogin;
                 password = currentPassword;
-
-
 
                 mutableTeacherLiveData.postValue(new State(new TeacherEntity(
                         status.getValue().getId(),
