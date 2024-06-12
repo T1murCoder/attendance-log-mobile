@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentTableBinding;
@@ -96,6 +97,13 @@ public class TableFragment extends Fragment {
             }
         });
 
+        binding.swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                viewModel.update(null);
+            }
+        });
+
         binding.studentsRv.setAdapter(attendancesAdapter);
         binding.datesRv.setAdapter(datesAdapter);
 
@@ -118,7 +126,14 @@ public class TableFragment extends Fragment {
                 binding.tableErrorTv.setVisibility(View.GONE);
                 binding.tableProgressBar.setVisibility(View.VISIBLE);
                 binding.backWithoutLoading.setVisibility(View.VISIBLE);
+
+                binding.swipe.setEnabled(false);
+                binding.swipe.setVisibility(View.GONE);
+
             } else {
+                binding.swipe.setVisibility(View.VISIBLE);
+                binding.swipe.setEnabled(true);
+                binding.swipe.setRefreshing(false);
                 if (state.getSuccess()) {
                     binding.tableGroupName.setText(state.getGroupName());
                     binding.tableContent.setVisibility(View.VISIBLE);
