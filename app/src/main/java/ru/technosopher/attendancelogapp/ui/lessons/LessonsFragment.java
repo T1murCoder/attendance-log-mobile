@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ru.technosopher.attendancelogapp.R;
+import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.databinding.DialogCreateLessonBinding;
 import ru.technosopher.attendancelogapp.databinding.FragmentLessonsBinding;
 import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
@@ -37,6 +38,7 @@ import ru.technosopher.attendancelogapp.domain.entities.QrCodeEntity;
 import ru.technosopher.attendancelogapp.ui.utils.NavigationBarChangeListener;
 import ru.technosopher.attendancelogapp.ui.utils.DateFormatter;
 import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
+import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
 
@@ -181,6 +183,14 @@ public class LessonsFragment extends Fragment{
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString());
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
+        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
+        viewModel.update();
     }
     public static class BottomLessonCreateDialog extends BottomSheetDialogFragment {
         private  DialogCreateLessonBinding binding;
