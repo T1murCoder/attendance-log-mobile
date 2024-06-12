@@ -17,11 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import ru.technosopher.attendancelogapp.R;
+import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.databinding.FragmentStudentsAddBinding;
 import ru.technosopher.attendancelogapp.ui.group_add.GroupAddViewModel;
 import ru.technosopher.attendancelogapp.ui.group_add.StudentListAdapter;
 import ru.technosopher.attendancelogapp.ui.table.TableFragment;
 import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
+import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
 public class StudentAddFragment extends Fragment {
@@ -116,6 +118,14 @@ public class StudentAddFragment extends Fragment {
             if (view == null) return;
             Navigation.findNavController(view).navigate(R.id.action_studentAddFragment_to_tableFragment, TableFragment.getBundle(viewModel.getGroupId()));
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
+        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
+        viewModel.update();
     }
     public static Bundle getBundle(@NonNull String id) {
         Bundle bundle = new Bundle();

@@ -20,9 +20,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import ru.technosopher.attendancelogapp.R;
+import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.databinding.FragmentGroupsBinding;
 import ru.technosopher.attendancelogapp.ui.utils.NavigationBarChangeListener;
 import ru.technosopher.attendancelogapp.ui.table.TableFragment;
+import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
 
@@ -131,6 +133,14 @@ public class GroupsFragment extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString());
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
+        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
+        viewModel.update();
     }
 
     private AlertDialog createDeletionDialog(@NonNull String group_id){
