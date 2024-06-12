@@ -54,6 +54,9 @@ public class GroupAddViewModel extends ViewModel {
                     if (status.getStatusCode() == 200) {
                         mutableConfirmLiveData.postValue(null);
                     }
+                    else {
+                        mutableErrorLiveData.postValue("Не удалось создать группу");
+                    }
                 });
             }else{
                 mutableErrorLiveData.postValue("Добавьте учеников");
