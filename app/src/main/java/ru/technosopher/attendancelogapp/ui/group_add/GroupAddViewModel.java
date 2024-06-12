@@ -61,7 +61,7 @@ public class GroupAddViewModel extends ViewModel {
         }
     }
 
-    public void loadStudents() {
+    public void update() {
         mutableStateLiveData.postValue(new StudentsState(null, null, false, true));
         getStudentsListUseCase.execute(status -> {
             mutableStateLiveData.postValue(fromStatus(status));

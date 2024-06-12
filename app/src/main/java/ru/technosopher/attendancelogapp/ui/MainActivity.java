@@ -16,6 +16,7 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import java.util.Map;
 
 import ru.technosopher.attendancelogapp.R;
+import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.ui.utils.NavigationBarChangeListener;
 import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 
@@ -51,6 +52,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
         navigationBar.setItemSelected(r, true);
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        CredentialsDataSource.getInstance().updateLogin(getPrefsLogin(), getPrefsPassword());
+    }
 
     private void fragmentNavigation(int previousFragment, int destinationFragment) {
         navController = Navigation.findNavController(MainActivity.this, R.id.fragmentContainerView);

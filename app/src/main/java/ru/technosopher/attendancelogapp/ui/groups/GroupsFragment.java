@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +60,13 @@ public class GroupsFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_groupsFragment_to_groupAddFragment);
             }
         });
+
+        binding.swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                viewModel.update();
+            }
+        });
         subscribe(viewModel, adapter);
     }
 
@@ -67,7 +75,12 @@ public class GroupsFragment extends Fragment {
             if (state.getLoading()){
                 binding.groupsContent.setVisibility(View.GONE);
                 binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(state.getLoading()));
+                binding.swipe.setEnabled(false);
+                binding.swipe.setVisibility(View.GONE);
             }else{
+                binding.swipe.setVisibility(View.VISIBLE);
+                binding.swipe.setEnabled(true);
+                binding.swipe.setRefreshing(false);
                 binding.groupsContent.setVisibility(View.VISIBLE);
                 binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(state.getLoading()));
                 binding.recyclerView.setVisibility(Utils.visibleOrGone(state.getSuccess()));

@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.databinding.FragmentGroupAddBinding;
@@ -66,8 +67,15 @@ public class GroupAddFragment extends Fragment {
                 viewModel.createGroup();
             }
         });
+
+        binding.swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                viewModel.update();
+            }
+        });
         subscribe(viewModel, adapter);
-        viewModel.loadStudents();
+        viewModel.update();
     }
 
     private void addStudent(@NonNull String id) {
@@ -86,7 +94,12 @@ public class GroupAddFragment extends Fragment {
                 binding.progressBar.setVisibility(Utils.visibleOrGone(true));
                 binding.studentsRecyclerView.setVisibility(Utils.visibleOrGone(false));
                 binding.errorTv.setVisibility(Utils.visibleOrGone(false));
+                binding.swipe.setEnabled(false);
+                binding.swipe.setVisibility(View.GONE);
             }else{
+                binding.swipe.setVisibility(View.VISIBLE);
+                binding.swipe.setEnabled(true);
+                binding.swipe.setRefreshing(false);
                 binding.progressBar.setVisibility(Utils.visibleOrGone(false));
                 binding.studentsRecyclerView.setVisibility(Utils.visibleOrGone(studentsState.getSuccess()));
                 binding.errorTv.setVisibility(Utils.visibleOrGone(!studentsState.getSuccess()));
