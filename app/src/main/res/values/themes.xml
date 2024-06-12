@@ -3,7 +3,31 @@
     <style name="Base.Theme.AttendanceLogApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="floatingActionButtonStyle">@style/FloatingActionButtonStyle</item>
+        <item name="android:statusBarColor">@color/main_blue</item>
     </style>
 
     <style name="Theme.AttendanceLogApp" parent="Base.Theme.AttendanceLogApp" />
+
+    <style name="FloatingActionButtonStyle" parent="Widget.Design.FloatingActionButton">
+        <item name="shapeAppearanceOverlay">@style/FabShapeStyle</item>
+    </style>
+
+    <style name="FabShapeStyle" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">50%</item>
+        <item name="cornerFamilyBottomLeft">rounded</item>
+        <item name="cornerFamilyBottomRight">rounded</item>
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerFamilyTopRight">rounded</item>
+    </style>
+
+    <style name="ActiveCheckBox" parent="Base.Theme.AppCompat">
+        <item name="colorAccent">@color/main_blue</item>
+        <item name="android:textColorSecondary">@color/main_blue</item>
+    </style>
+
+    <style name="InactiveCheckBox" parent="Base.Theme.AppCompat">
+        <item name="colorAccent">@color/main_blue</item>
+        <item name="android:textColorSecondary">@color/main_gray</item>
+    </style>
 </resources>

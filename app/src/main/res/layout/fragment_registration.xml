@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_gray"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/app_logo" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/registration_name_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/action_elements_background"
+                android:cursorVisible="true"
+                android:ems="10"
+                android:hint="Имя"
+                android:inputType="text"
+                android:padding="20dp"
+                android:textColor="@color/black"
+                android:textCursorDrawable="@color/main_gray"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/editTextText2"
+                app:layout_constraintTop_toBottomOf="@id/imageView" />
+
+            <EditText
+                android:id="@+id/registration_surname_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/action_elements_background"
+                android:cursorVisible="true"
+                android:ems="10"
+                android:hint="Фамилия"
+                android:inputType="text"
+                android:padding="20dp"
+                android:textColor="@color/black"
+                android:textCursorDrawable="@color/main_gray"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/editTextText3" />
+
+            <EditText
+                android:id="@+id/registration_login_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/action_elements_background"
+                android:cursorVisible="true"
+                android:ems="10"
+                android:hint="Логин"
+                android:inputType="text"
+                android:padding="20dp"
+                android:textColor="@color/black"
+                android:textCursorDrawable="@color/main_gray"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/password_edit_text_layout" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/registration_password_edit_text_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/action_elements_background"
+                android:paddingStart="6dp"
+                app:boxStrokeWidth="0dp"
+                app:hintEnabled="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/main_gray">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/registration_password_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/action_elements_background"
+                    android:hint="@string/password_edit_text_hint"
+                    android:inputType="textPassword"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/main_gray"
+                    android:textCursorDrawable="@color/main_gray"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/registration_account_error_tv"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/main_red"
+                android:textSize="16sp"
+                android:visibility="gone"
+                tools:text="This account is already exists" />
+
+            <ProgressBar
+                android:id="@+id/loading_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/registration_remember_cb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/InactiveCheckBox" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="Remember me"
+                    android:textColor="@color/main_gray"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/registration_confirm_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/action_elements_background"
+                    android:backgroundTint="@color/main_blue"
+                    android:fontFamily="@font/inter_regular"
+                    android:padding="16dp"
+                    android:text="Sign up"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/registration_sign_in_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="Have account?"
+                    android:textColor="@color/main_gray"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/registration_sign_in_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_semibold"
+                    android:text="Sign in"
+                    android:textColor="@color/main_blue"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</FrameLayout>
