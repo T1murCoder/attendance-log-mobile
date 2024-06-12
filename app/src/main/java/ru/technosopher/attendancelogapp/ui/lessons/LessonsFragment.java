@@ -10,8 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.view.LayoutInflater;
@@ -19,16 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,6 +49,7 @@ public class LessonsFragment extends Fragment{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
     }
 
@@ -65,7 +62,7 @@ public class LessonsFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentLessonsBinding.bind(view);
-        //navigationBarChangeListener.changeSelectedItem(R.id.lessons);
+        navigationBarChangeListener.changeSelectedItem(R.id.lessons);
         LessonsListAdapter adapter = new LessonsListAdapter(getContext(), this::checkQrCodeIsAlive, this::onDelete, this::onOpenJournal);
 
         viewModel = new ViewModelProvider(this).get(LessonsViewModel.class);
@@ -141,6 +138,8 @@ public class LessonsFragment extends Fragment{
             dialog.dismiss();
         });
 
+
+
         viewModel.groupsLiveData.observe(getViewLifecycleOwner(), groupsState -> {
             if (groupsState.getSuccess()) {
                 dialog.saveGroupsData(groupsState.getGroups());
@@ -151,6 +150,11 @@ public class LessonsFragment extends Fragment{
             if (qrCode != null){
                 adapter.updateItemQrCode(qrCode);
             }
+        });
+
+        viewModel.errorsLiveData.observe(getViewLifecycleOwner(), qrCodeState ->{
+            Toast.makeText(getContext(), qrCodeState.getErrorMsg(), Toast.LENGTH_SHORT).show();
+            adapter.updateItemQrCode(new QrCodeEntity("", qrCodeState.getLessonId(), null, null));
         });
     }
     @Override
@@ -244,7 +248,7 @@ public class LessonsFragment extends Fragment{
                 }
             });
 
-            ArrayAdapter<ItemGroupEntity> arrayAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, this.groups);
+            ArrayAdapter<ItemGroupEntity> arrayAdapter = new ArrayAdapter<>(requireContext(), R.layout.item_spinner, this.groups);
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             binding.groupsNamesSpinner.setAdapter(arrayAdapter);
 

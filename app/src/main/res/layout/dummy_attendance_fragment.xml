@@ -28,6 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:textAlignment="center"
                 android:fontFamily="@font/inter_semibold"
                 android:text="Ученики, посетившие занятие"
                 android:textSize="18sp" />
@@ -39,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/dummy_item_list" />
+            tools:listitem="@layout/item_dummy_list" />
 
     </LinearLayout>
 

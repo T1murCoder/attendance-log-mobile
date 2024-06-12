@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AttendanceLogApp</string>
+    <string name="app_name">TutOn Teacher</string>
     <string name="lessons">Lessons</string>
     <string name="groups">Groups</string>
     <string name="profile">Profile</string>

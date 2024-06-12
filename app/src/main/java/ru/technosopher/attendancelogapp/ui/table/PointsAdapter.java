@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import ru.technosopher.attendancelogapp.databinding.PointEtElementBinding;
+import ru.technosopher.attendancelogapp.databinding.ElementPointEtBinding;
 import ru.technosopher.attendancelogapp.domain.entities.AttendanceEntity;
 import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
 
@@ -24,6 +24,7 @@ public class PointsAdapter extends RecyclerView.Adapter<PointsAdapter.ViewHolder
     private final List<AttendanceEntity> data = new ArrayList<>();
 
     private final Consumer<AttendanceEntity> changeStudent;
+
     public PointsAdapter(Context context, Consumer<AttendanceEntity> changeStudent) {
         this.context = context;
         this.changeStudent = changeStudent;
@@ -33,7 +34,7 @@ public class PointsAdapter extends RecyclerView.Adapter<PointsAdapter.ViewHolder
     @Override
     public PointsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new PointsAdapter.ViewHolder(
-                PointEtElementBinding.inflate(LayoutInflater.from(
+                ElementPointEtBinding.inflate(LayoutInflater.from(
                                 parent.getContext()),
                         parent,
                         false));
@@ -58,9 +59,9 @@ public class PointsAdapter extends RecyclerView.Adapter<PointsAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final PointEtElementBinding binding;
+        private final ElementPointEtBinding binding;
 
-        public ViewHolder(@NonNull PointEtElementBinding binding) {
+        public ViewHolder(@NonNull ElementPointEtBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -74,8 +75,7 @@ public class PointsAdapter extends RecyclerView.Adapter<PointsAdapter.ViewHolder
                 @Override
                 public void afterTextChanged(Editable editable) {
                     super.afterTextChanged(editable);
-                    //TODO (entered data validation)
-                        changeStudent.accept(new AttendanceEntity(item.getId(), item.getVisited(), item.getStudentId(), item.getLessonId(), item.getLessonTimeStart(), editable.toString()));
+                    changeStudent.accept(new AttendanceEntity(item.getId(), item.getVisited(), item.getStudentId(), item.getLessonId(), item.getLessonTimeStart(), editable.toString()));
                 }
             });
         }

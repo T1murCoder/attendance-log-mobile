@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import ru.technosopher.attendancelogapp.databinding.CheckBoxElementBinding;
+import ru.technosopher.attendancelogapp.databinding.ElementCheckBoxBinding;
 import ru.technosopher.attendancelogapp.domain.entities.AttendanceEntity;
 
 public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.ViewHolder>{
@@ -30,7 +30,7 @@ public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new CheckBoxAdapter.ViewHolder(
-                CheckBoxElementBinding.inflate(LayoutInflater.from(
+                ElementCheckBoxBinding.inflate(LayoutInflater.from(
                                 parent.getContext()),
                         parent,
                         false));
@@ -54,8 +54,8 @@ public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final CheckBoxElementBinding binding;
-        public ViewHolder(@NonNull CheckBoxElementBinding binding) {
+        private final ElementCheckBoxBinding binding;
+        public ViewHolder(@NonNull ElementCheckBoxBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

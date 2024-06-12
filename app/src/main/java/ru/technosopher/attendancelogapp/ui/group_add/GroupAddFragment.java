@@ -72,11 +72,9 @@ public class GroupAddFragment extends Fragment {
 
     private void addStudent(@NonNull String id) {
         viewModel.addStudent(id);
-        System.out.println(viewModel.selectedStudents);
     }
     private void deleteStudent(@NonNull String id){
         viewModel.deleteStudent(id);
-        System.out.println(viewModel.selectedStudents);
     }
     private void clearStudents(){
         viewModel.clearStudents();

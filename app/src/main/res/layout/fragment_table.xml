@@ -191,7 +191,7 @@
                         android:layout_weight="0"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="1"
-                        tools:listitem="@layout/date_element" />
+                        tools:listitem="@layout/element_date" />
 
                 </LinearLayout>
 
@@ -202,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/student_table_item" />
+                    tools:listitem="@layout/item_student_table" />
             </LinearLayout>
 
         </HorizontalScrollView>
@@ -214,7 +214,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/dummy_item_list"
+            tools:listitem="@layout/item_dummy_list"
             tools:itemCount="10"/>
 
     </LinearLayout>

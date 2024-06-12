@@ -79,20 +79,19 @@ public class RegistrationViewModel extends ViewModel {
                 currentSurname == null || currentSurname.isEmpty() ||
                 currentLogin == null || currentLogin.isEmpty() ||
                 currentPassword == null || currentPassword.isEmpty()) {
-            mutableErrorLiveData.postValue("Provide all necessary data to fields, please.");
+            mutableErrorLiveData.postValue("Введите все необходимые данные");
             return;
         }
         mutableLoadingLiveData.postValue(true);
         isTeacherExistsUseCase.execute(currentLogin, status -> {
             if (status.getErrors() != null || status.getValue() == null) {
-                System.out.println(status.getErrors().getLocalizedMessage());
                 mutableLoadingLiveData.postValue(false);
-                mutableErrorLiveData.postValue("Something went wrong with server. Try again later");
+                mutableErrorLiveData.postValue("Что-то пошло не так. Попробуйте позже");
                 return;
             }
             if (status.getStatusCode() == 200) {
                 mutableLoadingLiveData.postValue(false);
-                mutableErrorLiveData.postValue("This login is already exists. Want to login?");
+                mutableErrorLiveData.postValue("Этот логин уже существует. Хотите войти?");
                 return;
             }
             if (status.getStatusCode() == 404) {
@@ -123,13 +122,9 @@ public class RegistrationViewModel extends ViewModel {
                 mutableConfirmLiveData.postValue(null);
             }
             else if (status.getErrors() == null && status.getStatusCode() == 401) {
-                mutableErrorLiveData.postValue("This account is already exists. Want to login??????");
+                mutableErrorLiveData.postValue("Этот аккаунт уже существует. Хотите войти?");
             }
             mutableLoadingLiveData.postValue(false);
-//            } else {
-//                //System.out.println(status.getStatusCode());
-//                mutableErrorLiveData.postValue("Something went wrong before reg. Try again later");
-//            }
         });
     }
 

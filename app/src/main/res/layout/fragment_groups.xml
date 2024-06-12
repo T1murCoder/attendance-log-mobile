@@ -16,10 +16,10 @@
         android:visibility="gone" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/groups_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
-        android:id="@+id/groups_content">
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/no_groups_tv"
@@ -40,11 +40,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:paddingBottom="200dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/groups_text_view"
-            tools:listitem="@layout/groups_list_item" />
+            tools:listitem="@layout/item_groups_list" />
 
         <TextView
             android:id="@+id/groups_error_message"
@@ -63,8 +64,8 @@
             android:id="@+id/floatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:backgroundTint="@color/main_blue"
             android:clickable="true"
             android:contentDescription="@string/groups_fab_content_description"
@@ -97,7 +98,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:queryHint="Search"
             app:searchIcon="@drawable/ic_search" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

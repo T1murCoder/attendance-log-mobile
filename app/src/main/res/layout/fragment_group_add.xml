@@ -97,8 +97,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/student_search_view"
-            tools:listitem="@layout/groups_add_students_list_item"
-            android:paddingBottom="40dp"/>
+            tools:listitem="@layout/item_groups_add_students_list"
+            android:paddingBottom="280dp"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"

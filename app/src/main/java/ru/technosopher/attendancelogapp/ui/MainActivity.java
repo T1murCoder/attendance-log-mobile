@@ -27,9 +27,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         navigationBar = findViewById(R.id.bottom_navigation_bar);
         navigationBar.setItemSelected(R.id.lessons, true);
-        System.out.println(navigationBar.getSelectedItemId());
+
         navigationBar.setOnItemSelectedListener(destinationFragment -> {
             fragmentNavigation(0, destinationFragment);
         });
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
 
     @Override
     public void changeSelectedItem(int r) {
-        navigationBar.setItemEnabled(r, true);
+        navigationBar.setItemSelected(r, true);
     }
 
 

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.technosopher.attendancelogapp.databinding.DateElementBinding;
+import ru.technosopher.attendancelogapp.databinding.ElementDateBinding;
 
 
 public class DatesAdapter extends RecyclerView.Adapter<DatesAdapter.ViewHolder> {
@@ -22,7 +22,7 @@ public class DatesAdapter extends RecyclerView.Adapter<DatesAdapter.ViewHolder> 
     @Override
     public DatesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new DatesAdapter.ViewHolder(
-                DateElementBinding.inflate(LayoutInflater.from(
+                ElementDateBinding.inflate(LayoutInflater.from(
                                 parent.getContext()),
                         parent,
                         false));
@@ -46,9 +46,9 @@ public class DatesAdapter extends RecyclerView.Adapter<DatesAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final DateElementBinding binding;
+        private final ElementDateBinding binding;
 
-        public ViewHolder(@NonNull DateElementBinding binding) {
+        public ViewHolder(@NonNull ElementDateBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

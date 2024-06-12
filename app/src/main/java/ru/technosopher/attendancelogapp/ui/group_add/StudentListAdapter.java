@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import ru.technosopher.attendancelogapp.databinding.GroupsAddStudentsListItemBinding;
+import ru.technosopher.attendancelogapp.databinding.ItemGroupsAddStudentsListBinding;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 
 public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.ViewHolder>{
@@ -29,7 +29,7 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
     @Override
     public StudentListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new StudentListAdapter.ViewHolder(
-                GroupsAddStudentsListItemBinding.inflate(LayoutInflater.from(
+                ItemGroupsAddStudentsListBinding.inflate(LayoutInflater.from(
                                 parent.getContext()),
                         parent,
                         false));
@@ -53,15 +53,14 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final GroupsAddStudentsListItemBinding binding;
-        public ViewHolder(@NonNull GroupsAddStudentsListItemBinding binding) {
+        private final ItemGroupsAddStudentsListBinding binding;
+        public ViewHolder(@NonNull ItemGroupsAddStudentsListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
         public void bind(ItemStudentEntity item) {
             binding.listItemStudentName.setText(item.getFullName());
-//            binding.listItemStudentId.setText(item.getStringId());
             binding.listItemStudentId.setText(item.getUsername());
             binding.studentAddCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override

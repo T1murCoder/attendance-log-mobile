@@ -44,7 +44,7 @@ public class GroupsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentGroupsBinding.bind(view);
         navigationBarChangeListener.showNavigationBar();
-        //navigationBarChangeListener.changeSelectedItem(R.id.groups);
+        navigationBarChangeListener.changeSelectedItem(R.id.groups);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         GroupsListAdapter adapter = new GroupsListAdapter(this::openGroup, this::deleteGroup);

@@ -46,7 +46,7 @@ public class TableFragment extends Fragment {
         navigationBarChangeListener.hideNavigationBar();
         binding = FragmentTableBinding.bind(view);
 
-        String id = getArguments() != null ? getArguments().getString(KEY_ID) : "Something went wrong";
+        String id = getArguments() != null ? getArguments().getString(KEY_ID) : "-1";
         viewModel = new ViewModelProvider(this).get(TableViewModel.class);
         viewModel.saveGroupId(id);
 
@@ -143,7 +143,8 @@ public class TableFragment extends Fragment {
                         binding.studentsRv.setVisibility(View.VISIBLE);
                         binding.rvsContent.setVisibility(View.VISIBLE);
                         binding.studentsEmptyLessonsRv.setVisibility(View.GONE);
-                        binding.dateHeader.setText(DateFormatter.getDateStringFromDate(state.getStudents().get(0).getAttendanceEntityList().get(0).getLessonTimeStart(), "MMM yyyy"));
+//                        binding.dateHeader.setText(DateFormatter.getDateStringFromDate(state.getStudents().get(0).getAttendanceEntityList().get(0).getLessonTimeStart(), "MMM yyyy"));
+                        binding.dateHeader.setText("Календарь");
                         attendancesAdapter.updateData(state.getStudents());
                         datesAdapter.update(viewModel.extractDates(state.getStudents().get(0).getAttendanceEntityList()));
                     }

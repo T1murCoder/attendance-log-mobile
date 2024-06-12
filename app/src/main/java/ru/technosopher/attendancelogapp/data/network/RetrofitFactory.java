@@ -63,8 +63,8 @@ public class RetrofitFactory {
             .create();
 
     private Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.105:8085/") // local server
-//            .baseUrl("http://193.164.149.209:8085/") // remote server
+//            .baseUrl("http://192.168.1.105:8085/") // local server
+            .baseUrl("http://193.164.149.209:8085/") // remote server
             .client(client.build())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build();

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import ru.technosopher.attendancelogapp.databinding.DummyItemListBinding;
+import ru.technosopher.attendancelogapp.databinding.ItemDummyListBinding;
 import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
 
 public class StudentsListAdapterForTable extends RecyclerView.Adapter<StudentsListAdapterForTable.ViewHolder> {
@@ -27,7 +27,7 @@ public class StudentsListAdapterForTable extends RecyclerView.Adapter<StudentsLi
     @Override
     public StudentsListAdapterForTable.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(
-                DummyItemListBinding.inflate(LayoutInflater.from(
+                ItemDummyListBinding.inflate(LayoutInflater.from(
                                 parent.getContext()),
                         parent,
                         false));
@@ -50,8 +50,8 @@ public class StudentsListAdapterForTable extends RecyclerView.Adapter<StudentsLi
         notifyDataSetChanged();
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final DummyItemListBinding binding;
-        public ViewHolder(@NonNull DummyItemListBinding binding) {
+        private final ItemDummyListBinding binding;
+        public ViewHolder(@NonNull ItemDummyListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

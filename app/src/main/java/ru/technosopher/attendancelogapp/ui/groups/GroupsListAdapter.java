@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import ru.technosopher.attendancelogapp.databinding.GroupsListItemBinding;
+import ru.technosopher.attendancelogapp.databinding.ItemGroupsListBinding;
 import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
 
 public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.ViewHolder> {
@@ -29,7 +29,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(
-                GroupsListItemBinding.inflate(LayoutInflater.from(
+                ItemGroupsListBinding.inflate(LayoutInflater.from(
                                 parent.getContext()),
                         parent,
                         false));
@@ -53,8 +53,8 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final GroupsListItemBinding binding;
-        public ViewHolder(@NonNull GroupsListItemBinding binding) {
+        private final ItemGroupsListBinding binding;
+        public ViewHolder(@NonNull ItemGroupsListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

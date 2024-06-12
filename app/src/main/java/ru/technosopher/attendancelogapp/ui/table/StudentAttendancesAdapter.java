@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import ru.technosopher.attendancelogapp.databinding.StudentTableItemBinding;
+import ru.technosopher.attendancelogapp.databinding.ItemStudentTableBinding;
 import ru.technosopher.attendancelogapp.domain.entities.AttendanceEntity;
 import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
 
@@ -35,7 +35,7 @@ public class StudentAttendancesAdapter extends RecyclerView.Adapter<StudentAtten
     @Override
     public StudentAttendancesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new StudentAttendancesAdapter.ViewHolder(
-                StudentTableItemBinding.inflate(LayoutInflater.from(
+                ItemStudentTableBinding.inflate(LayoutInflater.from(
                                 parent.getContext()),
                         parent,
                         false));
@@ -65,9 +65,9 @@ public class StudentAttendancesAdapter extends RecyclerView.Adapter<StudentAtten
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final StudentTableItemBinding binding;
+        private final ItemStudentTableBinding binding;
 
-        public ViewHolder(@NonNull StudentTableItemBinding binding) {
+        public ViewHolder(@NonNull ItemStudentTableBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

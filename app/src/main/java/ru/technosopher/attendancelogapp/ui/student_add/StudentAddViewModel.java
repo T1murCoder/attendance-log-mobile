@@ -52,7 +52,6 @@ public class StudentAddViewModel extends ViewModel {
                     mutableConfirmLiveData.postValue(null);
                 }
                 else{
-                    System.out.println(status.getStatusCode());
                     mutableErrorLiveData.setValue("Что-то пошло не так. Попробуйте ещё раз");
                 }
             });

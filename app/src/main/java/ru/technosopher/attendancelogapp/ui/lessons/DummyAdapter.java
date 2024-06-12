@@ -11,8 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.technosopher.attendancelogapp.databinding.DummyItemListBinding;
-import ru.technosopher.attendancelogapp.databinding.GroupsListItemBinding;
+import ru.technosopher.attendancelogapp.databinding.ItemDummyListBinding;
 import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 import ru.technosopher.attendancelogapp.ui.groups.GroupsListAdapter;
@@ -24,7 +23,7 @@ public class DummyAdapter extends RecyclerView.Adapter<DummyAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new DummyAdapter.ViewHolder(
-                DummyItemListBinding.inflate(LayoutInflater.from(
+                ItemDummyListBinding.inflate(LayoutInflater.from(
                                 parent.getContext()),
                         parent,
                         false));
@@ -47,8 +46,8 @@ public class DummyAdapter extends RecyclerView.Adapter<DummyAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final DummyItemListBinding binding;
-        public ViewHolder(@NonNull DummyItemListBinding binding) {
+        private final ItemDummyListBinding binding;
+        public ViewHolder(@NonNull ItemDummyListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

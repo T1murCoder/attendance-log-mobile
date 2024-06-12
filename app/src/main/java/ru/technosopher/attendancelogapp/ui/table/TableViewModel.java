@@ -68,8 +68,6 @@ public class TableViewModel extends ViewModel {
                                 status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
                                 status.getErrors() == null && status.getValue() != null && !sortedByDatesAndNames.isEmpty(), false));
                     } else {
-                        System.out.println(status.getValue());
-                        System.out.println(status.getStatusCode());
                         mutableErrorLiveData.postValue("Что-то пошло не так. Попробуйте еще раз");
                     }
                 });
@@ -88,8 +86,6 @@ public class TableViewModel extends ViewModel {
                                 status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
                                 status.getErrors() == null && status.getValue() != null && !sortedByDatesAndNames.isEmpty(), false));
                     } else {
-                        System.out.println(status.getValue());
-                        System.out.println(status.getStatusCode());
                         mutableErrorLiveData.postValue("Что-то пошло не так. Попробуйте еще раз");
                     }
                 });
@@ -149,7 +145,6 @@ public class TableViewModel extends ViewModel {
                 attendance.getPoints(),
                 status -> {
                     if (status.getStatusCode() == 200){
-                        System.out.println("IN SUCCESS");
                     }
                     else{
                         if(status.getErrors() != null) mutableErrorLiveData.postValue(status.getErrors().getLocalizedMessage());

@@ -29,7 +29,7 @@ import java.util.function.Consumer;
 
 
 import ru.technosopher.attendancelogapp.data.source.QrCodeApi;
-import ru.technosopher.attendancelogapp.databinding.LessonsListItemBinding;
+import ru.technosopher.attendancelogapp.databinding.ItemLessonsListBinding;
 import ru.technosopher.attendancelogapp.domain.entities.LessonEntity;
 import ru.technosopher.attendancelogapp.domain.entities.QrCodeEntity;
 import ru.technosopher.attendancelogapp.ui.MainActivity;
@@ -69,7 +69,7 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
     @Override
     public LessonsListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new LessonsListAdapter.ViewHolder(
-                LessonsListItemBinding.inflate(LayoutInflater.from(
+                ItemLessonsListBinding.inflate(LayoutInflater.from(
                                 parent.getContext()),
                         parent,
                         false));
@@ -93,21 +93,32 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
     }
 
     public void updateItemQrCode(QrCodeEntity qrCode){
-        for (int ind = 0; ind < data.size(); ind++){
-            if (data.get(ind).getId().equals(qrCode.getLessonId())){
-                LessonEntity lessonWithQrCOde = data.get(ind);
-                lessonWithQrCOde.setActiveQrCode(qrCode);
-                data.set(ind, lessonWithQrCOde);
-                notifyItemChanged(ind);
-                break;
+        if (qrCode.getId().isEmpty() || qrCode.getId() == null) {
+            for (int ind = 0; ind < data.size(); ind++){
+                if (data.get(ind).getId().equals(qrCode.getLessonId())){
+                    data.set(ind, data.get(ind));
+                    notifyItemChanged(ind);
+                    break;
+                }
+            }
+        }
+        else{
+            for (int ind = 0; ind < data.size(); ind++){
+                if (data.get(ind).getId().equals(qrCode.getLessonId())){
+                    LessonEntity lessonWithQrCOde = data.get(ind);
+                    lessonWithQrCOde.setActiveQrCode(qrCode);
+                    data.set(ind, lessonWithQrCOde);
+                    notifyItemChanged(ind);
+                    break;
+                }
             }
         }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        private final LessonsListItemBinding binding;
+        private final ItemLessonsListBinding binding;
         private Boolean closed = true;
-        public ViewHolder(@NonNull LessonsListItemBinding binding) {
+        public ViewHolder(@NonNull ItemLessonsListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -116,7 +127,7 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
 
             binding.timeTv.setText(DateFormatter.getFullTimeStringFromDate(item.getTimeStart(), item.getTimeEnd(), "HH:mm"));
             binding.groupName.setText(item.getGroupName());
-            binding.dateTv.setText(DateFormatter.getDateStringFromDate(item.getDate(), "dd MMM yyyy"));
+            binding.dateTv.setText(DateFormatter.getDateStringFromDate(item.getTimeStart(), "dd MMM yyyy"));
             binding.lessonTitle.setText(item.getTheme());
 
 
@@ -135,13 +146,6 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
                 binding.qrCodeUploadLayout.setVisibility(View.VISIBLE);
                 binding.qrCodeCopyLinkLayout.setVisibility(View.VISIBLE);
             }
-
-
-
-            //
-
-
-
             binding.generateQrCodeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -159,32 +163,14 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
                             binding.qrCodeImage.setVisibility(View.GONE);
                             binding.lessonItemImageCheckingPb.setVisibility(View.GONE);
                             binding.emptyQrCodeState.setVisibility(View.VISIBLE);
-                            //Log.e("FROM LESSON ADAPTER", item.getActiveQrCode().getId());
                         } else{
-
                             binding.qrCodeImage.setVisibility(View.VISIBLE);
                             binding.qrCodeImage.setImageBitmap(Utils.generateQr(item.getActiveQrCode().getId(), 900, 900));
                             binding.lessonItemImageCheckingPb.setVisibility(View.GONE);
                             binding.emptyQrCodeState.setVisibility(View.GONE);
                         }
-//                            GregorianCalendar curTime = new GregorianCalendar();
-//                            if (item.getActiveQrCode().getExpiresAt().compareTo(curTime) > 0){ // when qr code expires time more than current time its okay we show qr code
-//                                binding.qrCodeImage.setVisibility(View.VISIBLE);
-//                                binding.qrCodeImage.setImageBitmap(Utils.generateQr(item.getActiveQrCode().getId(), 900, 900));
-//                                binding.lessonItemImageCheckingPb.setVisibility(View.GONE);
-//                                binding.emptyQrCodeState.setVisibility(View.GONE);
-//                            }
-//                            else{ // when qr code epires time less then now means that qr is not usable
-//                                binding.qrCodeImage.setVisibility(View.GONE);
-//                                binding.lessonItemImageCheckingPb.setVisibility(View.GONE);
-//                                binding.emptyQrCodeState.setVisibility(View.VISIBLE);
-//                                binding.emptyQrCodeState.setText("QR код просрочен. Сгенерируйте новый QR код");
-//                            }
-//                            //onItemOpen.accept(item.getId());
-//                            binding.qrCodeAdditionalBox.setVisibility(View.VISIBLE);
                         closed = false;
                     }else{
-                        //Log.e("FROM LESSON ADAPTER", item.getActiveQrCode().getId());
                         binding.qrCodeAdditionalBox.setVisibility(View.GONE);
                         closed = true;
                     }

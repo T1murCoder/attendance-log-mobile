@@ -33,8 +33,6 @@ public class DummyAttendancesViewModel extends ViewModel {
     }
 
     private State fromStatus(Status<List<ItemStudentEntity>> status) {
-        System.out.println(status.getStatusCode());
-        System.out.println(status.getValue());
         return new State(
                 status.getValue(),
                 status.getErrors() == null && status.getValue() != null, false);

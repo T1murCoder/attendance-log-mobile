@@ -56,57 +56,32 @@ public class LoginViewModel extends ViewModel {
         final String currentPassword = password;
 
         if ((currentLogin == null || currentLogin.isEmpty()) && (currentPassword == null || currentPassword.isEmpty())) {
-            mutableErrorLiveData.postValue("Please, enter login and password.");
+            mutableErrorLiveData.postValue("Введите пароль");
             return;
         }
         if (currentLogin == null || currentLogin.isEmpty()) {
-            mutableErrorLiveData.postValue("Please, enter login.");
+            mutableErrorLiveData.postValue("Введите логин");
             return;
         }
         if (currentPassword == null || currentPassword.isEmpty()) {
-            mutableErrorLiveData.postValue("Please, enter password.");
+            mutableErrorLiveData.postValue("Введите пароль");
             return;
         }
         mutableLoadingLiveData.postValue(true);
         isTeacherExistsUseCase.execute(currentLogin, status -> {
             if (status.getErrors() != null || status.getValue() == null) {
-                System.out.println(status.getErrors().getLocalizedMessage());
                 mutableLoadingLiveData.postValue(false);
-                mutableErrorLiveData.postValue("Something went wrong with server. Try again later");
+                mutableErrorLiveData.postValue("Что-то пошло не так. Попробуйте позже");
 
                 return;
             }
             if (status.getStatusCode() == 404) {
                 mutableLoadingLiveData.postValue(false);
-                mutableErrorLiveData.postValue("This login doesn`t exist. Want to create account?");
+                mutableErrorLiveData.postValue("Этого логина не существует. Хотите создать аккаунт?");
                 return;
             }
             if (status.getStatusCode() == 200) {
                 loginTeacher(currentLogin, currentPassword);
-            }
-        });
-    }
-
-    public void testIsTeacherExists() {
-        final String currentLogin = login;
-        assert currentLogin != null;
-        isTeacherExistsUseCase.execute(currentLogin, status -> {
-            if (status.getErrors() != null || status.getValue() == null) {
-//                System.out.println(status.getErrors().getLocalizedMessage());
-//                System.out.println(status.getValue());
-//                System.out.println(status.getStatusCode());
-                mutableErrorLiveData.postValue("Something went wrong with requests. Try again later");
-                return;
-            }
-            if (status.getStatusCode() == 404) {
-                mutableErrorLiveData.postValue("This login doesn`t exist. Want to create account?");
-                return;
-            }
-            if (status.getStatusCode() == 200) {
-                System.out.println(status.getValue());
-                System.out.println(status.getStatusCode());
-                mutableErrorLiveData.postValue("This login exists. Its okay");
-                //loginTeacher(currentLogin, currentPassword);
             }
         });
     }
@@ -134,7 +109,7 @@ public class LoginViewModel extends ViewModel {
                 mutableConfirmLiveData.postValue(null);
             }
             if (status.getErrors() == null && status.getStatusCode() == 401) {
-                mutableErrorLiveData.postValue("Wrong password");
+                mutableErrorLiveData.postValue("Неверный пароль");
             }
             mutableLoadingLiveData.postValue(false);
         });

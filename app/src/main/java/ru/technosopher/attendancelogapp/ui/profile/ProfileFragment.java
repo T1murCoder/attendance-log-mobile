@@ -48,7 +48,7 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentProfileBinding.bind(view);
-        //navigationBarChangeListener.changeSelectedItem(R.id.profile);
+        navigationBarChangeListener.changeSelectedItem(R.id.profile);
         viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
         binding.profileLogoutBtn.setOnClickListener(new View.OnClickListener() {

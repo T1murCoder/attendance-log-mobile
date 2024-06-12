@@ -75,8 +75,6 @@ public class ProfileViewModel extends ViewModel {
                             github,
                             photo),
                     tstatus -> {
-                        System.out.println(tstatus.getStatusCode());
-                        System.out.println(tstatus.getValue());
                         if (tstatus.getStatusCode() == 200) {
                             loadPrefs(id, prefsLogin, name, surname, telegram, github, photo);
                         } else {
