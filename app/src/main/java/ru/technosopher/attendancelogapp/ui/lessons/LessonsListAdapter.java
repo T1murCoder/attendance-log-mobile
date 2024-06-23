@@ -37,26 +37,11 @@ import ru.technosopher.attendancelogapp.ui.utils.DateFormatter;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
 public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.ViewHolder> {
-
     private Context context;
-
     private final Consumer<String> onCheckQrCodeIsAlive;
-//    private final Consumer<String> onItemOpen;
-//    private final Consumer<Boolean> onItemClose;
     private final Consumer<String> onDelete;
     private final Consumer<String> onOpenJournal;
-//    private final Consumer<String> onUpload;
-//    private final Consumer<String> onCopyLink;
     private final List<LessonEntity> data = new ArrayList<>();
-//    public LessonsListAdapter(Context context, Consumer<String> onItemOpen, Consumer<Boolean> onItemClose, Consumer<String> onDelete, Consumer<String> onOpenJournal, Consumer<String> onUpload, Consumer<String> onCopyLink) {
-//        this.context = context;
-//        this.onItemOpen = onItemOpen;
-//        this.onItemClose = onItemClose;
-//        this.onDelete = onDelete;
-//        this.onOpenJournal = onOpenJournal;
-//        this.onUpload = onUpload;
-//        this.onCopyLink = onCopyLink;
-//    }
 
     public LessonsListAdapter(Context context, Consumer<String> onCheckQrCodeIsAlive, Consumer<String> onDelete, Consumer<String> onOpenJournal) {
         this.context = context;

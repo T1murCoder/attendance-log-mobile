@@ -46,14 +46,19 @@
                     android:contentDescription="@string/groups_fab_content_description"
                     android:src="@drawable/ic_new_avatar"
                     android:tint="@color/white"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:fabCustomSize="69dp" />
 
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:padding="5dp"
                     android:id="@+id/profile_avatar_iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/empty_avatar_image" />
+                    android:layout_width="205dp"
+                    android:layout_height="205dp"
+                    app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/empty_avatar_image"
+                    app:strokeColor="@color/main_gray"
+                    app:strokeWidth="1dp"/>
             </RelativeLayout>
 
 

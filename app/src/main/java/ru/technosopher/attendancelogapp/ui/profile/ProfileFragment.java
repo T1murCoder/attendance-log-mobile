@@ -1,8 +1,11 @@
 package ru.technosopher.attendancelogapp.ui.profile;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -17,6 +20,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.canhub.cropper.CropImageContract;
+import com.canhub.cropper.CropImageContractOptions;
+import com.canhub.cropper.CropImageOptions;
+import com.canhub.cropper.CropImageView;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import ru.technosopher.attendancelogapp.R;
@@ -31,25 +41,39 @@ public class ProfileFragment extends Fragment {
     private NavigationBarChangeListener navigationBarChangeListener;
     private UpdateSharedPreferences prefs;
     private FragmentProfileBinding binding;
-
     private ProfileViewModel viewModel;
+    private Uri userAvatarUri;
+    private final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageRef = storage.getReference();
+    private ActivityResultLauncher<CropImageContractOptions> cropImageActivity = registerForActivityResult(new CropImageContract(),
+            result -> {
+                if (result.isSuccessful()) {
+                    userAvatarUri = result.getUriContent();
+                    Glide.with(this).load(userAvatarUri).into(binding.profileAvatarIv);
+                    viewModel.uploadAvatar(prefs.getPrefsId(), prefs.getPrefsLogin(), userAvatarUri);
+                } else {
+                    Toast.makeText(requireContext(), "Please select an image", Toast.LENGTH_SHORT).show();
+                }
+            });
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentProfileBinding.bind(view);
         navigationBarChangeListener.changeSelectedItem(R.id.profile);
         viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+
+        binding.profileNewImageFab.setOnClickListener(v -> {
+            startCrop();
+        });
 
         binding.profileLogoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,6 +205,31 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    private void startCrop() {
+        CropImageOptions options = new CropImageOptions();
+        options.imageSourceIncludeCamera = false;
+        options.imageSourceIncludeGallery = true;
+        options.aspectRatioX = 1;
+        options.aspectRatioY = 1;
+        options.cropShape = CropImageView.CropShape.RECTANGLE;
+        options.fixAspectRatio = true;
+        options.showCropOverlay = true;
+        options.outputCompressFormat = Bitmap.CompressFormat.PNG;
+
+        CropImageContractOptions cropOptions = new CropImageContractOptions(null, options);
+
+        cropImageActivity.launch(cropOptions);
+    }
+
+    private void loadAvatar(String imageUrl) {
+        StorageReference imageRef = storageRef.child(imageUrl);
+        imageRef.getDownloadUrl().addOnCompleteListener(task -> {
+            if (task != null && task.getResult() != null) {
+                Glide.with(requireContext()).load(task.getResult()).into(binding.profileAvatarIv);
+            }
+        });
+    }
+
     private void subscribe(ProfileViewModel viewModel) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), state -> {
             if(Boolean.TRUE.equals(state.getLoading())){
@@ -211,8 +260,9 @@ public class ProfileFragment extends Fragment {
                     binding.profileGithubEt.setText(teacher.getGithub_url() != null ? teacher.getGithub_url() : "Provide your github");
                     // TODO (validate link)
                     // TODO (FIREBASE SLANDER?????????)
-                    if (teacher.getPhoto_url() != null)
-                        Picasso.get().load(teacher.getPhoto_url()).into(binding.profileAvatarIv);
+                    if (teacher.getPhoto_url() != null) {
+                        loadAvatar(teacher.getPhoto_url());
+                    }
                 }else{
                     Toast.makeText(getContext(), state.getErrorMessage(), Toast.LENGTH_SHORT).show();
                     viewModel.loadPrefs(
@@ -236,13 +286,11 @@ public class ProfileFragment extends Fragment {
             Navigation.findNavController(view).navigate(R.id.action_profileFragment_to_loginFragment);
         });
     }
-
     @Override
     public void onDestroyView() {
         binding = null;
         super.onDestroyView();
     }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

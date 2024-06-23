@@ -1,5 +1,6 @@
 package ru.technosopher.attendancelogapp.ui.profile;
 
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import ru.technosopher.attendancelogapp.data.TeacherRepositoryImpl;
 import ru.technosopher.attendancelogapp.domain.teacher.GetTeacherByIdUseCase;
 import ru.technosopher.attendancelogapp.domain.entities.TeacherEntity;
@@ -15,6 +19,11 @@ import ru.technosopher.attendancelogapp.domain.sign.LogoutUseCase;
 import ru.technosopher.attendancelogapp.domain.teacher.UpdateTeacherProfileUseCase;
 
 public class ProfileViewModel extends ViewModel {
+
+    public static final String TAG = "PROFILE_VIEW_MODEL";
+    public static final String AVATAR_PREFIX = "images/avatar_";
+    private final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageRef = storage.getReference();
     private final MutableLiveData<State> mutableStateLiveData = new MutableLiveData<>();
 
     public final LiveData<State> stateLiveData = mutableStateLiveData;
@@ -26,19 +35,14 @@ public class ProfileViewModel extends ViewModel {
     private final UpdateTeacherProfileUseCase updateTeacherProfileUseCase = new UpdateTeacherProfileUseCase(
             TeacherRepositoryImpl.getInstance()
     );
-
     @Nullable
     private String name;
-
     @Nullable
     private String surname;
-
     @Nullable
     private String telegram;
-
     @Nullable
     private String github;
-
     @Nullable
     private String photo;
 
@@ -56,6 +60,7 @@ public class ProfileViewModel extends ViewModel {
         changeSurname(prefsSurname);
         changeTelegram(prefsTelegram);
         changeGithub(prefsGithub);
+        changePhoto(prefsPhotoUrl);
     }
 
     public void updateProfile(String id, String prefsLogin) {
@@ -85,6 +90,35 @@ public class ProfileViewModel extends ViewModel {
         }
     }
 
+    public void uploadAvatar(String id, String prefsLogin, Uri image) {
+        if (image != null) {
+            //TODO: Сделать сжатие изображения
+            StorageReference imageRef = storageRef.child(AVATAR_PREFIX + id + ".png");
+
+            imageRef.putFile(image).addOnSuccessListener(taskSnapshot -> {
+                Log.d(TAG, "Image loaded!");
+                updateTeacherProfileUseCase.execute(
+                        id,
+                        new TeacherEntity(
+                                id,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                imageRef.getPath()
+                        ),
+                        userStatus -> loadPrefs(id, prefsLogin, name, surname, telegram, github, imageRef.getPath())
+                );
+            }).addOnFailureListener(e -> {
+                Log.d(TAG, e.toString());
+                mutableStateLiveData.postValue(new State("Не получилось загрузить аватар!", null, false));
+            });
+        } else {
+            Log.d(TAG, "Image is null!");
+        }
+    }
+
     public void logout() {
         logoutUseCase.execute();
         mutableLogoutLiveData.postValue(null);
@@ -103,6 +137,7 @@ public class ProfileViewModel extends ViewModel {
         this.github = github;
     }
 
+    public void changePhoto(String photo) {this.photo = photo;}
     //TODO(PHOTO LOADING)
 
     public class State {

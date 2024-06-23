@@ -60,9 +60,13 @@ public class TableViewModel extends ViewModel {
             getStudentsAttendancesUseCase.execute(groupId, status -> {
                 getGroupNameByIdUseCase.execute(groupId, groupNameStatus -> {
                     if (groupNameStatus.getStatusCode() == 200 && groupNameStatus.getErrors() == null && groupNameStatus.getValue() != null) {
+
+
                         List<StudentEntity> students = status.getValue() != null ? status.getValue() : new ArrayList<>();
                         List<StudentEntity> sortedByNames = sortFullNames(students);
                         List<StudentEntity> sortedByDatesAndNames = sortAttendancesForStudents(sortedByNames);
+
+
                         this.students = status.getValue() != null ? status.getValue() : null;
                         mutableStateLiveData.postValue(new State(groupNameStatus.getValue(), status.getValue() != null ? status.getValue() : null,
                                 status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
@@ -78,9 +82,13 @@ public class TableViewModel extends ViewModel {
             getStudentsAttendancesUseCase.execute(groupId, status -> {
                 getGroupNameByIdUseCase.execute(groupId, groupNameStatus -> {
                     if (groupNameStatus.getStatusCode() == 200 && groupNameStatus.getErrors() == null && groupNameStatus.getValue() != null) {
+
+
                         List<StudentEntity> students = status.getValue() != null ? status.getValue() : new ArrayList<>();
                         List<StudentEntity> sortedByNames = sortFullNames(students);
                         List<StudentEntity> sortedByDatesAndNames = sortAttendancesForStudents(sortedByNames);
+
+
                         this.students = status.getValue() != null ? status.getValue() : null;
                         mutableStateLiveData.postValue(new State(groupNameStatus.getValue(), status.getValue() != null ? status.getValue() : null,
                                 status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
@@ -92,7 +100,6 @@ public class TableViewModel extends ViewModel {
             });
         }
     }
-
     public void deleteStudent(@NonNull String studentId){
         if (students.size() == 1){
             mutableErrorLiveData.postValue("В группе должен быть хотя бы 1 ученик");
@@ -119,7 +126,7 @@ public class TableViewModel extends ViewModel {
         if (attendances == null) return;
         attendances.sort(Comparator.comparing(AttendanceEntity::getLessonTimeStart));
     }
-    private List<StudentEntity> sortFullNames(@Nullable List<StudentEntity> students){
+     private List<StudentEntity> sortFullNames(@Nullable List<StudentEntity> students){
         if (students == null) return new ArrayList<>();
         students.sort(Comparator.comparing(StudentEntity::getFullName));
         return students;
@@ -133,6 +140,7 @@ public class TableViewModel extends ViewModel {
         }
         return dates;
     }
+
     public List<StudentEntity> getStudents() {
         return this.students;
     }
