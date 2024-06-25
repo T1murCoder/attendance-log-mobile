@@ -11,9 +11,11 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.StudentRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.utils.Mapper;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
@@ -22,6 +24,8 @@ import ru.technosopher.attendancelogapp.domain.groups.GetGroupNameByIdUseCase;
 import ru.technosopher.attendancelogapp.domain.groups.PutStudentsToGroupUseCase;
 import ru.technosopher.attendancelogapp.domain.students.GetStudentsAttendancesUseCase;
 import ru.technosopher.attendancelogapp.domain.students.GetStudentsListUseCase;
+import ru.technosopher.attendancelogapp.ui.group_add.GroupAddViewModel;
+import ru.technosopher.attendancelogapp.ui.group_add.ItemStudentEntityModel;
 import ru.technosopher.attendancelogapp.ui.table.TableViewModel;
 
 public class StudentAddViewModel extends ViewModel {
@@ -34,7 +38,6 @@ public class StudentAddViewModel extends ViewModel {
     private final MutableLiveData<Void> mutableConfirmLiveData = new MutableLiveData<>();
     public final LiveData<Void> confirmLiveData = mutableConfirmLiveData;
     /* LIVEDATA */
-    public List<ItemStudentEntity> selectedStudents = new ArrayList<>();
     /* USE CASES */
     private final GetStudentsListUseCase getStudentsListUseCase = new GetStudentsListUseCase(
             StudentRepositoryImpl.getInstance()
@@ -44,10 +47,14 @@ public class StudentAddViewModel extends ViewModel {
     );
     /* USE CASES */
     private String id;
+
+    private List<ItemStudentEntityModel> selectedStudents = new ArrayList<>();
+    private List<ItemStudentEntityModel> studentModelList = new ArrayList<>();
     /* LOGIC */
     public void addStudentsToGroup() {
         if (id != null){
-            putStudentsToGroupUseCase.execute(id, selectedStudents, status -> {
+            List<ItemStudentEntity> tmp = selectedStudents.stream().map(Mapper::fromModelToEntity).collect(Collectors.toList());
+            putStudentsToGroupUseCase.execute(id, tmp, status -> {
                 if (status.getStatusCode() == 200) {
                     mutableConfirmLiveData.postValue(null);
                 }
@@ -66,39 +73,46 @@ public class StudentAddViewModel extends ViewModel {
     private void loadVacantStudents() {
         mutableStateLiveData.postValue(new StudentsState(null, null, false, true));
         getStudentsListUseCase.execute(status -> {
-            mutableStateLiveData.postValue(fromStatus(status));
+            List<ItemStudentEntityModel> modelList = status.getValue() != null ? status.getValue().stream().map(Mapper::fromEntityToModel).collect(Collectors.toList()) : new ArrayList<>();
+            studentModelList = new ArrayList<>(modelList);
+            mutableStateLiveData.postValue(new StudentsState(
+                    studentModelList,
+                    status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
+                    status.getErrors() == null && status.getValue() != null && !status.getValue().isEmpty(), false)
+            );
         });
     }
-    private List<ItemStudentEntity> fromStudentEntityListToItemStudentEntityList(List<StudentEntity> students){
-        if (students == null || students.isEmpty()) return new ArrayList<>();
-        List<ItemStudentEntity> studentsItems = new ArrayList<>();
-        for (StudentEntity student: students) {
-            studentsItems.add(new ItemStudentEntity(student.getId(), student.getName(), student.getSurname(), ""));
-        }
-        return studentsItems;
-    }
-    private StudentsState fromStatus(Status<List<ItemStudentEntity>> status) {
-        return new StudentsState(
-                status.getValue(),
-                status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
-                status.getErrors() == null && status.getValue() != null && !status.getValue().isEmpty(), false);
+
+
+    public void filterList(String text) {
+        List<ItemStudentEntityModel> filteredList = studentModelList != null ? studentModelList.stream().filter(
+                itemStudentEntity -> itemStudentEntity.getItemStudent().getFullName().toLowerCase().contains(text.toLowerCase())
+        ).collect(Collectors.toList()) : new ArrayList<>();
+        mutableStateLiveData.postValue(new StudentsState(
+                filteredList, null, true, false));
     }
     public void addStudent(@NonNull String id) {
-        selectedStudents.add(new ItemStudentEntity(
-                id,
-                "",
-                "",
-                ""));
+        selectedStudents.add(new ItemStudentEntityModel(
+                id, null, true)
+        );
     }
     public void deleteStudent(@NonNull String id) {
         if (selectedStudents != null) {
-            Iterator<ItemStudentEntity> itr = selectedStudents.iterator();
+            Iterator<ItemStudentEntityModel> itr = selectedStudents.iterator();
             while (itr.hasNext()) {
-                ItemStudentEntity student = (ItemStudentEntity) itr.next();
+                ItemStudentEntityModel student = (ItemStudentEntityModel) itr.next();
                 if (student.getId().equals(id)) {
                     itr.remove();
                     break;
                 }
+            }
+        }
+    }
+
+    public void updateItemCheckedState(String id, boolean isChecked) {
+        for (ItemStudentEntityModel item : studentModelList) {
+            if (item.getId().equals(id)) {
+                item.setChecked(isChecked);
             }
         }
     }
@@ -113,7 +127,7 @@ public class StudentAddViewModel extends ViewModel {
     }
     public class StudentsState {
         @Nullable
-        private final List<ItemStudentEntity> students;
+        private final List<ItemStudentEntityModel> students;
         @Nullable
         private final String errorMessage;
         @NonNull
@@ -121,7 +135,7 @@ public class StudentAddViewModel extends ViewModel {
         @NonNull
         private final Boolean isLoading;
 
-        public StudentsState(@Nullable List<ItemStudentEntity> students, @Nullable String errorMessage, @NonNull Boolean isSuccess, @NonNull Boolean isLoading) {
+        public StudentsState(@Nullable List<ItemStudentEntityModel> students, @Nullable String errorMessage, @NonNull Boolean isSuccess, @NonNull Boolean isLoading) {
             this.students = students;
             this.errorMessage = errorMessage;
             this.isSuccess = isSuccess;
@@ -129,7 +143,7 @@ public class StudentAddViewModel extends ViewModel {
         }
 
         @Nullable
-        public List<ItemStudentEntity> getStudents() {
+        public List<ItemStudentEntityModel> getStudents() {
             return students;
         }
         @Nullable
@@ -140,7 +154,6 @@ public class StudentAddViewModel extends ViewModel {
         public Boolean getSuccess() {
             return isSuccess;
         }
-
         @NonNull
         public Boolean getLoading() {
             return isLoading;

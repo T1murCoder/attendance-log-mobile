@@ -16,13 +16,13 @@ import java.util.function.Consumer;
 import ru.technosopher.attendancelogapp.databinding.ItemGroupsAddStudentsListBinding;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 
-public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.ViewHolder>{
-    private final Consumer<String> onItemSelected;
-    private final Consumer<String> onItemUnselected;
-    private final List<ItemStudentEntity> data = new ArrayList<>();
-    public StudentListAdapter(Consumer<String> onItemSelected, Consumer<String> onItemUnselected) {
-        this.onItemSelected = onItemSelected;
-        this.onItemUnselected = onItemUnselected;
+public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.ViewHolder> {
+    private final List<ItemStudentEntityModel> data = new ArrayList<>();
+
+    private GroupAddViewModel viewModel;
+
+    public StudentListAdapter(GroupAddViewModel viewModel) {
+        this.viewModel = viewModel;
     }
 
     @NonNull
@@ -46,7 +46,7 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void updateData(List<ItemStudentEntity> newData){
+    public void updateData(List<ItemStudentEntityModel> newData) {
         data.clear();
         data.addAll(newData);
         notifyDataSetChanged();
@@ -54,19 +54,26 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final ItemGroupsAddStudentsListBinding binding;
+
         public ViewHolder(@NonNull ItemGroupsAddStudentsListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
-        public void bind(ItemStudentEntity item) {
-            binding.listItemStudentName.setText(item.getFullName());
-            binding.listItemStudentId.setText(item.getUsername());
-            binding.studentAddCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if (b) onItemSelected.accept(item.getId());
-                    else onItemUnselected.accept(item.getId());
+        public void bind(ItemStudentEntityModel item) {
+            binding.listItemStudentName.setText(item.getItemStudent().getFullName());
+            binding.listItemStudentId.setText(item.getItemStudent().getUsername());
+            binding.studentAddCb.setOnCheckedChangeListener(null);
+            binding.studentAddCb.setChecked(item.isChecked());
+            binding.studentAddCb.setOnCheckedChangeListener((button, isChecked) -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    data.get(position).setChecked(isChecked);
+                    if (isChecked)
+                        viewModel.addStudent(data.get(position).getItemStudent().getId());
+                    else
+                        viewModel.deleteStudent(data.get(position).getItemStudent().getId());
+                    viewModel.updateItemCheckedState(item.getId(), isChecked);
                 }
             });
         }

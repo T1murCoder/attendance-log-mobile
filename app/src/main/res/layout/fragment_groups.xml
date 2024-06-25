@@ -102,6 +102,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:queryHint="Search"
+                android:visibility="gone"
                 app:searchIcon="@drawable/ic_search" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
