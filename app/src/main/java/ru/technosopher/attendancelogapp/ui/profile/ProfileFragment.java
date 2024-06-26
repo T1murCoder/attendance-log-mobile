@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,8 @@ import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 
 
 public class ProfileFragment extends Fragment {
+
+    private final String TAG = "ProfileFragment";
     private NavigationBarChangeListener navigationBarChangeListener;
     private UpdateSharedPreferences prefs;
     private FragmentProfileBinding binding;
@@ -60,10 +63,12 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -84,11 +89,11 @@ public class ProfileFragment extends Fragment {
         binding.profileNameEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!binding.profileNameEt.isFocusable()){
+                if (!binding.profileNameEt.isFocusable()) {
                     binding.profileNameEt.setFocusable(true);
                     binding.profileNameEt.setFocusableInTouchMode(true);
                     binding.profileNameEt.setEnabled(true);
-                }else{
+                } else {
                     binding.profileNameEt.setFocusable(false);
                     binding.profileNameEt.setFocusableInTouchMode(false);
                     binding.profileNameEt.setEnabled(false);
@@ -99,11 +104,11 @@ public class ProfileFragment extends Fragment {
         binding.profileSurnameEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!binding.profileSurnameEt.isFocusable()){
+                if (!binding.profileSurnameEt.isFocusable()) {
                     binding.profileSurnameEt.setFocusable(true);
                     binding.profileSurnameEt.setFocusableInTouchMode(true);
                     binding.profileSurnameEt.setEnabled(true);
-                }else{
+                } else {
                     binding.profileSurnameEt.setFocusable(false);
                     binding.profileSurnameEt.setFocusableInTouchMode(false);
                     binding.profileSurnameEt.setEnabled(false);
@@ -113,11 +118,11 @@ public class ProfileFragment extends Fragment {
         binding.profileTelegramEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!binding.profileTelegramEt.isFocusable()){
+                if (!binding.profileTelegramEt.isFocusable()) {
                     binding.profileTelegramEt.setFocusable(true);
                     binding.profileTelegramEt.setFocusableInTouchMode(true);
                     binding.profileTelegramEt.setEnabled(true);
-                }else{
+                } else {
                     binding.profileTelegramEt.setFocusable(false);
                     binding.profileTelegramEt.setFocusableInTouchMode(false);
                     binding.profileTelegramEt.setEnabled(false);
@@ -127,11 +132,11 @@ public class ProfileFragment extends Fragment {
         binding.profileGithubEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!binding.profileGithubEt.isFocusable()){
+                if (!binding.profileGithubEt.isFocusable()) {
                     binding.profileGithubEt.setFocusable(true);
                     binding.profileGithubEt.setFocusableInTouchMode(true);
                     binding.profileGithubEt.setEnabled(true);
-                }else{
+                } else {
                     binding.profileGithubEt.setFocusable(false);
                     binding.profileGithubEt.setFocusableInTouchMode(false);
                     binding.profileGithubEt.setEnabled(false);
@@ -139,14 +144,14 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        binding.profileNameEt.addTextChangedListener(new OnChangeText(){
+        binding.profileNameEt.addTextChangedListener(new OnChangeText() {
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
                 viewModel.changeName(editable.toString());
             }
         });
-        binding.profileSurnameEt.addTextChangedListener(new OnChangeText(){
+        binding.profileSurnameEt.addTextChangedListener(new OnChangeText() {
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
@@ -154,14 +159,14 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        binding.profileTelegramEt.addTextChangedListener(new OnChangeText(){
+        binding.profileTelegramEt.addTextChangedListener(new OnChangeText() {
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
                 viewModel.changeTelegram(editable.toString());
             }
         });
-        binding.profileGithubEt.addTextChangedListener(new OnChangeText(){
+        binding.profileGithubEt.addTextChangedListener(new OnChangeText() {
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
@@ -223,29 +228,34 @@ public class ProfileFragment extends Fragment {
 
     private void loadAvatar(String imageUrl) {
         StorageReference imageRef = storageRef.child(imageUrl);
-        imageRef.getDownloadUrl().addOnCompleteListener(task -> {
-            if (task != null && task.getResult() != null) {
-                Glide.with(requireContext()).load(task.getResult()).into(binding.profileAvatarIv);
-            }
-        });
+        if (imageRef.getDownloadUrl().isSuccessful()) {
+            imageRef.getDownloadUrl().addOnCompleteListener(task -> {
+                if (task != null && task.getResult() != null && task.isSuccessful()) {
+                    Glide.with(requireContext()).load(task.getResult()).into(binding.profileAvatarIv);
+                }
+                Log.d(TAG, "loadAvatar: " + task.isSuccessful());
+            }).addOnFailureListener(e -> {
+                Log.d(TAG, "loadAvatar: " + false);
+            });
+        }
     }
 
     private void subscribe(ProfileViewModel viewModel) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), state -> {
-            if(Boolean.TRUE.equals(state.getLoading())){
+            if (Boolean.TRUE.equals(state.getLoading())) {
                 binding.profileLoading.setVisibility(View.VISIBLE);
                 binding.profileContent.setVisibility(View.GONE);
                 binding.swipe.setEnabled(false);
                 binding.swipe.setVisibility(View.GONE);
-            }
-            else{
+            } else {
                 binding.swipe.setVisibility(View.VISIBLE);
                 binding.swipe.setEnabled(true);
                 binding.swipe.setRefreshing(false);
                 binding.profileLoading.setVisibility(View.GONE);
                 binding.profileContent.setVisibility(View.VISIBLE);
+
                 TeacherEntity teacher = state.getTeacher();
-                if (teacher != null){
+                if (teacher != null) {
                     prefs.profileUpdate(
                             state.getTeacher().getName(),
                             state.getTeacher().getSurname(),
@@ -258,12 +268,10 @@ public class ProfileFragment extends Fragment {
                     binding.profileSurnameEt.setText(teacher.getSurname());
                     binding.profileTelegramEt.setText(teacher.getTelegram_url() != null ? teacher.getTelegram_url() : "Provide your telegram");
                     binding.profileGithubEt.setText(teacher.getGithub_url() != null ? teacher.getGithub_url() : "Provide your github");
-                    // TODO (validate link)
-                    // TODO (FIREBASE SLANDER?????????)
                     if (teacher.getPhoto_url() != null) {
                         loadAvatar(teacher.getPhoto_url());
                     }
-                }else{
+                } else {
                     Toast.makeText(getContext(), state.getErrorMessage(), Toast.LENGTH_SHORT).show();
                     viewModel.loadPrefs(
                             prefs.getPrefsId(),
@@ -276,21 +284,21 @@ public class ProfileFragment extends Fragment {
                     );
                 }
             }
-
         });
         viewModel.logoutLiveData.observe(getViewLifecycleOwner(), unused -> {
             prefs.clearAll();
             View view = getView();
             if (view == null) return;
-            //navigationBarChangeListener.changeSelectedItem(R.id.lessons);
             Navigation.findNavController(view).navigate(R.id.action_profileFragment_to_loginFragment);
         });
     }
+
     @Override
     public void onDestroyView() {
         binding = null;
         super.onDestroyView();
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

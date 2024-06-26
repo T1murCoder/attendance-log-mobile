@@ -123,6 +123,8 @@
                 android:background="@drawable/action_elements_background"
                 android:fontFamily="@font/inter_regular"
                 android:hint="Введите тему"
+                android:maxLength="18"
+                android:inputType="text"
                 android:textSize="14sp" />
 
         </LinearLayout>

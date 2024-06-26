@@ -115,7 +115,6 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
             binding.dateTv.setText(DateFormatter.getDateStringFromDate(item.getTimeStart(), "dd MMM yyyy"));
             binding.lessonTitle.setText(item.getTheme());
 
-
             if (item.getActiveQrCode() == null){
                 binding.qrCodeImage.setVisibility(View.GONE);
                 binding.lessonItemImageCheckingPb.setVisibility(View.GONE);

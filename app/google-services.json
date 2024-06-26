@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "13781790789",
-    "project_id": "tuton-fb",
-    "storage_bucket": "tuton-fb.appspot.com"
+    "project_number": "406155840886",
+    "project_id": "tuton-cdn",
+    "storage_bucket": "tuton-cdn.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:13781790789:android:24fd9743bd1619880f332c",
+        "mobilesdk_app_id": "1:406155840886:android:92dde7394e4af601fd7e57",
         "android_client_info": {
           "package_name": "ru.technosopher.attendancelogapp"
         }
@@ -15,26 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDn4PsHefZq5oKYC6ctBAKcDob7b3r2TvM"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:13781790789:android:c17ed74749c53a9b0f332c",
-        "android_client_info": {
-          "package_name": "ru.technosopher.attendancelogappstudents"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDn4PsHefZq5oKYC6ctBAKcDob7b3r2TvM"
+          "current_key": "AIzaSyDevKfhVBcQYdEmrY3hpFccC_xEzX19aUM"
         }
       ],
       "services": {

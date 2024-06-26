@@ -25,7 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <RelativeLayout
                 android:id="@+id/avatar_container"
@@ -134,6 +135,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:enabled="false"
+                            android:inputType="text"
+                            android:maxLength="15"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:fontFamily="@font/inter_regular"
@@ -175,7 +178,8 @@
                             android:focusableInTouchMode="false"
                             android:fontFamily="@font/inter_regular"
                             tools:text="Name"
-
+                            android:inputType="text"
+                            android:maxLength="15"
                             android:textAlignment="textEnd"
                             android:textSize="14sp" />
 
@@ -212,7 +216,8 @@
                             android:focusableInTouchMode="false"
                             android:fontFamily="@font/inter_regular"
                             tools:text="telegram"
-
+                            android:inputType="text"
+                            android:maxLength="30"
                             android:textAlignment="textEnd"
                             android:textSize="14sp" />
 
@@ -246,6 +251,8 @@
                             android:layout_height="wrap_content"
                             android:enabled="false"
                             android:focusable="false"
+                            android:inputType="text"
+                            android:maxLength="30"
                             android:focusableInTouchMode="false"
                             android:fontFamily="@font/inter_regular"
                             tools:text="github_link"
@@ -346,7 +353,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:backgroundTint="@color/background_gray"
+                        android:background="@color/background_gray"
                         app:srcCompat="@drawable/ic_logout" />
 
                 </LinearLayout>
