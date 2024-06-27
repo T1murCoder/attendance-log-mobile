@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -45,13 +46,26 @@ public class StudentAddFragment extends Fragment {
         binding = FragmentStudentsAddBinding.bind(view);
         viewModel = new ViewModelProvider(this).get(StudentAddViewModel.class);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        StudentListAdapter adapter = new StudentListAdapter(this::addStudent, this::deleteStudent);
+        StudentListAdapterLegacy adapter = new StudentListAdapterLegacy(viewModel);
 
         binding.studentsRecyclerView.setLayoutManager(mLayoutManager);
         binding.studentsRecyclerView.setAdapter(adapter);
 
         String id = getArguments() != null ? getArguments().getString(KEY_ID) : "-1";
         viewModel.saveGroupId(id);
+
+        binding.studentSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                viewModel.filterList(newText);
+                return true;
+            }
+        });
         binding.back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,17 +90,7 @@ public class StudentAddFragment extends Fragment {
         subscribe(viewModel, adapter);
         viewModel.update();
     }
-
-    private void addStudent(@NonNull String id) {
-        viewModel.addStudent(id);
-    }
-    private void deleteStudent(@NonNull String id){
-        viewModel.deleteStudent(id);
-    }
-    private void clearStudents(){
-        viewModel.clearStudents();
-    }
-    private void subscribe(StudentAddViewModel viewModel, StudentListAdapter adapter) {
+    private void subscribe(StudentAddViewModel viewModel, StudentListAdapterLegacy adapter) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), studentsState -> {
             if (studentsState.getLoading()){
                 binding.progressBar.setVisibility(Utils.visibleOrGone(true));

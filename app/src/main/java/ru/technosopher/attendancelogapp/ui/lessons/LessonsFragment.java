@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,6 @@ public class LessonsFragment extends Fragment{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
     }
 
@@ -66,6 +66,7 @@ public class LessonsFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentLessonsBinding.bind(view);
         navigationBarChangeListener.changeSelectedItem(R.id.lessons);
+
         LessonsListAdapter adapter = new LessonsListAdapter(getContext(), this::checkQrCodeIsAlive, this::onDelete, this::onOpenJournal);
 
         viewModel = new ViewModelProvider(this).get(LessonsViewModel.class);
@@ -78,10 +79,39 @@ public class LessonsFragment extends Fragment{
             }
         });
 
+        binding.openEndedLessons.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.noLessonsTv.setVisibility(View.GONE);
+
+                adapter.updateData(viewModel.getEndedLessons());
+
+                binding.endedLessonsBackLayout.setVisibility(View.VISIBLE);
+                binding.openEndedLessons.setVisibility(View.GONE);
+
+                binding.floatingActionButton.setVisibility(View.GONE);
+
+            }
+        });
+
+        binding.backToCurrentLessons.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter.updateData(viewModel.getCurrentLessons());
+                binding.endedLessonsBackLayout.setVisibility(View.GONE);
+                binding.openEndedLessons.setVisibility(View.VISIBLE);
+                binding.floatingActionButton.setVisibility(View.VISIBLE);
+                if (viewModel.getCurrentLessons().isEmpty() || viewModel.getCurrentLessons() == null){
+                    binding.noLessonsTv.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         binding.swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 viewModel.update();
+                binding.openEndedLessons.setVisibility(View.VISIBLE);
+                binding.endedLessonsBackLayout.setVisibility(View.GONE);
             }
         });
         subscribe(viewModel, adapter);
@@ -106,28 +136,40 @@ public class LessonsFragment extends Fragment{
             if (state.getLoading()) {
                 binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(true));
                 binding.recyclerView.setVisibility(Utils.visibleOrGone(false));
+
+                binding.openEndedLessons.setVisibility(View.GONE);
+                binding.endedLessonsBackLayout.setVisibility(View.GONE);
+
                 binding.floatingActionButton.setVisibility(Utils.visibleOrGone(false));
                 binding.noLessonsTv.setVisibility(View.GONE);
 
                 binding.swipe.setEnabled(false);
                 binding.swipe.setVisibility(View.GONE);
-            } else {
+            }
+            else {
                 binding.floatingActionButton.setVisibility(Utils.visibleOrGone(true));
                 binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(false));
                 binding.recyclerView.setVisibility(Utils.visibleOrGone(state.getSuccess()));
+                binding.openEndedLessons.setVisibility(Utils.visibleOrGone(state.getSuccess()));
 
                 binding.swipe.setVisibility(View.VISIBLE);
                 binding.swipe.setEnabled(true);
                 binding.swipe.setRefreshing(false);
 
                 if (state.getSuccess()){
-                    if (state.getLessons().isEmpty()){
+                    binding.recyclerView.setVisibility(View.VISIBLE);
+                    if (state.getLessons().isEmpty() && viewModel.getEndedLessons().isEmpty()){
+                        binding.openEndedLessons.setVisibility(View.GONE);
+                        binding.endedLessonsBackLayout.setVisibility(View.GONE);
                         binding.noLessonsTv.setVisibility(View.VISIBLE);
-                        binding.recyclerView.setVisibility(View.GONE);
                     }
-                    else{
-                        binding.recyclerView.setVisibility(View.VISIBLE);
+                    else if (!state.getLessons().isEmpty() && viewModel.getEndedLessons().isEmpty()){
+                        binding.openEndedLessons.setVisibility(View.GONE);
+                        binding.endedLessonsBackLayout.setVisibility(View.GONE);
                         binding.noLessonsTv.setVisibility(View.GONE);
+                    } else if (state.getLessons().isEmpty() && !viewModel.getEndedLessons().isEmpty()) {
+                        binding.openEndedLessons.setVisibility(View.VISIBLE);
+                        binding.noLessonsTv.setVisibility(View.VISIBLE);
                     }
                     adapter.updateData(state.getLessons());
                 }
@@ -142,6 +184,8 @@ public class LessonsFragment extends Fragment{
                 Toast.makeText(getContext(), "Что-то пошло не так", Toast.LENGTH_SHORT).show();
                 viewModel.update();
             }
+//            binding.openEndedLessons.setVisibility(View.VISIBLE);
+//            binding.endedLessonsBackLayout.setVisibility(View.GONE);
         });
 
         viewModel.addErrorLiveData.observe(getViewLifecycleOwner(), message -> {
@@ -155,8 +199,6 @@ public class LessonsFragment extends Fragment{
             dialog.binding.themeEt.setText(null);
             dialog.dismiss();
         });
-
-
 
         viewModel.groupsLiveData.observe(getViewLifecycleOwner(), groupsState -> {
             if (groupsState.getSuccess()) {
@@ -184,7 +226,6 @@ public class LessonsFragment extends Fragment{
             throw new ClassCastException(context.toString());
         }
     }
-
     @Override
     public void onStart() {
         super.onStart();

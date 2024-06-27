@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -42,12 +43,22 @@ public class GroupAddFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentGroupAddBinding.bind(view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        StudentListAdapter adapter = new StudentListAdapter(this::addStudent, this::deleteStudent);
-
         viewModel = new ViewModelProvider(this).get(GroupAddViewModel.class);
+        StudentListAdapter adapter = new StudentListAdapter(viewModel);
         binding.studentsRecyclerView.setLayoutManager(mLayoutManager);
         binding.studentsRecyclerView.setAdapter(adapter);
+        binding.studentSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                viewModel.filterList(newText.trim());
+                return true;
+            }
+        });
         binding.back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,7 +70,7 @@ public class GroupAddFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
-                viewModel.changeName(editable.toString());
+                viewModel.changeName(editable.toString().trim());
             }
 
         });
@@ -106,6 +117,11 @@ public class GroupAddFragment extends Fragment {
                 binding.studentsRecyclerView.setVisibility(Utils.visibleOrGone(studentsState.getSuccess()));
                 binding.errorTv.setVisibility(Utils.visibleOrGone(!studentsState.getSuccess()));
                 if (studentsState.getSuccess()){
+//                    if (studentsState.getStudents() != null) {
+//                        adapter.updateData(studentsState.getStudents());
+//                    } else {
+//                        adapter.updateData(new ArrayList<>());
+//                    }
                     adapter.updateData(studentsState.getStudents());
                 }
                 else{

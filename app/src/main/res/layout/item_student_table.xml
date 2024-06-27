@@ -8,7 +8,8 @@
     android:layout_marginBottom="4dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:background="@drawable/action_elements_background">
+    android:background="@drawable/action_elements_background"
+    android:backgroundTint="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

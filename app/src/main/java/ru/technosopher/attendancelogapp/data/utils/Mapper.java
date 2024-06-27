@@ -14,6 +14,7 @@ import ru.technosopher.attendancelogapp.domain.entities.AttendanceEntity;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 import ru.technosopher.attendancelogapp.domain.entities.QrCodeEntity;
 import ru.technosopher.attendancelogapp.domain.entities.TeacherEntity;
+import ru.technosopher.attendancelogapp.ui.group_add.ItemStudentEntityModel;
 
 public class Mapper {
     public static StudentItemDto fromEntityToDto(@NonNull ItemStudentEntity entity){
@@ -87,4 +88,11 @@ public class Mapper {
         return new TeacherEntity(dto.id, dto.name, dto.surname, dto.username, dto.telegram_url, dto.github_url, dto.photo_url);
     }
 
+    public static ItemStudentEntityModel fromEntityToModel(ItemStudentEntity entity) {
+        return new ItemStudentEntityModel(entity.getId(), entity, false);
+    }
+
+    public static ItemStudentEntity fromModelToEntity(ItemStudentEntityModel selectedState) {
+        return new ItemStudentEntity(selectedState.getId(), "", "", "");
+    }
 }

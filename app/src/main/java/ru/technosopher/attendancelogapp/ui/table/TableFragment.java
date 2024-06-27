@@ -106,6 +106,20 @@ public class TableFragment extends Fragment {
             }
         });
 
+        binding.calendarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        binding.calendarForward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         binding.studentsRv.setAdapter(attendancesAdapter);
         binding.datesRv.setAdapter(datesAdapter);
 
