@@ -164,14 +164,14 @@ public class ProfileFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
-                viewModel.changeTelegram(editable.toString().trim());
+                viewModel.changeTelegram(editable.toString());
             }
         });
         binding.profileGithubEt.addTextChangedListener(new OnChangeText() {
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
-                viewModel.changeGithub(editable.toString().trim());
+                viewModel.changeGithub(editable.toString());
             }
         });
 
