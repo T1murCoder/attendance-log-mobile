@@ -59,7 +59,7 @@ public class LoginFragment extends Fragment{
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
-                viewModel.changeLogin(editable.toString());
+                viewModel.changeLogin(editable.toString().trim());
             }
         });
 
@@ -67,7 +67,7 @@ public class LoginFragment extends Fragment{
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
-                viewModel.changePassword(editable.toString());
+                viewModel.changePassword(editable.toString().trim());
             }
         });
 

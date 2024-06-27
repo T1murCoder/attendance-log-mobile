@@ -136,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/inter_regular"
-                    android:text="Remember me"
+                    android:text="Запомнить меня"
                     android:textColor="@color/main_gray"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -154,7 +154,7 @@
                     android:background="@drawable/action_elements_background"
                     android:fontFamily="@font/inter_regular"
                     android:padding="16dp"
-                    android:text="Sign in"
+                    android:text="Войти"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -173,7 +173,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:fontFamily="@font/inter_regular"
-                    android:text="No account?"
+                    android:text="Нет аккаунта?"
                     android:textColor="@color/main_gray"
                     android:textSize="16sp" />
 
@@ -182,7 +182,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_semibold"
-                    android:text="Sign up"
+                    android:text="Зарегестрироваться"
                     android:textColor="@color/main_blue"
                     android:textSize="16sp" />
 

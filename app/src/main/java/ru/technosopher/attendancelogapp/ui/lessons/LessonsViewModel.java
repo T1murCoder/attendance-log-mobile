@@ -206,7 +206,7 @@ public class LessonsViewModel extends ViewModel {
         lessons.add(lesson);
     }
     public void changeTheme(Editable editable) {
-        theme = String.valueOf(editable);
+        theme = String.valueOf(editable).trim();
     }
     public void changeStartTime(Integer hour, Integer minute) {
         if (timeStart == null) timeStart = new GregorianCalendar();

@@ -148,14 +148,14 @@ public class ProfileFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
-                viewModel.changeName(editable.toString());
+                viewModel.changeName(editable.toString().trim());
             }
         });
         binding.profileSurnameEt.addTextChangedListener(new OnChangeText() {
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
-                viewModel.changeSurname(editable.toString());
+                viewModel.changeSurname(editable.toString().trim());
             }
         });
 
@@ -163,14 +163,14 @@ public class ProfileFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
-                viewModel.changeTelegram(editable.toString());
+                viewModel.changeTelegram(editable.toString().trim());
             }
         });
         binding.profileGithubEt.addTextChangedListener(new OnChangeText() {
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
-                viewModel.changeGithub(editable.toString());
+                viewModel.changeGithub(editable.toString().trim());
             }
         });
 
@@ -227,8 +227,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private void loadAvatar(String imageUrl) {
-        StorageReference imageRef = storageRef.child(imageUrl);
-        if (imageRef.getDownloadUrl().isSuccessful()) {
+        try {
+            StorageReference imageRef = storageRef.child(imageUrl);
             imageRef.getDownloadUrl().addOnCompleteListener(task -> {
                 if (task != null && task.getResult() != null && task.isSuccessful()) {
                     Glide.with(requireContext()).load(task.getResult()).into(binding.profileAvatarIv);
@@ -237,6 +237,8 @@ public class ProfileFragment extends Fragment {
             }).addOnFailureListener(e -> {
                 Log.d(TAG, "loadAvatar: " + false);
             });
+        } catch (Exception e) {
+            Log.d(TAG, String.valueOf(e));
         }
     }
 

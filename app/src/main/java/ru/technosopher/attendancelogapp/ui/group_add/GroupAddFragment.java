@@ -55,7 +55,7 @@ public class GroupAddFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                viewModel.filterList(newText);
+                viewModel.filterList(newText.trim());
                 return true;
             }
         });
@@ -70,7 +70,7 @@ public class GroupAddFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
-                viewModel.changeName(editable.toString());
+                viewModel.changeName(editable.toString().trim());
             }
 
         });

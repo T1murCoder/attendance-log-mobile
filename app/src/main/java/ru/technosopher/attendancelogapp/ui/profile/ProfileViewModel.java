@@ -75,9 +75,6 @@ public class ProfileViewModel extends ViewModel {
                 changeGithub(teacher.getValue().getGithub_url());
                 changePhoto(teacher.getValue().getPhoto_url());
 
-                //Log.e("ProfileViewModel", teacher.getValue().getName());
-                //Log.e("ProfileViewModel", teacher.getValue().getSurname());
-
                 mutableStateLiveData.postValue(new State(
                         null, new TeacherEntity(
                         id,
