@@ -26,6 +26,7 @@ import com.canhub.cropper.CropImageContract;
 import com.canhub.cropper.CropImageContractOptions;
 import com.canhub.cropper.CropImageOptions;
 import com.canhub.cropper.CropImageView;
+import com.google.android.gms.tasks.RuntimeExecutionException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -227,21 +228,22 @@ public class ProfileFragment extends Fragment {
     }
 
     private void loadAvatar(String imageUrl) {
-        try {
-            StorageReference imageRef = storageRef.child(imageUrl);
-            imageRef.getDownloadUrl().addOnCompleteListener(task -> {
+        StorageReference imageRef = storageRef.child(imageUrl);
+        imageRef.getDownloadUrl().addOnCompleteListener(task -> {
+            try {
                 if (task != null && task.getResult() != null && task.isSuccessful()) {
                     Glide.with(requireContext()).load(task.getResult()).into(binding.profileAvatarIv);
                 }
                 Log.d(TAG, "loadAvatar: " + task.isSuccessful());
-            }).addOnFailureListener(e -> {
+            } catch (RuntimeExecutionException e) {
                 Log.d(TAG, "loadAvatar: " + false);
-            });
-        } catch (Exception e) {
-            Log.d(TAG, String.valueOf(e));
-        }
+            }
+        }).addOnFailureListener(e -> {
+            Log.d(TAG, "loadAvatar: " + false);
+        }).addOnCanceledListener(() -> {
+            Log.d(TAG, "loadAvatar: " + false);
+        });
     }
-
     private void subscribe(ProfileViewModel viewModel) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), state -> {
             if (Boolean.TRUE.equals(state.getLoading())) {
