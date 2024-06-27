@@ -1,4 +1,4 @@
-package ru.technosopher.attendancelogapp.ui.group_add;
+package ru.technosopher.attendancelogapp.ui.student_add;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
@@ -15,20 +15,18 @@ import java.util.function.Consumer;
 
 import ru.technosopher.attendancelogapp.databinding.ItemGroupsAddStudentsListBinding;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
+import ru.technosopher.attendancelogapp.ui.group_add.ItemStudentEntityModel;
 
-public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.ViewHolder> {
+public class StudentListAdapterLegacy extends RecyclerView.Adapter<StudentListAdapterLegacy.ViewHolder>{
+
+    private StudentAddViewModel viewModel;
     private final List<ItemStudentEntityModel> data = new ArrayList<>();
-
-    private GroupAddViewModel viewModel;
-
-    public StudentListAdapter(GroupAddViewModel viewModel) {
-        this.viewModel = viewModel;
-    }
+    public StudentListAdapterLegacy(StudentAddViewModel viewModel) {this.viewModel = viewModel;}
 
     @NonNull
     @Override
-    public StudentListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new StudentListAdapter.ViewHolder(
+    public StudentListAdapterLegacy.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new StudentListAdapterLegacy.ViewHolder(
                 ItemGroupsAddStudentsListBinding.inflate(LayoutInflater.from(
                                 parent.getContext()),
                         parent,
@@ -36,7 +34,7 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull StudentListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StudentListAdapterLegacy.ViewHolder holder, int position) {
         holder.bind(data.get(position));
     }
 
@@ -46,7 +44,7 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void updateData(List<ItemStudentEntityModel> newData) {
+    public void updateData(List<ItemStudentEntityModel> newData){
         data.clear();
         data.addAll(newData);
         notifyDataSetChanged();
@@ -54,7 +52,6 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final ItemGroupsAddStudentsListBinding binding;
-
         public ViewHolder(@NonNull ItemGroupsAddStudentsListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;

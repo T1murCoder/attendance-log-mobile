@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.technosopher.attendancelogapp.databinding.ElementDateBinding;
+import ru.technosopher.attendancelogapp.ui.utils.DateFormatter;
 
 
 public class DatesAdapter extends RecyclerView.Adapter<DatesAdapter.ViewHolder> {
 
     private final List<String> data = new ArrayList<>();
-
 
     @NonNull
     @Override

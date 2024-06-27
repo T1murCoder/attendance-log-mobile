@@ -56,7 +56,7 @@ public class RegistrationFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
-                viewModel.changeLogin(editable.toString());
+                viewModel.changeLogin(editable.toString().trim());
             }
         });
 
@@ -64,7 +64,7 @@ public class RegistrationFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
-                viewModel.changeName(editable.toString());
+                viewModel.changeName(editable.toString().trim());
             }
         });
 
@@ -72,7 +72,7 @@ public class RegistrationFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
-                viewModel.changeSurname(editable.toString());
+                viewModel.changeSurname(editable.toString().trim());
             }
         });
 
@@ -80,7 +80,7 @@ public class RegistrationFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 super.afterTextChanged(editable);
-                viewModel.changePassword(editable.toString());
+                viewModel.changePassword(editable.toString().trim());
             }
         });
 
