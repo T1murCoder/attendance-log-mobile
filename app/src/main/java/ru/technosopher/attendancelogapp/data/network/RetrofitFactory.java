@@ -1,6 +1,7 @@
 package ru.technosopher.attendancelogapp.data.network;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -86,11 +87,12 @@ public class RetrofitFactory {
         public GregorianCalendar deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             synchronized (dateFormat){
                 try{
-                    //dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
                     Date date = dateFormat.parse(json.getAsString());
                     GregorianCalendar calendar = new GregorianCalendar();
-                    calendar.setTimeZone(TimeZone.getDefault());
                     calendar.setTime(date);
+                    calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
                     return calendar;
                 }catch (ParseException e){
                     throw new JsonParseException(e);
@@ -102,7 +104,7 @@ public class RetrofitFactory {
         @Override
         public JsonElement serialize(GregorianCalendar src, Type typeOfT, JsonSerializationContext context){
             synchronized (dateFormat){
-                dateFormat.setTimeZone(TimeZone.getDefault());
+                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
                 return context.serialize(dateFormat.format(src.getTime()));
             }
         }
