@@ -120,7 +120,6 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
                 binding.lessonItemImageCheckingPb.setVisibility(View.GONE);
                 binding.emptyQrCodeState.setVisibility(View.VISIBLE);
                 binding.qrCodeUploadLayout.setVisibility(View.GONE);
-                binding.qrCodeCopyLinkLayout.setVisibility(View.GONE);
             }
             else{
                 binding.lessonItemImageCheckingPb.setVisibility(View.GONE);
@@ -128,7 +127,7 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
                 binding.qrCodeImage.setVisibility(View.VISIBLE);
                 binding.qrCodeImage.setImageBitmap(Utils.generateQr(item.getActiveQrCode().getId(), 900, 900));
                 binding.qrCodeUploadLayout.setVisibility(View.VISIBLE);
-                binding.qrCodeCopyLinkLayout.setVisibility(View.VISIBLE);
+
             }
             binding.generateQrCodeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
