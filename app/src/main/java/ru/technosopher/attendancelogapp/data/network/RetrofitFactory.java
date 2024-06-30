@@ -86,7 +86,7 @@ public class RetrofitFactory {
         public GregorianCalendar deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             synchronized (dateFormat){
                 try{
-                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                    //dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
                     Date date = dateFormat.parse(json.getAsString());
                     GregorianCalendar calendar = new GregorianCalendar();
                     calendar.setTimeZone(TimeZone.getDefault());
