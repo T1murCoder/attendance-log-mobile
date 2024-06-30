@@ -1,6 +1,7 @@
 package ru.technosopher.attendancelogapp.ui.lessons;
 
 import android.text.Editable;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -162,6 +163,8 @@ public class LessonsViewModel extends ViewModel {
             mutableAddErrorLiveData.postValue("Введите тему занятия");
             return;
         }
+        Log.e("LessonViewModel", "IN LESSON CREATE");
+        Log.e("LessonViewModel", "IN LESSON CREATE");
 
         createLessonUseCase.execute(theme, groupId, "", timeStart, timeEnd, date, lessonStatus -> {
             if (lessonStatus.getStatusCode() == 200) {
@@ -172,6 +175,10 @@ public class LessonsViewModel extends ViewModel {
                     mutableAddErrorLiveData.postValue("Что-то пошло не так");
                     clearAllFields();
                 }
+            }
+            else{
+                Log.e("LessonViewModel", "IN LESSON CREATE ERROR");
+                Log.e("LessonViewModel", ""+lessonStatus.getStatusCode());
             }
         });
     }
