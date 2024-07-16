@@ -28,12 +28,10 @@ public class LoginFragment extends Fragment{
     private NavigationBarChangeListener navigationBarChangeListener;
     private FragmentLoginBinding binding;
     private LoginViewModel viewModel;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_login, container, false);
@@ -123,7 +121,6 @@ public class LoginFragment extends Fragment{
             binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(loading));
         });
     }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -134,7 +131,6 @@ public class LoginFragment extends Fragment{
             throw new ClassCastException(context.toString());
         }
     }
-
     @Override
     public void onDestroyView() {
         binding = null;

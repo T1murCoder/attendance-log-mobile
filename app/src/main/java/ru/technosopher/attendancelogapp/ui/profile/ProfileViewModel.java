@@ -18,7 +18,6 @@ import ru.technosopher.attendancelogapp.domain.sign.LogoutUseCase;
 import ru.technosopher.attendancelogapp.domain.teacher.UpdateTeacherProfileUseCase;
 
 public class ProfileViewModel extends ViewModel {
-
     public static final String TAG = "PROFILE_VIEW_MODEL";
     public static final String AVATAR_PREFIX = "images/avatar_";
     private final FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -34,7 +33,6 @@ public class ProfileViewModel extends ViewModel {
     private final UpdateTeacherProfileUseCase updateTeacherProfileUseCase = new UpdateTeacherProfileUseCase(
             TeacherRepositoryImpl.getInstance()
     );
-
     private final GetTeacherByIdUseCase getTeacherByIdUseCase = new GetTeacherByIdUseCase(
             TeacherRepositoryImpl.getInstance()
     );
@@ -90,7 +88,6 @@ public class ProfileViewModel extends ViewModel {
         });
 
     }
-
     public void updateProfile(String id, String prefsLogin) {
         if (name == null || surname == null || name.isEmpty() || surname.isEmpty()) {
             mutableStateLiveData.postValue(new State("Имя и фамилия не могут быть пустыми", null, false));
@@ -116,7 +113,6 @@ public class ProfileViewModel extends ViewModel {
                     });
         }
     }
-
     public void uploadAvatar(String id, String prefsLogin, Uri image) {
         if (image != null) {
             StorageReference imageRef = storageRef.child(AVATAR_PREFIX + id + ".png");
@@ -144,32 +140,25 @@ public class ProfileViewModel extends ViewModel {
             Log.d(TAG, "Image is null!");
         }
     }
-
     public void logout() {
         logoutUseCase.execute();
         mutableLogoutLiveData.postValue(null);
     }
-
     public void changeName(String name) {
         this.name = name;
     }
-
     public void changeSurname(String surname) {
         this.surname = surname;
     }
-
     public void changeTelegram(String telegram) {
         this.telegram = telegram;
     }
-
     public void changeGithub(String github) {
         this.github = github;
     }
-
     public void changePhoto(String photo) {
         this.photo = photo;
     }
-
     public class State {
         @Nullable
         private final String errorMessage;

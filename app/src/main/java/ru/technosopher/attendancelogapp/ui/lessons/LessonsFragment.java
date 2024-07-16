@@ -11,9 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.text.Editable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +20,10 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.ismaeldivita.chipnavigation.ChipNavigationBar;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.databinding.DialogCreateLessonBinding;
@@ -42,25 +36,20 @@ import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
 import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
-
 public class LessonsFragment extends Fragment{
-
     public final static String TAG = "LessonsFragment";
     private NavigationBarChangeListener navigationBarChangeListener;
     private LessonsViewModel viewModel;
     private FragmentLessonsBinding binding;
     private BottomLessonCreateDialog dialog;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_lessons, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -116,8 +105,22 @@ public class LessonsFragment extends Fragment{
         });
         subscribe(viewModel, adapter);
     }
-
-
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            navigationBarChangeListener = (NavigationBarChangeListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString());
+        }
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
+        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
+        viewModel.update();
+    }
     private void checkQrCodeIsAlive(@NonNull String lessonId){
         viewModel.checkQRCodeIsAlive(lessonId);
     }
@@ -217,31 +220,13 @@ public class LessonsFragment extends Fragment{
             adapter.updateItemQrCode(new QrCodeEntity("", qrCodeState.getLessonId(), null, null));
         });
     }
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            navigationBarChangeListener = (NavigationBarChangeListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString());
-        }
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
-        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
-        viewModel.update();
-    }
     public static class BottomLessonCreateDialog extends BottomSheetDialogFragment {
         private  DialogCreateLessonBinding binding;
         private List<ItemGroupEntity> groups = Collections.singletonList(new ItemGroupEntity("-1", "Не выбрано"));
         private final LessonsViewModel lessonsViewModel;
-
         public BottomLessonCreateDialog(LessonsViewModel lessonsViewModel){
             this.lessonsViewModel = lessonsViewModel;
         }
-
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -326,7 +311,6 @@ public class LessonsFragment extends Fragment{
             this.groups.add(0, new ItemGroupEntity("-1", "Не выбрано"));
             this.groups.addAll(groups);
         }
-
         @Override
         public void onDestroyView() {
             binding = null;

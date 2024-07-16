@@ -42,14 +42,12 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
     private final Consumer<String> onDelete;
     private final Consumer<String> onOpenJournal;
     private final List<LessonEntity> data = new ArrayList<>();
-
     public LessonsListAdapter(Context context, Consumer<String> onCheckQrCodeIsAlive, Consumer<String> onDelete, Consumer<String> onOpenJournal) {
         this.context = context;
         this.onCheckQrCodeIsAlive = onCheckQrCodeIsAlive;
         this.onDelete = onDelete;
         this.onOpenJournal = onOpenJournal;
     }
-
     @NonNull
     @Override
     public LessonsListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -59,24 +57,20 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
                         parent,
                         false));
     }
-
     @Override
     public void onBindViewHolder(@NonNull LessonsListAdapter.ViewHolder holder, int position) {
         holder.bind(data.get(position));
     }
-
     @Override
     public int getItemCount() {
         return data.size();
     }
-
     @SuppressLint("NotifyDataSetChanged")
     public void updateData(List<LessonEntity> newData){
         data.clear();
         data.addAll(newData);
         notifyDataSetChanged();
     }
-
     public void updateItemQrCode(QrCodeEntity qrCode){
         if (qrCode.getId().isEmpty() || qrCode.getId() == null) {
             for (int ind = 0; ind < data.size(); ind++){
@@ -99,7 +93,6 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
             }
         }
     }
-
     public class ViewHolder extends RecyclerView.ViewHolder{
         private final ItemLessonsListBinding binding;
         private Boolean closed = true;

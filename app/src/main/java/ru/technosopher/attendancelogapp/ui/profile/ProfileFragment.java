@@ -40,7 +40,6 @@ import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 
 
 public class ProfileFragment extends Fragment {
-
     private final String TAG = "ProfileFragment";
     private NavigationBarChangeListener navigationBarChangeListener;
     private UpdateSharedPreferences prefs;
@@ -64,12 +63,10 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -210,7 +207,21 @@ public class ProfileFragment extends Fragment {
         );
 
     }
-
+    @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
+    }
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            navigationBarChangeListener = (NavigationBarChangeListener) context;
+            prefs = (UpdateSharedPreferences) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString());
+        }
+    }
     private void startCrop() {
         CropImageOptions options = new CropImageOptions();
         options.imageSourceIncludeCamera = false;
@@ -226,7 +237,6 @@ public class ProfileFragment extends Fragment {
 
         cropImageActivity.launch(cropOptions);
     }
-
     private void loadAvatar(String imageUrl) {
         StorageReference imageRef = storageRef.child(imageUrl);
         imageRef.getDownloadUrl().addOnCompleteListener(task -> {
@@ -295,22 +305,5 @@ public class ProfileFragment extends Fragment {
             if (view == null) return;
             Navigation.findNavController(view).navigate(R.id.action_profileFragment_to_loginFragment);
         });
-    }
-
-    @Override
-    public void onDestroyView() {
-        binding = null;
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            navigationBarChangeListener = (NavigationBarChangeListener) context;
-            prefs = (UpdateSharedPreferences) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString());
-        }
     }
 }

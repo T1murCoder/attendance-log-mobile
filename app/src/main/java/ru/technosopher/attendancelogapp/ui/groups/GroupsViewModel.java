@@ -16,13 +16,13 @@ import ru.technosopher.attendancelogapp.domain.groups.GetGroupsListUseCase;
 
 public class GroupsViewModel extends ViewModel {
     private final MutableLiveData<State> mutableStateLiveData = new MutableLiveData<>();
+
     public final LiveData<State> stateLiveData = mutableStateLiveData;
     private final MutableLiveData<Boolean> mutableDeleteLiveData = new MutableLiveData<>();
     public final LiveData<Boolean> deleteLiveData = mutableDeleteLiveData;
 
     /* USE CASES */
     private final GetGroupsListUseCase getGroupsListUseCase = new GetGroupsListUseCase(GroupsRepositoryImpl.getInstance());
-
     private final DeleteGroupUseCase deleteGroupUseCase = new DeleteGroupUseCase(GroupsRepositoryImpl.getInstance());
     /* USE CASES */
 
@@ -36,13 +36,6 @@ public class GroupsViewModel extends ViewModel {
         });
     }
 
-    private State fromStatus(Status<List<ItemGroupEntity>> status) {
-        return new State(
-                status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
-                status.getValue(),
-                status.getErrors() == null && status.getValue() != null, false);
-    }
-
     public void deleteGroup(@NonNull String id){
         deleteGroupUseCase.execute(id, status -> {
             if (status.getStatusCode() == 200 && status.getErrors() == null){
@@ -53,6 +46,13 @@ public class GroupsViewModel extends ViewModel {
                 mutableDeleteLiveData.postValue(false);
             }
         });
+    }
+
+    private State fromStatus(Status<List<ItemGroupEntity>> status) {
+        return new State(
+                status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
+                status.getValue(),
+                status.getErrors() == null && status.getValue() != null, false);
     }
 
     public class State {

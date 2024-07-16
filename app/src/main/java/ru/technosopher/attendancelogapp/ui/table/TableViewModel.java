@@ -23,7 +23,6 @@ import ru.technosopher.attendancelogapp.ui.utils.DateFormatter;
 
 public class TableViewModel extends ViewModel {
     private final MutableLiveData<State> mutableStateLiveData = new MutableLiveData<>();
-
     public LiveData<State> stateLiveData = mutableStateLiveData;
     private final MutableLiveData<String> mutableErrorLiveData = new MutableLiveData<>();
     public LiveData<String> errorLiveData = mutableErrorLiveData;
@@ -109,24 +108,6 @@ public class TableViewModel extends ViewModel {
             }
         });
     }
-    private List<StudentEntity> sortAttendancesForStudents(@Nullable List<StudentEntity> students) {
-        if (students == null) return new ArrayList<>();
-        for (StudentEntity student : students) {
-            List<AttendanceEntity> attendanceEntities = student.getAttendanceEntityList();
-            attendanceEntities.sort(Comparator.comparing(AttendanceEntity::getLessonTimeStart));
-        }
-        return students;
-    }
-    private void sortAttendances(@Nullable List<AttendanceEntity> attendances) {
-        if (attendances == null) return;
-        attendances.sort(Comparator.comparing(AttendanceEntity::getLessonTimeStart));
-    }
-     private List<StudentEntity> sortFullNames(@Nullable List<StudentEntity> students){
-        if (students == null) return new ArrayList<>();
-        students.sort(Comparator.comparing(StudentEntity::getFullName));
-        return students;
-
-    }
     public List<String> extractDates(List<AttendanceEntity> attendances) {
         List<String> dates = new ArrayList<>();
         sortAttendances(attendances);
@@ -135,7 +116,6 @@ public class TableViewModel extends ViewModel {
         }
         return dates;
     }
-
     public List<StudentEntity> getStudents() {
         return this.students;
     }
@@ -160,6 +140,24 @@ public class TableViewModel extends ViewModel {
     }
     public String getGroupId() {
         return groupId;
+    }
+    private List<StudentEntity> sortAttendancesForStudents(@Nullable List<StudentEntity> students) {
+        if (students == null) return new ArrayList<>();
+        for (StudentEntity student : students) {
+            List<AttendanceEntity> attendanceEntities = student.getAttendanceEntityList();
+            attendanceEntities.sort(Comparator.comparing(AttendanceEntity::getLessonTimeStart));
+        }
+        return students;
+    }
+    private void sortAttendances(@Nullable List<AttendanceEntity> attendances) {
+        if (attendances == null) return;
+        attendances.sort(Comparator.comparing(AttendanceEntity::getLessonTimeStart));
+    }
+    private List<StudentEntity> sortFullNames(@Nullable List<StudentEntity> students){
+        if (students == null) return new ArrayList<>();
+        students.sort(Comparator.comparing(StudentEntity::getFullName));
+        return students;
+
     }
     public class State {
 

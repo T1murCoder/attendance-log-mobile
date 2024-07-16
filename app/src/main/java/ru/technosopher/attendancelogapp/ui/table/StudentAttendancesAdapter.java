@@ -22,7 +22,6 @@ public class StudentAttendancesAdapter extends RecyclerView.Adapter<StudentAtten
     private boolean state = true;
     private final Context context;
     private final Consumer<AttendanceEntity> setAttendanceAndPointsToStudent;
-
     private final Consumer<String> onStudentDelete;
     public StudentAttendancesAdapter(Context context, boolean state, Consumer<AttendanceEntity> setAttendanceAndPointsToStudent, Consumer<String> onStudentDelete) {
         this.context = context;
@@ -30,7 +29,6 @@ public class StudentAttendancesAdapter extends RecyclerView.Adapter<StudentAtten
         this.setAttendanceAndPointsToStudent = setAttendanceAndPointsToStudent;
         this.onStudentDelete = onStudentDelete;
     }
-
     @NonNull
     @Override
     public StudentAttendancesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,30 +38,25 @@ public class StudentAttendancesAdapter extends RecyclerView.Adapter<StudentAtten
                         parent,
                         false));
     }
-
     @Override
     public void onBindViewHolder(@NonNull StudentAttendancesAdapter.ViewHolder holder, int position) {
         holder.bind(data.get(position), state);
     }
-
     @SuppressLint("NotifyDataSetChanged")
     public void updateData(List<StudentEntity> newData) {
         data.clear();
         data.addAll(newData);
         notifyDataSetChanged();
     }
-
     @SuppressLint("NotifyDataSetChanged")
     public void updateState(boolean newState) {
         this.state = newState;
         notifyDataSetChanged();
     }
-
     @Override
     public int getItemCount() {
         return data.size();
     }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final ItemStudentTableBinding binding;
 

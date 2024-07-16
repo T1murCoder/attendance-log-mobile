@@ -26,23 +26,18 @@ import ru.technosopher.attendancelogapp.ui.student_add.StudentAddFragment;
 import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 
 public class TableFragment extends Fragment {
-
     private static final String KEY_ID = "TABLE_FRAGMENT";
     private FragmentTableBinding binding;
     private TableViewModel viewModel;
     private NavigationBarChangeListener navigationBarChangeListener;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_table, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -127,15 +122,38 @@ public class TableFragment extends Fragment {
         subscribe(viewModel, attendancesAdapter, datesAdapter);
         viewModel.update(id);
     }
-
+    @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
+        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
+        viewModel.update(null);
+    }
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            navigationBarChangeListener = (NavigationBarChangeListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString());
+        }
+    }
+    public static Bundle getBundle(@NonNull String id) {
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_ID, id);
+        return bundle;
+    }
     private void setAttAndPointsToStudent(AttendanceEntity attendanceToStudent){
         viewModel.setAttAndPointsToStudent(attendanceToStudent);
     }
-
     private void deleteStudentFromGroup(String studentId){
         createDeletionDialog(studentId).show();
     }
-
     private void subscribe(TableViewModel viewModel, StudentAttendancesAdapter attendancesAdapter, DatesAdapter datesAdapter) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), state -> {
             if (state.getLoading()) {
@@ -200,31 +218,6 @@ public class TableFragment extends Fragment {
             viewModel.update(null);
         });
     }
-
-    @Override
-    public void onDestroyView() {
-        binding = null;
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
-        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
-        viewModel.update(null);
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            navigationBarChangeListener = (NavigationBarChangeListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString());
-        }
-    }
-
     private AlertDialog createDeletionDialog(@NonNull String studentId){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),  R.style.DialogTheme);
         builder.setMessage("Удалить ученика?")
@@ -240,9 +233,4 @@ public class TableFragment extends Fragment {
         return builder.create();
     }
 
-    public static Bundle getBundle(@NonNull String id) {
-        Bundle bundle = new Bundle();
-        bundle.putString(KEY_ID, id);
-        return bundle;
-    }
 }

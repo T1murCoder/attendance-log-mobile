@@ -28,18 +28,13 @@ import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
 public class StudentAddFragment extends Fragment {
-
     public static String KEY_ID = "STUDENTS_ADD_FRAGMENT";
-
     private FragmentStudentsAddBinding binding;
-
     private StudentAddViewModel viewModel;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_students_add, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -90,6 +85,23 @@ public class StudentAddFragment extends Fragment {
         subscribe(viewModel, adapter);
         viewModel.update();
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
+        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
+        viewModel.update();
+    }
+    public static Bundle getBundle(@NonNull String id) {
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_ID, id);
+        return bundle;
+    }
+    @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
+    }
     private void subscribe(StudentAddViewModel viewModel, StudentListAdapter adapter) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), studentsState -> {
             if (studentsState.getLoading()){
@@ -123,30 +135,11 @@ public class StudentAddFragment extends Fragment {
             Navigation.findNavController(view).navigate(R.id.action_studentAddFragment_to_tableFragment, TableFragment.getBundle(viewModel.getGroupId()));
         });
     }
-
     private void addStudent(@NonNull String id) {viewModel.addStudent(id);}
     private void deleteStudent(@NonNull String id){
         viewModel.deleteStudent(id);
     }
     private void changeItemSelection(@NonNull List<String> args){
         viewModel.updateItemCheckedState(args.get(0), Objects.equals(args.get(1), "t"));
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
-        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
-        viewModel.update();
-    }
-    public static Bundle getBundle(@NonNull String id) {
-        Bundle bundle = new Bundle();
-        bundle.putString(KEY_ID, id);
-        return bundle;
-    }
-    @Override
-    public void onDestroyView() {
-        binding = null;
-        super.onDestroyView();
     }
 }

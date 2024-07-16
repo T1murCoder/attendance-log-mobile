@@ -29,19 +29,16 @@ import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
 public class GroupAddFragment extends Fragment {
-
-    FragmentGroupAddBinding binding;
+    private FragmentGroupAddBinding binding;
     private GroupAddViewModel viewModel;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_group_add, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -94,7 +91,18 @@ public class GroupAddFragment extends Fragment {
         subscribe(viewModel, adapter);
         viewModel.update();
     }
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
+        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
+        viewModel.update();
+    }
+    @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
+    }
     private void addStudent(@NonNull String id) {viewModel.addStudent(id);}
     private void deleteStudent(@NonNull String id){
         viewModel.deleteStudent(id);
@@ -105,7 +113,6 @@ public class GroupAddFragment extends Fragment {
     private void clearStudents(){
         viewModel.clearStudents();
     }
-
     private void subscribe(GroupAddViewModel viewModel, StudentListAdapter adapter) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), studentsState -> {
             if (studentsState.getLoading()){
@@ -139,17 +146,4 @@ public class GroupAddFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
-        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
-        viewModel.update();
-    }
-
-    @Override
-    public void onDestroyView() {
-        binding = null;
-        super.onDestroyView();
-    }
 }

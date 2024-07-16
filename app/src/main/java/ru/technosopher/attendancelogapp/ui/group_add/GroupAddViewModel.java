@@ -31,11 +31,6 @@ public class GroupAddViewModel extends ViewModel {
     public final LiveData<Void> confirmLiveData = mutableConfirmLiveData;
 
     /* LIVEDATA */
-
-    private List<ItemStudentEntityModel> selectedStudents = new ArrayList<>();
-    private List<ItemStudentEntityModel> studentModelList = new ArrayList<>();
-    @Nullable
-    private String name;
     /* USE CASES */
     private final GetStudentsListUseCase getStudentsListUseCase = new GetStudentsListUseCase(
             StudentRepositoryImpl.getInstance()
@@ -43,9 +38,11 @@ public class GroupAddViewModel extends ViewModel {
     private final CreateGroupUseCase createGroupUseCase = new CreateGroupUseCase(
             GroupsRepositoryImpl.getInstance()
     );
-
     /* USE CASES */
-
+    private List<ItemStudentEntityModel> selectedStudents = new ArrayList<>();
+    private List<ItemStudentEntityModel> studentModelList = new ArrayList<>();
+    @Nullable
+    private String name;
 
     /* LOGIC */
     public void createGroup() {
