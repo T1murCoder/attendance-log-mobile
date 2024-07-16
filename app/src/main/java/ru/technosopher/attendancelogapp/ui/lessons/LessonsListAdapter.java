@@ -102,7 +102,11 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
         }
 
         public void bind(LessonEntity item) {
-
+            if (closed) {
+                binding.qrCodeAdditionalBox.setVisibility(View.GONE);
+            } else {
+                binding.qrCodeAdditionalBox.setVisibility(View.VISIBLE);
+            }
             binding.timeTv.setText(DateFormatter.getFullTimeStringFromDate(item.getTimeStart(), item.getTimeEnd(), "HH:mm"));
             binding.groupName.setText(item.getGroupName());
             binding.dateTv.setText(DateFormatter.getDateStringFromDate(item.getTimeStart(), "dd MMM yyyy"));
@@ -193,9 +197,6 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
 
                 }
             });
-        }
-        public Boolean getIsClosed(){
-            return this.closed;
         }
     }
 }

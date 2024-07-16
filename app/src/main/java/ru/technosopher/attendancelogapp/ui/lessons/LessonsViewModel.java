@@ -194,10 +194,10 @@ public class LessonsViewModel extends ViewModel {
         }
     }
     public List<LessonEntity> getEndedLessons(){
-        return endedLessons;
+        return sortLessonsByTimeStart(endedLessons);
     }
     public List<LessonEntity> getCurrentLessons(){
-        return lessons;
+        return sortLessonsByTimeStart(lessons);
     }
     public void changeStartAndEndDate(int year, int month, int day) {
         if (timeStart == null) timeStart = new GregorianCalendar();

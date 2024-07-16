@@ -1,5 +1,6 @@
 package ru.technosopher.attendancelogapp.ui.lessons;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -57,7 +58,7 @@ public class LessonsFragment extends Fragment{
         navigationBarChangeListener.changeSelectedItem(R.id.lessons);
 
         LessonsListAdapter adapter = new LessonsListAdapter(getContext(), this::checkQrCodeIsAlive, this::onDelete, this::onOpenJournal);
-
+        adapter.setHasStableIds(true);
         viewModel = new ViewModelProvider(this).get(LessonsViewModel.class);
         dialog = new BottomLessonCreateDialog(viewModel);
         binding.recyclerView.setAdapter(adapter);
@@ -69,24 +70,25 @@ public class LessonsFragment extends Fragment{
         });
 
         binding.openEndedLessons.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View view) {
                 binding.noLessonsTv.setVisibility(View.GONE);
-
                 adapter.updateData(viewModel.getEndedLessons());
-
+                adapter.notifyDataSetChanged();
                 binding.endedLessonsBackLayout.setVisibility(View.VISIBLE);
                 binding.openEndedLessons.setVisibility(View.GONE);
-
                 binding.floatingActionButton.setVisibility(View.GONE);
 
             }
         });
 
         binding.backToCurrentLessons.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View view) {
                 adapter.updateData(viewModel.getCurrentLessons());
+                adapter.notifyDataSetChanged();
                 binding.endedLessonsBackLayout.setVisibility(View.GONE);
                 binding.openEndedLessons.setVisibility(View.VISIBLE);
                 binding.floatingActionButton.setVisibility(View.VISIBLE);
@@ -105,6 +107,10 @@ public class LessonsFragment extends Fragment{
         });
         subscribe(viewModel, adapter);
     }
+
+//    private LessonsListAdapter createNewAdapter(){
+//        return new LessonsListAdapter(getContext(), this::checkQrCodeIsAlive, this::onDelete, this::onOpenJournal);
+//    }
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -175,6 +181,7 @@ public class LessonsFragment extends Fragment{
                         binding.noLessonsTv.setVisibility(View.VISIBLE);
                     }
                     adapter.updateData(state.getLessons());
+                    //adapter.setHasStableIds(true);
                 }
             }
         });
