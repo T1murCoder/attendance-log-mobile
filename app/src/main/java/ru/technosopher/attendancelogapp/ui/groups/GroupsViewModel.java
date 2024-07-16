@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
-import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.GroupsRepositoryImpl;
 import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 import ru.technosopher.attendancelogapp.domain.groups.DeleteGroupUseCase;

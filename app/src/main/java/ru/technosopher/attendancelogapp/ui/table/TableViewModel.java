@@ -1,7 +1,5 @@
 package ru.technosopher.attendancelogapp.ui.table;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -10,16 +8,13 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import ru.technosopher.attendancelogapp.data.AttendanceRepositoryImpl;
-import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
-import ru.technosopher.attendancelogapp.data.StudentRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.AttendanceRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.GroupsRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.StudentRepositoryImpl;
 import ru.technosopher.attendancelogapp.domain.attendance.ChangeStudentAttAndPointsUseCase;
 import ru.technosopher.attendancelogapp.domain.entities.AttendanceEntity;
-import ru.technosopher.attendancelogapp.domain.entities.Status;
 import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
 import ru.technosopher.attendancelogapp.domain.groups.DeleteStudentFromGroupUseCase;
 import ru.technosopher.attendancelogapp.domain.groups.GetGroupNameByIdUseCase;

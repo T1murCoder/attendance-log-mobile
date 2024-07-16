@@ -1,8 +1,7 @@
-package ru.technosopher.attendancelogapp.data;
+package ru.technosopher.attendancelogapp.data.repository;
 
 import androidx.annotation.NonNull;
 
-import java.util.GregorianCalendar;
 import java.util.function.Consumer;
 
 import ru.technosopher.attendancelogapp.data.dto.QrCodeDto;

@@ -1,7 +1,5 @@
 package ru.technosopher.attendancelogapp.ui.student_add;
 
-import android.content.ClipData;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -13,20 +11,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
-import ru.technosopher.attendancelogapp.data.StudentRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.GroupsRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.StudentRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.utils.Mapper;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
-import ru.technosopher.attendancelogapp.domain.entities.Status;
-import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
-import ru.technosopher.attendancelogapp.domain.groups.AddStudentsToGroupUseCase;
-import ru.technosopher.attendancelogapp.domain.groups.GetGroupNameByIdUseCase;
 import ru.technosopher.attendancelogapp.domain.groups.PutStudentsToGroupUseCase;
-import ru.technosopher.attendancelogapp.domain.students.GetStudentsAttendancesUseCase;
 import ru.technosopher.attendancelogapp.domain.students.GetStudentsListUseCase;
-import ru.technosopher.attendancelogapp.ui.group_add.GroupAddViewModel;
 import ru.technosopher.attendancelogapp.ui.group_add.ItemStudentEntityModel;
-import ru.technosopher.attendancelogapp.ui.table.TableViewModel;
 
 public class StudentAddViewModel extends ViewModel {
     /* LIVEDATA */

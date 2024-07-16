@@ -3,7 +3,6 @@ package ru.technosopher.attendancelogapp.ui.profile;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -12,7 +11,7 @@ import androidx.lifecycle.ViewModel;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import ru.technosopher.attendancelogapp.data.TeacherRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.TeacherRepositoryImpl;
 import ru.technosopher.attendancelogapp.domain.teacher.GetTeacherByIdUseCase;
 import ru.technosopher.attendancelogapp.domain.entities.TeacherEntity;
 import ru.technosopher.attendancelogapp.domain.sign.LogoutUseCase;

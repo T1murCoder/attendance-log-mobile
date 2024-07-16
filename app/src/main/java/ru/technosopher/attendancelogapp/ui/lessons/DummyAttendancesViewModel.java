@@ -8,13 +8,10 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
-import ru.technosopher.attendancelogapp.data.LessonRepositoryImpl;
-import ru.technosopher.attendancelogapp.data.StudentRepositoryImpl;
-import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
+import ru.technosopher.attendancelogapp.data.repository.StudentRepositoryImpl;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 import ru.technosopher.attendancelogapp.domain.students.GetStudentAttendancesByLessonIdUseCase;
-import ru.technosopher.attendancelogapp.ui.groups.GroupsViewModel;
 
 public class DummyAttendancesViewModel extends ViewModel {
     private MutableLiveData<State> mutableStateLiveData = new MutableLiveData<State>();

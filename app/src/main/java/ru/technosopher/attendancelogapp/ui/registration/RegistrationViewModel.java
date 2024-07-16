@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import ru.technosopher.attendancelogapp.data.TeacherRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.TeacherRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.domain.entities.TeacherEntity;
 import ru.technosopher.attendancelogapp.domain.sign.IsTeacherExistsUseCase;

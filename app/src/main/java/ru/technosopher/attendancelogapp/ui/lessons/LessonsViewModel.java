@@ -18,14 +18,13 @@ import java.util.Objects;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
-import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
-import ru.technosopher.attendancelogapp.data.LessonRepositoryImpl;
-import ru.technosopher.attendancelogapp.data.QrCodeRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.GroupsRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.LessonRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.QrCodeRepositoryImpl;
 import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
 import ru.technosopher.attendancelogapp.domain.entities.LessonEntity;
 import ru.technosopher.attendancelogapp.domain.entities.QrCodeEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
-import ru.technosopher.attendancelogapp.domain.groups.GetGroupNameByIdUseCase;
 import ru.technosopher.attendancelogapp.domain.groups.GetGroupsListUseCase;
 import ru.technosopher.attendancelogapp.domain.lessons.CreateLessonUseCase;
 import ru.technosopher.attendancelogapp.domain.lessons.DeleteLessonUseCase;
