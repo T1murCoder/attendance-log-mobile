@@ -18,10 +18,16 @@ import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 import ru.technosopher.attendancelogapp.ui.group_add.ItemStudentEntityModel;
 
 public class StudentListAdapterLegacy extends RecyclerView.Adapter<StudentListAdapterLegacy.ViewHolder>{
-
-    private StudentAddViewModel viewModel;
+    private Consumer<String> onAddStudent;
+    private Consumer<String> onDeleteStudent;
+    private Consumer<List<String>> onSelectedChange;
     private final List<ItemStudentEntityModel> data = new ArrayList<>();
-    public StudentListAdapterLegacy(StudentAddViewModel viewModel) {this.viewModel = viewModel;}
+
+    public StudentListAdapterLegacy(Consumer<String> onAddStudent, Consumer<String> onDeleteStudent, Consumer<List<String>> onSelectedChange) {
+        this.onAddStudent = onAddStudent;
+        this.onDeleteStudent = onDeleteStudent;
+        this.onSelectedChange = onSelectedChange;
+    }
 
     @NonNull
     @Override
@@ -67,10 +73,16 @@ public class StudentListAdapterLegacy extends RecyclerView.Adapter<StudentListAd
                 if (position != RecyclerView.NO_POSITION) {
                     data.get(position).setChecked(isChecked);
                     if (isChecked)
-                        viewModel.addStudent(data.get(position).getItemStudent().getId());
+                        onAddStudent.accept(data.get(position).getItemStudent().getId());
+                        //viewModel.addStudent(data.get(position).getItemStudent().getId());
                     else
-                        viewModel.deleteStudent(data.get(position).getItemStudent().getId());
-                    viewModel.updateItemCheckedState(item.getId(), isChecked);
+                        onDeleteStudent.accept(data.get(position).getItemStudent().getId());
+                        //viewModel.deleteStudent(data.get(position).getItemStudent().getId());
+                    ArrayList<String> tmp = new ArrayList<>();
+                    tmp.add(item.getId());
+                    tmp.add(isChecked ? "t" : "f");
+                    onSelectedChange.accept(tmp);
+                    //viewModel.updateItemCheckedState(item.getId(), isChecked);
                 }
             });
         }

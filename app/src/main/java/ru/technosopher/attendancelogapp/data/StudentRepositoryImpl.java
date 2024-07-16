@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 
 import ru.technosopher.attendancelogapp.data.dto.StudentDto;
 import ru.technosopher.attendancelogapp.data.dto.StudentItemDto;
-import ru.technosopher.attendancelogapp.data.dto.StudentWithAttendances;
+import ru.technosopher.attendancelogapp.data.dto.StudentWithAttendancesDto;
 import ru.technosopher.attendancelogapp.data.network.RetrofitFactory;
 import ru.technosopher.attendancelogapp.data.source.StudentApi;
 import ru.technosopher.attendancelogapp.data.utils.CallToConsumer;
@@ -63,7 +63,7 @@ public class StudentRepositoryImpl implements StudentRepository {
                 studentsDto -> {
                     if (studentsDto != null){
                         ArrayList<StudentEntity> res = new ArrayList<>();
-                        for (StudentWithAttendances dto: studentsDto){
+                        for (StudentWithAttendancesDto dto: studentsDto){
                             final String id = dto.id;
                             final String name = dto.name;
                             final String surname = dto.surname;

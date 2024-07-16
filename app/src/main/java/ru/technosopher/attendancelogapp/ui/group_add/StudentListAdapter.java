@@ -9,6 +9,8 @@ import android.widget.CompoundButton;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -18,13 +20,15 @@ import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 
 public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.ViewHolder> {
     private final List<ItemStudentEntityModel> data = new ArrayList<>();
+    private Consumer<String> onAddStudent;
+    private Consumer<String> onDeleteStudent;
+    private Consumer<List<String>> onSelectedChange;
 
-    private GroupAddViewModel viewModel;
-
-    public StudentListAdapter(GroupAddViewModel viewModel) {
-        this.viewModel = viewModel;
+    public StudentListAdapter(Consumer<String> onAddStudent, Consumer<String> onDeleteStudent, Consumer<List<String>> onSelectedChange) {
+        this.onAddStudent = onAddStudent;
+        this.onDeleteStudent = onDeleteStudent;
+        this.onSelectedChange = onSelectedChange;
     }
-
     @NonNull
     @Override
     public StudentListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -70,10 +74,16 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
                 if (position != RecyclerView.NO_POSITION) {
                     data.get(position).setChecked(isChecked);
                     if (isChecked)
-                        viewModel.addStudent(data.get(position).getItemStudent().getId());
+                        onAddStudent.accept(data.get(position).getItemStudent().getId());
+                        //viewModel.addStudent();
                     else
-                        viewModel.deleteStudent(data.get(position).getItemStudent().getId());
-                    viewModel.updateItemCheckedState(item.getId(), isChecked);
+                        onDeleteStudent.accept(data.get(position).getItemStudent().getId());
+                        //viewModel.deleteStudent();
+                    ArrayList<String> tmp = new ArrayList<>();
+                    tmp.add(item.getId());
+                    tmp.add(isChecked ? "t" : "f");
+                    onSelectedChange.accept(tmp);
+                    //viewModel.updateItemCheckedState(, );
                 }
             });
         }

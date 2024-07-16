@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.List;
+import java.util.Objects;
+
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.databinding.FragmentStudentsAddBinding;
@@ -46,7 +49,7 @@ public class StudentAddFragment extends Fragment {
         binding = FragmentStudentsAddBinding.bind(view);
         viewModel = new ViewModelProvider(this).get(StudentAddViewModel.class);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        StudentListAdapterLegacy adapter = new StudentListAdapterLegacy(viewModel);
+        StudentListAdapterLegacy adapter = new StudentListAdapterLegacy(this::addStudent, this::deleteStudent, this::changeItemSelection);
 
         binding.studentsRecyclerView.setLayoutManager(mLayoutManager);
         binding.studentsRecyclerView.setAdapter(adapter);
@@ -122,6 +125,14 @@ public class StudentAddFragment extends Fragment {
             if (view == null) return;
             Navigation.findNavController(view).navigate(R.id.action_studentAddFragment_to_tableFragment, TableFragment.getBundle(viewModel.getGroupId()));
         });
+    }
+
+    private void addStudent(@NonNull String id) {viewModel.addStudent(id);}
+    private void deleteStudent(@NonNull String id){
+        viewModel.deleteStudent(id);
+    }
+    private void changeItemSelection(@NonNull List<String> args){
+        viewModel.updateItemCheckedState(args.get(0), Objects.equals(args.get(1), "t"));
     }
 
     @Override

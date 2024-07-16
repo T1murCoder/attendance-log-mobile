@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.List;
+import java.util.Objects;
+
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.databinding.FragmentGroupAddBinding;
@@ -44,7 +47,7 @@ public class GroupAddFragment extends Fragment {
         binding = FragmentGroupAddBinding.bind(view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         viewModel = new ViewModelProvider(this).get(GroupAddViewModel.class);
-        StudentListAdapter adapter = new StudentListAdapter(viewModel);
+        StudentListAdapter adapter = new StudentListAdapter(this::addStudent, this::deleteStudent, this::changeItemSelection);
         binding.studentsRecyclerView.setLayoutManager(mLayoutManager);
         binding.studentsRecyclerView.setAdapter(adapter);
         binding.studentSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -91,11 +94,12 @@ public class GroupAddFragment extends Fragment {
         viewModel.update();
     }
 
-    private void addStudent(@NonNull String id) {
-        viewModel.addStudent(id);
-    }
+    private void addStudent(@NonNull String id) {viewModel.addStudent(id);}
     private void deleteStudent(@NonNull String id){
         viewModel.deleteStudent(id);
+    }
+    private void changeItemSelection(@NonNull List<String> args){
+        viewModel.updateItemCheckedState(args.get(0), Objects.equals(args.get(1), "t"));
     }
     private void clearStudents(){
         viewModel.clearStudents();
@@ -117,11 +121,6 @@ public class GroupAddFragment extends Fragment {
                 binding.studentsRecyclerView.setVisibility(Utils.visibleOrGone(studentsState.getSuccess()));
                 binding.errorTv.setVisibility(Utils.visibleOrGone(!studentsState.getSuccess()));
                 if (studentsState.getSuccess()){
-//                    if (studentsState.getStudents() != null) {
-//                        adapter.updateData(studentsState.getStudents());
-//                    } else {
-//                        adapter.updateData(new ArrayList<>());
-//                    }
                     adapter.updateData(studentsState.getStudents());
                 }
                 else{

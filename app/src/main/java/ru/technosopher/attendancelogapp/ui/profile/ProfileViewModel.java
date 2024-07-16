@@ -120,7 +120,6 @@ public class ProfileViewModel extends ViewModel {
 
     public void uploadAvatar(String id, String prefsLogin, Uri image) {
         if (image != null) {
-            //TODO: Сделать сжатие изображения
             StorageReference imageRef = storageRef.child(AVATAR_PREFIX + id + ".png");
 
             imageRef.putFile(image).addOnSuccessListener(taskSnapshot -> {
@@ -171,7 +170,6 @@ public class ProfileViewModel extends ViewModel {
     public void changePhoto(String photo) {
         this.photo = photo;
     }
-    //TODO(PHOTO LOADING)
 
     public class State {
         @Nullable
