@@ -17,7 +17,7 @@ import ru.technosopher.attendancelogapp.data.utils.Mapper;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 import ru.technosopher.attendancelogapp.domain.groups.PutStudentsToGroupUseCase;
 import ru.technosopher.attendancelogapp.domain.students.GetStudentsListUseCase;
-import ru.technosopher.attendancelogapp.ui.group_add.ItemStudentEntityModel;
+import ru.technosopher.attendancelogapp.ui.utils.ItemStudentEntityModel;
 
 public class StudentAddViewModel extends ViewModel {
     /* LIVEDATA */

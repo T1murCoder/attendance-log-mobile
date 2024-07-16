@@ -1,7 +1,6 @@
 package ru.technosopher.attendancelogapp.ui.student_add;
 
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +22,8 @@ import java.util.Objects;
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.databinding.FragmentStudentsAddBinding;
-import ru.technosopher.attendancelogapp.ui.group_add.GroupAddViewModel;
-import ru.technosopher.attendancelogapp.ui.group_add.StudentListAdapter;
+import ru.technosopher.attendancelogapp.ui.utils.StudentListAdapter;
 import ru.technosopher.attendancelogapp.ui.table.TableFragment;
-import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
 import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
@@ -49,7 +46,7 @@ public class StudentAddFragment extends Fragment {
         binding = FragmentStudentsAddBinding.bind(view);
         viewModel = new ViewModelProvider(this).get(StudentAddViewModel.class);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        StudentListAdapterLegacy adapter = new StudentListAdapterLegacy(this::addStudent, this::deleteStudent, this::changeItemSelection);
+        StudentListAdapter adapter = new StudentListAdapter(this::addStudent, this::deleteStudent, this::changeItemSelection);
 
         binding.studentsRecyclerView.setLayoutManager(mLayoutManager);
         binding.studentsRecyclerView.setAdapter(adapter);
@@ -93,7 +90,7 @@ public class StudentAddFragment extends Fragment {
         subscribe(viewModel, adapter);
         viewModel.update();
     }
-    private void subscribe(StudentAddViewModel viewModel, StudentListAdapterLegacy adapter) {
+    private void subscribe(StudentAddViewModel viewModel, StudentListAdapter adapter) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), studentsState -> {
             if (studentsState.getLoading()){
                 binding.progressBar.setVisibility(Utils.visibleOrGone(true));
@@ -146,5 +143,10 @@ public class StudentAddFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString(KEY_ID, id);
         return bundle;
+    }
+    @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
     }
 }

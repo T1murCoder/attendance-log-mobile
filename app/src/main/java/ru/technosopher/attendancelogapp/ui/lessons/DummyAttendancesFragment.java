@@ -69,6 +69,7 @@ public class DummyAttendancesFragment extends Fragment {
     }
     @Override
     public void onDestroyView() {
+        binding = null;
         super.onDestroyView();
     }
 }

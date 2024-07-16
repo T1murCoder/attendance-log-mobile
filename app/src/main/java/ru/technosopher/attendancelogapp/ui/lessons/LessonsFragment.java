@@ -326,5 +326,11 @@ public class LessonsFragment extends Fragment{
             this.groups.add(0, new ItemGroupEntity("-1", "Не выбрано"));
             this.groups.addAll(groups);
         }
+
+        @Override
+        public void onDestroyView() {
+            binding = null;
+            super.onDestroyView();
+        }
     }
 }
