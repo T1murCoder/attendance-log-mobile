@@ -96,7 +96,7 @@ public class ProfileFragment extends Fragment {
                     binding.profileNameEt.setFocusableInTouchMode(false);
                     binding.profileNameEt.setEnabled(false);
                 }
-
+                binding.fab.setVisibility(View.VISIBLE);
             }
         });
         binding.profileSurnameEditBtn.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +111,7 @@ public class ProfileFragment extends Fragment {
                     binding.profileSurnameEt.setFocusableInTouchMode(false);
                     binding.profileSurnameEt.setEnabled(false);
                 }
+                binding.fab.setVisibility(View.VISIBLE);
             }
         });
         binding.profileTelegramEditBtn.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +126,7 @@ public class ProfileFragment extends Fragment {
                     binding.profileTelegramEt.setFocusableInTouchMode(false);
                     binding.profileTelegramEt.setEnabled(false);
                 }
+                binding.fab.setVisibility(View.VISIBLE);
             }
         });
         binding.profileGithubEditBtn.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +141,7 @@ public class ProfileFragment extends Fragment {
                     binding.profileGithubEt.setFocusableInTouchMode(false);
                     binding.profileGithubEt.setEnabled(false);
                 }
+                binding.fab.setVisibility(View.VISIBLE);
             }
         });
 
@@ -192,6 +195,27 @@ public class ProfileFragment extends Fragment {
                 binding.profileTelegramEt.setFocusable(false);
                 binding.profileTelegramEt.setFocusableInTouchMode(false);
                 binding.profileTelegramEt.setEnabled(false);
+                binding.fab.setVisibility(View.GONE);
+            }
+        });
+
+        binding.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewModel.updateProfile(prefs.getPrefsId(), prefs.getPrefsLogin());
+                binding.profileGithubEt.setFocusable(false);
+                binding.profileGithubEt.setFocusableInTouchMode(false);
+                binding.profileGithubEt.setEnabled(false);
+                binding.profileSurnameEt.setFocusable(false);
+                binding.profileSurnameEt.setFocusableInTouchMode(false);
+                binding.profileSurnameEt.setEnabled(false);
+                binding.profileNameEt.setFocusable(false);
+                binding.profileNameEt.setFocusableInTouchMode(false);
+                binding.profileNameEt.setEnabled(false);
+                binding.profileTelegramEt.setFocusable(false);
+                binding.profileTelegramEt.setFocusableInTouchMode(false);
+                binding.profileTelegramEt.setEnabled(false);
+                binding.fab.setVisibility(View.GONE);
             }
         });
 
