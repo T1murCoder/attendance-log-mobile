@@ -58,7 +58,6 @@ public class LessonsFragment extends Fragment{
         navigationBarChangeListener.changeSelectedItem(R.id.lessons);
 
         LessonsListAdapter adapter = new LessonsListAdapter(getContext(), this::checkQrCodeIsAlive, this::onDelete, this::onOpenJournal);
-        adapter.setHasStableIds(true);
         viewModel = new ViewModelProvider(this).get(LessonsViewModel.class);
         dialog = new BottomLessonCreateDialog(viewModel);
         binding.recyclerView.setAdapter(adapter);

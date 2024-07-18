@@ -62,8 +62,8 @@ public class LessonsViewModel extends ViewModel {
             QrCodeRepositoryImpl.getInstance()
     );
     /* USE CASES */
-    private List<LessonEntity> lessons = new ArrayList<>();
-    private List<LessonEntity> endedLessons = new ArrayList<>();
+    private List<LessonEntityModel> lessons = new ArrayList<>();
+    private List<LessonEntityModel> endedLessons = new ArrayList<>();
     @Nullable
     private String groupId = null;
     @Nullable
@@ -114,7 +114,7 @@ public class LessonsViewModel extends ViewModel {
         createLessonUseCase.execute(theme, groupId, "", timeStart, timeEnd, date, lessonStatus -> {
             if (lessonStatus.getStatusCode() == 200) {
                 if (lessonStatus.getValue() != null && lessonStatus.getErrors() == null) {
-                    addNewLesson(lessonStatus.getValue());
+                    addNewLesson(new LessonEntityModel(lessonStatus.getValue(), true));
                     update();
                 } else {
                     mutableAddErrorLiveData.postValue("Что-то пошло не так");
@@ -193,10 +193,10 @@ public class LessonsViewModel extends ViewModel {
             return "";
         }
     }
-    public List<LessonEntity> getEndedLessons(){
+    public List<LessonEntityModel> getEndedLessons(){
         return sortLessonsByTimeStart(endedLessons);
     }
-    public List<LessonEntity> getCurrentLessons(){
+    public List<LessonEntityModel> getCurrentLessons(){
         return sortLessonsByTimeStart(lessons);
     }
     public void changeStartAndEndDate(int year, int month, int day) {
@@ -226,11 +226,15 @@ public class LessonsViewModel extends ViewModel {
     private State fromLessonStatus(Status<List<LessonEntity>> status) {
         if (status.getErrors() == null && status.getValue() != null) {
             List<LessonEntity> tmp = status.getValue();
-            lessons = getCurrentLessons(tmp);
-            endedLessons = getEndedLessons(tmp);
+            List<LessonEntityModel> tmpClosed = new ArrayList<>();
+            for (LessonEntity lesson: tmp) {
+                tmpClosed.add(new LessonEntityModel(lesson, true));
+            }
+            lessons = getCurrentLessons(tmpClosed);
+            endedLessons = getEndedLessons(tmpClosed);
             endedLessons = sortLessonsByTimeStart(endedLessons);
         }
-        List<LessonEntity> lessonsSortedByTimeStart = sortLessonsByTimeStart(lessons);
+        List<LessonEntityModel> lessonsSortedByTimeStart = sortLessonsByTimeStart(lessons);
         return new State(
                 lessonsSortedByTimeStart,
                 status.getErrors() == null ? null : status.getErrors().getLocalizedMessage(),
@@ -238,24 +242,24 @@ public class LessonsViewModel extends ViewModel {
                 false
         );
     }
-    private List<LessonEntity> sortLessonsByTimeStart(List<LessonEntity> lessons) {
+    private List<LessonEntityModel> sortLessonsByTimeStart(List<LessonEntityModel> lessons) {
         return lessons.stream()
-                .sorted(Comparator.comparing(LessonEntity::getTimeStart))
+                .sorted(Comparator.comparing(LessonEntityModel::getTimeStart))
                 .collect(Collectors.toList());
     }
-    private List<LessonEntity> getEndedLessons(List<LessonEntity> lessons){
-        List<LessonEntity> ended = new ArrayList<>();
-        for (LessonEntity entity: lessons) {
-            if (entity.getTimeEnd().compareTo(new GregorianCalendar()) <= 0){
+    private List<LessonEntityModel> getEndedLessons(List<LessonEntityModel> lessons){
+        List<LessonEntityModel> ended = new ArrayList<>();
+        for (LessonEntityModel entity: lessons) {
+            if (entity.getLesson().getTimeEnd().compareTo(new GregorianCalendar()) <= 0){
                 ended.add(entity);
             }
         }
         return ended;
     }
-    private List<LessonEntity> getCurrentLessons(List<LessonEntity> lessons){
-        List<LessonEntity> current = new ArrayList<>();
-        for (LessonEntity entity: lessons) {
-            if (entity.getTimeEnd().compareTo(new GregorianCalendar()) > 0){
+    private List<LessonEntityModel> getCurrentLessons(List<LessonEntityModel> lessons){
+        List<LessonEntityModel> current = new ArrayList<>();
+        for (LessonEntityModel entity: lessons) {
+            if (entity.getLesson().getTimeEnd().compareTo(new GregorianCalendar()) > 0){
                 current.add(entity);
             }
         }
@@ -267,13 +271,13 @@ public class LessonsViewModel extends ViewModel {
                 status.getValue(),
                 status.getErrors() == null && status.getValue() != null);
     }
-    private void addNewLesson(LessonEntity lesson) {
+    private void addNewLesson(LessonEntityModel lesson) {
         lessons.add(lesson);
     }
     /* LOGIC */
     public class State {
         @Nullable
-        private final List<LessonEntity> lessons;
+        private final List<LessonEntityModel> lessons;
         @Nullable
         private final String errorMessage;
         @NonNull
@@ -281,7 +285,7 @@ public class LessonsViewModel extends ViewModel {
         @NonNull
         private Boolean isLoading;
 
-        public State(@Nullable List<LessonEntity> lessons, @Nullable String errorMessage, @NonNull Boolean isSuccess, @NonNull Boolean isLoading) {
+        public State(@Nullable List<LessonEntityModel> lessons, @Nullable String errorMessage, @NonNull Boolean isSuccess, @NonNull Boolean isLoading) {
             this.lessons = lessons;
             this.errorMessage = errorMessage;
             this.isSuccess = isSuccess;
@@ -289,7 +293,7 @@ public class LessonsViewModel extends ViewModel {
         }
 
         @Nullable
-        public List<LessonEntity> getLessons() {
+        public List<LessonEntityModel> getLessons() {
             return lessons;
         }
 
