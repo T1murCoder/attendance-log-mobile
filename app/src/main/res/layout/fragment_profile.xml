@@ -52,7 +52,7 @@
                         android:src="@drawable/ic_new_avatar"
                         android:tint="@color/white"
                         android:visibility="visible"
-                        app:fabCustomSize="69dp" />
+                        app:fabCustomSize="72dp" />
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:padding="5dp"
@@ -365,7 +365,7 @@
             </LinearLayout>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab"
+                android:id="@+id/fab_save_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
