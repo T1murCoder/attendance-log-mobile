@@ -59,7 +59,7 @@ public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.ViewHo
             super(binding.getRoot());
             this.binding = binding;
         }
-
+        // TODO (Посмотреть почему создаю новый экземпляр класса (переделать по возможности))
         public void bind(AttendanceEntity item) {
             binding.cbElementCheckbox.setChecked(item.getVisited());
             binding.cbElementCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

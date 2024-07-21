@@ -59,7 +59,7 @@ public class PointsAdapter extends RecyclerView.Adapter<PointsAdapter.ViewHolder
             Integer point = Math.round(Float.valueOf(item.getPoints()));
             if (point == 0) binding.pointEt.setHint(String.valueOf(point));
             else binding.pointEt.setText(String.valueOf(point));
-
+            // TODO (Посмотреть почему создаю новый экземпляр класса (переделать по возможности))
             binding.pointEt.addTextChangedListener(new OnChangeText() {
                 @Override
                 public void afterTextChanged(Editable editable) {
