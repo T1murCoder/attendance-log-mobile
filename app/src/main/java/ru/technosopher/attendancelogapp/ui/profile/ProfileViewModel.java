@@ -1,7 +1,11 @@
 package ru.technosopher.attendancelogapp.ui.profile;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -11,6 +15,9 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.io.FileDescriptor;
+import java.io.IOException;
 
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.technosopher.attendancelogapp.data.repository.ImageRepositoryImpl;
@@ -107,33 +114,54 @@ public class ProfileViewModel extends ViewModel {
     }
 
     @SuppressLint("CheckResult")
-    public void uploadAvatar(String id, Uri image) {
+    public void uploadAvatar(String id, Uri image, ContentResolver contentResolver) {
         if (image != null) {
             mutableStateLiveData.postValue(new State("Загрузка...", null, false));
-            uploadProfileImageUseCase.execute(id, image).
-                    subscribeOn(Schedulers.io())
-                    .subscribe((photoUrl, throwable) -> {
-                        if (throwable != null) {
-                            mutableStateLiveData.postValue(new State("Не удалось загрузить аватар!", null, false));
-                        } else {
-                            Log.d(TAG, "Запрос сделан!");
-                            updateTeacherProfileUseCase.execute(
-                                    id,
-                                    new TeacherEntity(
+            try {
+
+                Bitmap imageBitmap = getBitmapFromUri(image, contentResolver);
+                if (imageBitmap != null) {
+                    uploadProfileImageUseCase.execute(id, imageBitmap)
+                            .subscribeOn(Schedulers.io())
+                            .subscribe((photoUrl, throwable) -> {
+                                if (throwable != null) {
+                                    mutableStateLiveData.postValue(new State("Не удалось загрузить аватар!", null, false));
+                                } else {
+                                    Log.d(TAG, "Запрос сделан!");
+                                    updateTeacherProfileUseCase.execute(
                                             id,
-                                            null,
-                                            null,
-                                            null,
-                                            null,
-                                            null,
-                                            photoUrl
-                                    ),
-                                    userStatus -> update(photoUrl));
-                        }
-                    });
+                                            new TeacherEntity(
+                                                    id,
+                                                    null,
+                                                    null,
+                                                    null,
+                                                    null,
+                                                    null,
+                                                    photoUrl
+                                            ),
+                                            userStatus -> update(photoUrl));
+                                }
+                            });
+                } else {
+                    mutableStateLiveData.postValue(new State("Что-то пошло не так...", null, false));
+                }
+            } catch (IOException e) {
+                mutableStateLiveData.postValue(new State("Что-то пошло не так...", null, false));
+            }
         } else {
             mutableStateLiveData.postValue(new State("Пожалуйста, выберите изображение", null, false));
         }
+    }
+
+    private Bitmap getBitmapFromUri(Uri uri, ContentResolver contentResolver) throws IOException {
+        ParcelFileDescriptor parcelFileDescriptor = contentResolver.openFileDescriptor(uri, "r");
+        if (parcelFileDescriptor != null) {
+            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+            Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+            parcelFileDescriptor.close();
+            return image;
+        }
+        return null;
     }
 
     public void updateProfile(String id, String prefsLogin) {

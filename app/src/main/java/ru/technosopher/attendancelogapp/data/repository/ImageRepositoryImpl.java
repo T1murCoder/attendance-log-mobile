@@ -1,5 +1,9 @@
 package ru.technosopher.attendancelogapp.data.repository;
 
+import static ru.technosopher.attendancelogapp.data.utils.ImageCompressor.convertBitmapToBytes;
+import static ru.technosopher.attendancelogapp.data.utils.ImageCompressor.resizeBitmap;
+
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 
@@ -39,11 +43,14 @@ public class ImageRepositoryImpl implements ImageRepository {
     }
 
     @Override
-    public Single<String> uploadProfileImage(@NonNull String id, @NonNull Uri imageUri) {
+    public Single<String> uploadProfileImage(@NonNull String id, @NonNull Bitmap imageBitmap) {
         return Single.create(emitter -> {
             StorageReference imageRef = fbService.storageRef.child(FIREBASE_AVATAR_PREFIX + id + ".png");
 
-            UploadTask uploadTask = imageRef.putFile(imageUri);
+            Bitmap resizedImage = resizeBitmap(imageBitmap, 256, 256);
+            byte[] resizedImageBytes = convertBitmapToBytes(resizedImage, Bitmap.CompressFormat.PNG, 100);
+
+            UploadTask uploadTask = imageRef.putBytes(resizedImageBytes);
             uploadTask.addOnCompleteListener(command -> {
                         Log.d(TAG, "Image successfully uploaded!");
                         emitter.onSuccess(imageRef.getPath());
@@ -54,5 +61,4 @@ public class ImageRepositoryImpl implements ImageRepository {
                     });
         });
     }
-
 }
