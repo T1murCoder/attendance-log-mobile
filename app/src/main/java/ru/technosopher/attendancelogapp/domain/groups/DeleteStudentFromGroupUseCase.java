@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 
 import java.util.function.Consumer;
 
-import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
-import ru.technosopher.attendancelogapp.data.source.GroupApi;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 
 public class DeleteStudentFromGroupUseCase {

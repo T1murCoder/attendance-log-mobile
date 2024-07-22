@@ -14,7 +14,7 @@ import ru.technosopher.attendancelogapp.domain.entities.AttendanceEntity;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 import ru.technosopher.attendancelogapp.domain.entities.QrCodeEntity;
 import ru.technosopher.attendancelogapp.domain.entities.TeacherEntity;
-import ru.technosopher.attendancelogapp.ui.group_add.ItemStudentEntityModel;
+import ru.technosopher.attendancelogapp.ui.utils.ItemStudentEntityModel;
 
 public class Mapper {
     public static StudentItemDto fromEntityToDto(@NonNull ItemStudentEntity entity){

@@ -5,8 +5,6 @@ import androidx.annotation.NonNull;
 import java.util.List;
 import java.util.function.Consumer;
 
-import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
-import ru.technosopher.attendancelogapp.domain.entities.GroupEntity;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 

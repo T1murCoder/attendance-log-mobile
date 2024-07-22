@@ -16,7 +16,6 @@ import ru.technosopher.attendancelogapp.databinding.ItemGroupsListBinding;
 import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
 
 public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.ViewHolder> {
-
     private final Consumer<String> onItemClick;
     private final Consumer<String> deleteGroup;
     private final List<ItemGroupEntity> data = new ArrayList<>();
@@ -24,7 +23,6 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
         this.onItemClick = onItemClick;
         this.deleteGroup = deleteGroup;
     }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -34,24 +32,20 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
                         parent,
                         false));
     }
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(data.get(position));
     }
-
     @Override
     public int getItemCount() {
         return data.size();
     }
-
     @SuppressLint("NotifyDataSetChanged")
     public void updateData(List<ItemGroupEntity> newData){
         data.clear();
         data.addAll(newData);
         notifyDataSetChanged();
     }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final ItemGroupsListBinding binding;
         public ViewHolder(@NonNull ItemGroupsListBinding binding) {

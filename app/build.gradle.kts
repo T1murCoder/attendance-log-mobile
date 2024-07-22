@@ -47,6 +47,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-storage")
     implementation("com.firebaseui:firebase-ui-storage:7.2.0")
+    implementation("io.reactivex.rxjava3:rxjava:3.1.8")
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

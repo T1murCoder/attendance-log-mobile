@@ -21,18 +21,14 @@ import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
 public class RegistrationFragment extends Fragment {
-
     private UpdateSharedPreferences prefs;
     private NavigationBarChangeListener navigationBarChangeListener;
-    FragmentRegistrationBinding binding;
-    RegistrationViewModel viewModel;
-
+    private FragmentRegistrationBinding binding;
+    private RegistrationViewModel viewModel;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_registration, container, false);
@@ -93,7 +89,21 @@ public class RegistrationFragment extends Fragment {
         binding.registrationRememberCb.setChecked(false);
         subscribe(viewModel);
     }
-
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            prefs = (UpdateSharedPreferences) context;
+            navigationBarChangeListener = (NavigationBarChangeListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString());
+        }
+    }
+    @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
+    }
     private void subscribe(RegistrationViewModel viewModel){
         viewModel.errorLiveData.observe(getViewLifecycleOwner(), error ->{
             binding.registrationAccountErrorTv.setVisibility(View.VISIBLE);
@@ -124,22 +134,5 @@ public class RegistrationFragment extends Fragment {
         viewModel.loadingLiveData.observe(getViewLifecycleOwner(), loading ->{
             binding.loadingProgressBar.setVisibility(Utils.visibleOrGone(loading));
         });
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            prefs = (UpdateSharedPreferences) context;
-            navigationBarChangeListener = (NavigationBarChangeListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString());
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        binding = null;
-        super.onDestroyView();
     }
 }

@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import ru.technosopher.attendancelogapp.data.TeacherRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.TeacherRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.domain.entities.TeacherEntity;
 import ru.technosopher.attendancelogapp.domain.sign.IsTeacherExistsUseCase;
@@ -20,10 +20,6 @@ public class RegistrationViewModel extends ViewModel {
     public final LiveData<String> errorLiveData = mutableErrorLiveData;
     private final MutableLiveData<State> mutableTeacherLiveData = new MutableLiveData<>();
     public final LiveData<State> teacherLiveData = mutableTeacherLiveData;
-
-    private final MutableLiveData<Boolean> mutableLoadingLiveData = new MutableLiveData<>();
-    public final LiveData<Boolean> loadingLiveData = mutableLoadingLiveData;
-
     /* USE CASES */
     private IsTeacherExistsUseCase isTeacherExistsUseCase = new IsTeacherExistsUseCase(
             TeacherRepositoryImpl.getInstance()
@@ -35,39 +31,30 @@ public class RegistrationViewModel extends ViewModel {
             TeacherRepositoryImpl.getInstance()
     );
     /* USE CASES */
-
-
+    private final MutableLiveData<Boolean> mutableLoadingLiveData = new MutableLiveData<>();
+    public final LiveData<Boolean> loadingLiveData = mutableLoadingLiveData;
     @Nullable
     private String id = null;
     @Nullable
     private String name = null;
-
     @Nullable
     private String surname = null;
-
     @Nullable
     private String login = null;
-
     @Nullable
     private String password = null;
-
-
     public void changeLogin(String login) {
         this.login = login;
     }
-
     public void changeName(String name) {
         this.name = name;
     }
-
     public void changeSurname(String surname) {
         this.surname = surname;
     }
-
     public void changePassword(String password) {
         this.password = password;
     }
-
     public void confirm() {
         CredentialsDataSource.getInstance().logout();
         final String currentName = name;
@@ -99,7 +86,6 @@ public class RegistrationViewModel extends ViewModel {
             }
         });
     }
-
     private void registerTeacher(@NonNull String currentLogin, @NonNull String currentPassword, @NonNull String currentName, @NonNull String currentSurname) {
         registerTeacherUseCase.execute(currentLogin, currentPassword, currentName, currentSurname, status -> {
             if (status.getErrors() == null && status.getStatusCode() == 200) {
@@ -127,7 +113,6 @@ public class RegistrationViewModel extends ViewModel {
             mutableLoadingLiveData.postValue(false);
         });
     }
-
     public class State {
         @Nullable
         private final TeacherEntity teacher;
@@ -149,5 +134,4 @@ public class RegistrationViewModel extends ViewModel {
             return teacher;
         }
     }
-
 }

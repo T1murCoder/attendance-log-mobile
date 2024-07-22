@@ -1,7 +1,5 @@
 package ru.technosopher.attendancelogapp.ui.group_add;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -13,14 +11,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
-import ru.technosopher.attendancelogapp.data.StudentRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.GroupsRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.StudentRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.utils.Mapper;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
-import ru.technosopher.attendancelogapp.domain.entities.Status;
-import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
 import ru.technosopher.attendancelogapp.domain.groups.CreateGroupUseCase;
 import ru.technosopher.attendancelogapp.domain.students.GetStudentsListUseCase;
+import ru.technosopher.attendancelogapp.ui.utils.ItemStudentEntityModel;
 
 public class GroupAddViewModel extends ViewModel {
 
@@ -34,11 +31,6 @@ public class GroupAddViewModel extends ViewModel {
     public final LiveData<Void> confirmLiveData = mutableConfirmLiveData;
 
     /* LIVEDATA */
-
-    private List<ItemStudentEntityModel> selectedStudents = new ArrayList<>();
-    private List<ItemStudentEntityModel> studentModelList = new ArrayList<>();
-    @Nullable
-    private String name;
     /* USE CASES */
     private final GetStudentsListUseCase getStudentsListUseCase = new GetStudentsListUseCase(
             StudentRepositoryImpl.getInstance()
@@ -46,9 +38,11 @@ public class GroupAddViewModel extends ViewModel {
     private final CreateGroupUseCase createGroupUseCase = new CreateGroupUseCase(
             GroupsRepositoryImpl.getInstance()
     );
-
     /* USE CASES */
-
+    private List<ItemStudentEntityModel> selectedStudents = new ArrayList<>();
+    private List<ItemStudentEntityModel> studentModelList = new ArrayList<>();
+    @Nullable
+    private String name;
 
     /* LOGIC */
     public void createGroup() {

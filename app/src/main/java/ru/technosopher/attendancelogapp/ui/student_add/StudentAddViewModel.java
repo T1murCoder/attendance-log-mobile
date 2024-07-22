@@ -1,7 +1,5 @@
 package ru.technosopher.attendancelogapp.ui.student_add;
 
-import android.content.ClipData;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -13,25 +11,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
-import ru.technosopher.attendancelogapp.data.StudentRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.GroupsRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.StudentRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.utils.Mapper;
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
-import ru.technosopher.attendancelogapp.domain.entities.Status;
-import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
-import ru.technosopher.attendancelogapp.domain.groups.AddStudentsToGroupUseCase;
-import ru.technosopher.attendancelogapp.domain.groups.GetGroupNameByIdUseCase;
 import ru.technosopher.attendancelogapp.domain.groups.PutStudentsToGroupUseCase;
-import ru.technosopher.attendancelogapp.domain.students.GetStudentsAttendancesUseCase;
 import ru.technosopher.attendancelogapp.domain.students.GetStudentsListUseCase;
-import ru.technosopher.attendancelogapp.ui.group_add.GroupAddViewModel;
-import ru.technosopher.attendancelogapp.ui.group_add.ItemStudentEntityModel;
-import ru.technosopher.attendancelogapp.ui.table.TableViewModel;
+import ru.technosopher.attendancelogapp.ui.utils.ItemStudentEntityModel;
 
 public class StudentAddViewModel extends ViewModel {
     /* LIVEDATA */
     private final MutableLiveData<StudentsState> mutableStateLiveData = new MutableLiveData<>();
-
     public final LiveData<StudentsState> stateLiveData = mutableStateLiveData;
     private final MutableLiveData<String> mutableErrorLiveData = new MutableLiveData<>();
     public final LiveData<String> errorLiveData = mutableErrorLiveData;
@@ -47,7 +37,6 @@ public class StudentAddViewModel extends ViewModel {
     );
     /* USE CASES */
     private String id;
-
     private List<ItemStudentEntityModel> selectedStudents = new ArrayList<>();
     private List<ItemStudentEntityModel> studentModelList = new ArrayList<>();
     /* LOGIC */
@@ -66,24 +55,9 @@ public class StudentAddViewModel extends ViewModel {
             mutableErrorLiveData.setValue("Group id is null");
         }
     }
-
     public void update(){
         loadVacantStudents();
     }
-    private void loadVacantStudents() {
-        mutableStateLiveData.postValue(new StudentsState(null, null, false, true));
-        getStudentsListUseCase.execute(status -> {
-            List<ItemStudentEntityModel> modelList = status.getValue() != null ? status.getValue().stream().map(Mapper::fromEntityToModel).collect(Collectors.toList()) : new ArrayList<>();
-            studentModelList = new ArrayList<>(modelList);
-            mutableStateLiveData.postValue(new StudentsState(
-                    studentModelList,
-                    status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
-                    status.getErrors() == null && status.getValue() != null && !status.getValue().isEmpty(), false)
-            );
-        });
-    }
-
-
     public void filterList(String text) {
         List<ItemStudentEntityModel> filteredList = studentModelList != null ? studentModelList.stream().filter(
                 itemStudentEntity -> itemStudentEntity.getItemStudent().getFullName().toLowerCase().contains(text.toLowerCase())
@@ -108,7 +82,6 @@ public class StudentAddViewModel extends ViewModel {
             }
         }
     }
-
     public void updateItemCheckedState(String id, boolean isChecked) {
         for (ItemStudentEntityModel item : studentModelList) {
             if (item.getId().equals(id)) {
@@ -124,6 +97,18 @@ public class StudentAddViewModel extends ViewModel {
     }
     public String getGroupId() {
         return this.id;
+    }
+    private void loadVacantStudents() {
+        mutableStateLiveData.postValue(new StudentsState(null, null, false, true));
+        getStudentsListUseCase.execute(status -> {
+            List<ItemStudentEntityModel> modelList = status.getValue() != null ? status.getValue().stream().map(Mapper::fromEntityToModel).collect(Collectors.toList()) : new ArrayList<>();
+            studentModelList = new ArrayList<>(modelList);
+            mutableStateLiveData.postValue(new StudentsState(
+                    studentModelList,
+                    status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
+                    status.getErrors() == null && status.getValue() != null && !status.getValue().isEmpty(), false)
+            );
+        });
     }
     public class StudentsState {
         @Nullable

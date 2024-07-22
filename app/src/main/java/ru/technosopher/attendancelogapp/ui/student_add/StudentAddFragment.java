@@ -1,7 +1,6 @@
 package ru.technosopher.attendancelogapp.ui.student_add;
 
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,36 +16,32 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.List;
+import java.util.Objects;
+
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.databinding.FragmentStudentsAddBinding;
-import ru.technosopher.attendancelogapp.ui.group_add.GroupAddViewModel;
-import ru.technosopher.attendancelogapp.ui.group_add.StudentListAdapter;
+import ru.technosopher.attendancelogapp.ui.utils.StudentListAdapter;
 import ru.technosopher.attendancelogapp.ui.table.TableFragment;
-import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
 import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
 public class StudentAddFragment extends Fragment {
-
     public static String KEY_ID = "STUDENTS_ADD_FRAGMENT";
-
     private FragmentStudentsAddBinding binding;
-
     private StudentAddViewModel viewModel;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_students_add, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentStudentsAddBinding.bind(view);
         viewModel = new ViewModelProvider(this).get(StudentAddViewModel.class);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        StudentListAdapterLegacy adapter = new StudentListAdapterLegacy(viewModel);
+        StudentListAdapter adapter = new StudentListAdapter(this::addStudent, this::deleteStudent, this::changeItemSelection);
 
         binding.studentsRecyclerView.setLayoutManager(mLayoutManager);
         binding.studentsRecyclerView.setAdapter(adapter);
@@ -90,7 +85,24 @@ public class StudentAddFragment extends Fragment {
         subscribe(viewModel, adapter);
         viewModel.update();
     }
-    private void subscribe(StudentAddViewModel viewModel, StudentListAdapterLegacy adapter) {
+    @Override
+    public void onStart() {
+        super.onStart();
+        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
+        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
+        viewModel.update();
+    }
+    public static Bundle getBundle(@NonNull String id) {
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_ID, id);
+        return bundle;
+    }
+    @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
+    }
+    private void subscribe(StudentAddViewModel viewModel, StudentListAdapter adapter) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), studentsState -> {
             if (studentsState.getLoading()){
                 binding.progressBar.setVisibility(Utils.visibleOrGone(true));
@@ -123,17 +135,11 @@ public class StudentAddFragment extends Fragment {
             Navigation.findNavController(view).navigate(R.id.action_studentAddFragment_to_tableFragment, TableFragment.getBundle(viewModel.getGroupId()));
         });
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
-        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
-        viewModel.update();
+    private void addStudent(@NonNull String id) {viewModel.addStudent(id);}
+    private void deleteStudent(@NonNull String id){
+        viewModel.deleteStudent(id);
     }
-    public static Bundle getBundle(@NonNull String id) {
-        Bundle bundle = new Bundle();
-        bundle.putString(KEY_ID, id);
-        return bundle;
+    private void changeItemSelection(@NonNull List<String> args){
+        viewModel.updateItemCheckedState(args.get(0), Objects.equals(args.get(1), "t"));
     }
 }

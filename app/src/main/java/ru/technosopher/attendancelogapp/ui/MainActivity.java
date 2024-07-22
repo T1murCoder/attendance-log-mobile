@@ -23,7 +23,6 @@ import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 public class MainActivity extends AppCompatActivity implements NavigationBarChangeListener, UpdateSharedPreferences {
     private NavController navController;
     private ChipNavigationBar navigationBar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,29 +35,23 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
             fragmentNavigation(0, destinationFragment);
         });
     }
-
     @Override
     public void hideNavigationBar() {
         if (navigationBar != null) navigationBar.setVisibility(View.GONE);
     }
-
     @Override
     public void showNavigationBar() {
         if (navigationBar != null) navigationBar.setVisibility(View.VISIBLE);
     }
-
     @Override
     public void changeSelectedItem(int r) {
         navigationBar.setItemSelected(r, true);
     }
-
-
     @Override
     protected void onStart() {
         super.onStart();
         CredentialsDataSource.getInstance().updateLogin(getPrefsLogin(), getPrefsPassword());
     }
-
     private void fragmentNavigation(int previousFragment, int destinationFragment) {
         navController = Navigation.findNavController(MainActivity.this, R.id.fragmentContainerView);
         if (destinationFragment == R.id.lessons) {
@@ -74,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarChan
 //            navigationBar.setItemEnabled(R.id.profile, true);
         }
     }
-
     @Override
     public void updatePrefs(String id,
                             String login,

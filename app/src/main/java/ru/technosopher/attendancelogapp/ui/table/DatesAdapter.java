@@ -15,9 +15,7 @@ import ru.technosopher.attendancelogapp.ui.utils.DateFormatter;
 
 
 public class DatesAdapter extends RecyclerView.Adapter<DatesAdapter.ViewHolder> {
-
     private final List<String> data = new ArrayList<>();
-
     @NonNull
     @Override
     public DatesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -27,7 +25,6 @@ public class DatesAdapter extends RecyclerView.Adapter<DatesAdapter.ViewHolder> 
                         parent,
                         false));
     }
-
     @Override
     public void onBindViewHolder(@NonNull DatesAdapter.ViewHolder holder, int position) {
         holder.bind(data.get(position));

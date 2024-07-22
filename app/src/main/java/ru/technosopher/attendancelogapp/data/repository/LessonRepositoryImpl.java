@@ -1,11 +1,10 @@
-package ru.technosopher.attendancelogapp.data;
+package ru.technosopher.attendancelogapp.data.repository;
 
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 import ru.technosopher.attendancelogapp.data.dto.LessonDto;
