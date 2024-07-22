@@ -17,34 +17,35 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.List;
+import java.util.Objects;
+
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.databinding.FragmentGroupAddBinding;
 import ru.technosopher.attendancelogapp.ui.utils.OnChangeText;
+import ru.technosopher.attendancelogapp.ui.utils.StudentListAdapter;
 import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
 public class GroupAddFragment extends Fragment {
-
-    FragmentGroupAddBinding binding;
+    private FragmentGroupAddBinding binding;
     private GroupAddViewModel viewModel;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_group_add, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentGroupAddBinding.bind(view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         viewModel = new ViewModelProvider(this).get(GroupAddViewModel.class);
-        StudentListAdapter adapter = new StudentListAdapter(viewModel);
+        StudentListAdapter adapter = new StudentListAdapter(this::addStudent, this::deleteStudent, this::changeItemSelection);
         binding.studentsRecyclerView.setLayoutManager(mLayoutManager);
         binding.studentsRecyclerView.setAdapter(adapter);
         binding.studentSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -90,17 +91,28 @@ public class GroupAddFragment extends Fragment {
         subscribe(viewModel, adapter);
         viewModel.update();
     }
-
-    private void addStudent(@NonNull String id) {
-        viewModel.addStudent(id);
+    @Override
+    public void onStart() {
+        super.onStart();
+        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
+        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
+        viewModel.update();
     }
+    @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
+    }
+    private void addStudent(@NonNull String id) {viewModel.addStudent(id);}
     private void deleteStudent(@NonNull String id){
         viewModel.deleteStudent(id);
+    }
+    private void changeItemSelection(@NonNull List<String> args){
+        viewModel.updateItemCheckedState(args.get(0), Objects.equals(args.get(1), "t"));
     }
     private void clearStudents(){
         viewModel.clearStudents();
     }
-
     private void subscribe(GroupAddViewModel viewModel, StudentListAdapter adapter) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), studentsState -> {
             if (studentsState.getLoading()){
@@ -117,11 +129,6 @@ public class GroupAddFragment extends Fragment {
                 binding.studentsRecyclerView.setVisibility(Utils.visibleOrGone(studentsState.getSuccess()));
                 binding.errorTv.setVisibility(Utils.visibleOrGone(!studentsState.getSuccess()));
                 if (studentsState.getSuccess()){
-//                    if (studentsState.getStudents() != null) {
-//                        adapter.updateData(studentsState.getStudents());
-//                    } else {
-//                        adapter.updateData(new ArrayList<>());
-//                    }
                     adapter.updateData(studentsState.getStudents());
                 }
                 else{
@@ -139,17 +146,4 @@ public class GroupAddFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
-        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
-        viewModel.update();
-    }
-
-    @Override
-    public void onDestroyView() {
-        binding = null;
-        super.onDestroyView();
-    }
 }

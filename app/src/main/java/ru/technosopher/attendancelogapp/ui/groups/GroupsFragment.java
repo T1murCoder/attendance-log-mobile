@@ -36,12 +36,10 @@ public class GroupsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_groups, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -71,7 +69,27 @@ public class GroupsFragment extends Fragment {
         });
         subscribe(viewModel, adapter);
     }
-
+    @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
+    }
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            navigationBarChangeListener = (NavigationBarChangeListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString());
+        }
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
+        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
+        viewModel.update();
+    }
     private void subscribe(GroupsViewModel viewModel, GroupsListAdapter adapter) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), state->{
             if (state.getLoading()){
@@ -110,39 +128,14 @@ public class GroupsFragment extends Fragment {
             }
         });
     }
-
     private void openGroup(@NonNull String id) {
         View view = getView();
         if (view == null) return;
         Navigation.findNavController(view).navigate(R.id.action_groupsFragment_to_tableFragment, TableFragment.getBundle(id));
     }
-
     private void deleteGroup(@NonNull String id){
         createDeletionDialog(id).show();
     }
-    @Override
-    public void onDestroyView() {
-        binding = null;
-        super.onDestroyView();
-    }
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            navigationBarChangeListener = (NavigationBarChangeListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString());
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
-        CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
-        viewModel.update();
-    }
-
     private AlertDialog createDeletionDialog(@NonNull String group_id){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
         builder.setMessage("Удалить группу?")

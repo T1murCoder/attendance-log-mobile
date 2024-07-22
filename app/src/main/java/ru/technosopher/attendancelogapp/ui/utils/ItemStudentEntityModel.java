@@ -1,4 +1,4 @@
-package ru.technosopher.attendancelogapp.ui.group_add;
+package ru.technosopher.attendancelogapp.ui.utils;
 
 
 import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;

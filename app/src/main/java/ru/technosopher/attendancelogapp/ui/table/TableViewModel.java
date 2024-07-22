@@ -1,7 +1,5 @@
 package ru.technosopher.attendancelogapp.ui.table;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -10,16 +8,13 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import ru.technosopher.attendancelogapp.data.AttendanceRepositoryImpl;
-import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
-import ru.technosopher.attendancelogapp.data.StudentRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.AttendanceRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.GroupsRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.StudentRepositoryImpl;
 import ru.technosopher.attendancelogapp.domain.attendance.ChangeStudentAttAndPointsUseCase;
 import ru.technosopher.attendancelogapp.domain.entities.AttendanceEntity;
-import ru.technosopher.attendancelogapp.domain.entities.Status;
 import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
 import ru.technosopher.attendancelogapp.domain.groups.DeleteStudentFromGroupUseCase;
 import ru.technosopher.attendancelogapp.domain.groups.GetGroupNameByIdUseCase;
@@ -28,7 +23,6 @@ import ru.technosopher.attendancelogapp.ui.utils.DateFormatter;
 
 public class TableViewModel extends ViewModel {
     private final MutableLiveData<State> mutableStateLiveData = new MutableLiveData<>();
-
     public LiveData<State> stateLiveData = mutableStateLiveData;
     private final MutableLiveData<String> mutableErrorLiveData = new MutableLiveData<>();
     public LiveData<String> errorLiveData = mutableErrorLiveData;
@@ -114,24 +108,6 @@ public class TableViewModel extends ViewModel {
             }
         });
     }
-    private List<StudentEntity> sortAttendancesForStudents(@Nullable List<StudentEntity> students) {
-        if (students == null) return new ArrayList<>();
-        for (StudentEntity student : students) {
-            List<AttendanceEntity> attendanceEntities = student.getAttendanceEntityList();
-            attendanceEntities.sort(Comparator.comparing(AttendanceEntity::getLessonTimeStart));
-        }
-        return students;
-    }
-    private void sortAttendances(@Nullable List<AttendanceEntity> attendances) {
-        if (attendances == null) return;
-        attendances.sort(Comparator.comparing(AttendanceEntity::getLessonTimeStart));
-    }
-     private List<StudentEntity> sortFullNames(@Nullable List<StudentEntity> students){
-        if (students == null) return new ArrayList<>();
-        students.sort(Comparator.comparing(StudentEntity::getFullName));
-        return students;
-
-    }
     public List<String> extractDates(List<AttendanceEntity> attendances) {
         List<String> dates = new ArrayList<>();
         sortAttendances(attendances);
@@ -140,7 +116,6 @@ public class TableViewModel extends ViewModel {
         }
         return dates;
     }
-
     public List<StudentEntity> getStudents() {
         return this.students;
     }
@@ -165,6 +140,24 @@ public class TableViewModel extends ViewModel {
     }
     public String getGroupId() {
         return groupId;
+    }
+    private List<StudentEntity> sortAttendancesForStudents(@Nullable List<StudentEntity> students) {
+        if (students == null) return new ArrayList<>();
+        for (StudentEntity student : students) {
+            List<AttendanceEntity> attendanceEntities = student.getAttendanceEntityList();
+            attendanceEntities.sort(Comparator.comparing(AttendanceEntity::getLessonTimeStart));
+        }
+        return students;
+    }
+    private void sortAttendances(@Nullable List<AttendanceEntity> attendances) {
+        if (attendances == null) return;
+        attendances.sort(Comparator.comparing(AttendanceEntity::getLessonTimeStart));
+    }
+    private List<StudentEntity> sortFullNames(@Nullable List<StudentEntity> students){
+        if (students == null) return new ArrayList<>();
+        students.sort(Comparator.comparing(StudentEntity::getFullName));
+        return students;
+
     }
     public class State {
 

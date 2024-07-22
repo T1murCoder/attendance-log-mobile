@@ -1,55 +1,44 @@
 package ru.technosopher.attendancelogapp.ui.login;
 
-import android.text.BoringLayout;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import ru.technosopher.attendancelogapp.data.TeacherRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.TeacherRepositoryImpl;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.domain.entities.TeacherEntity;
 import ru.technosopher.attendancelogapp.domain.sign.IsTeacherExistsUseCase;
 import ru.technosopher.attendancelogapp.domain.sign.LoginTeacherUseCase;
 
 public class LoginViewModel extends ViewModel {
-
     private final MutableLiveData<Void> mutableConfirmLiveData = new MutableLiveData<>();
     public final LiveData<Void> confirmLiveData = mutableConfirmLiveData;
     private final MutableLiveData<String> mutableErrorLiveData = new MutableLiveData<>();
     public final LiveData<String> errorLiveData = mutableErrorLiveData;
     private final MutableLiveData<State> mutableTeacherLiveData = new MutableLiveData<>();
     public final LiveData<State> teacherLiveData = mutableTeacherLiveData;
-
     private final MutableLiveData<Boolean> mutableLoadingLiveData = new MutableLiveData<>();
     public final LiveData<Boolean> loadingLiveData = mutableLoadingLiveData;
-
+    /*  USE CASES  */
+    private IsTeacherExistsUseCase isTeacherExistsUseCase = new IsTeacherExistsUseCase(
+            TeacherRepositoryImpl.getInstance()
+    );
+    private LoginTeacherUseCase loginTeacherUseCase = new LoginTeacherUseCase(
+            TeacherRepositoryImpl.getInstance()
+    );
     @Nullable
     private String login = null;
     @Nullable
     private String password = null;
-
-
     /*  USE CASES  */
-    IsTeacherExistsUseCase isTeacherExistsUseCase = new IsTeacherExistsUseCase(
-            TeacherRepositoryImpl.getInstance()
-    );
-    LoginTeacherUseCase loginTeacherUseCase = new LoginTeacherUseCase(
-            TeacherRepositoryImpl.getInstance()
-    );
-    /*  USE CASES  */
-
     public void changeLogin(@NonNull String login) {
         this.login = login;
     }
-
     public void changePassword(@NonNull String password) {
         this.password = password;
     }
-
     public void confirm() {
         CredentialsDataSource.getInstance().logout();
         final String currentLogin = login;
@@ -85,7 +74,6 @@ public class LoginViewModel extends ViewModel {
             }
         });
     }
-
     private void loginTeacher(@NonNull final String currentLogin, @NonNull final String currentPassword) {
         loginTeacherUseCase.execute(currentLogin, currentPassword, status -> {
             if (status.getErrors() == null && status.getStatusCode() == 200) {
@@ -112,7 +100,6 @@ public class LoginViewModel extends ViewModel {
             mutableLoadingLiveData.postValue(false);
         });
     }
-
     public class State {
 
         @Nullable

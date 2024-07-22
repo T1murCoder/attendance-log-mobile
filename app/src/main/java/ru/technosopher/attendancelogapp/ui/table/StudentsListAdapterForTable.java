@@ -17,9 +17,7 @@ import ru.technosopher.attendancelogapp.domain.entities.StudentEntity;
 
 public class StudentsListAdapterForTable extends RecyclerView.Adapter<StudentsListAdapterForTable.ViewHolder> {
     private final List<StudentEntity> data = new ArrayList<>();
-
     private final Consumer<String> onStudentDelete;
-
     public StudentsListAdapterForTable(Consumer<String> onStudentDelete){
         this.onStudentDelete = onStudentDelete;
     }
@@ -32,17 +30,14 @@ public class StudentsListAdapterForTable extends RecyclerView.Adapter<StudentsLi
                         parent,
                         false));
     }
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(data.get(position));
     }
-
     @Override
     public int getItemCount() {
         return data.size();
     }
-
     @SuppressLint("NotifyDataSetChanged")
     public void updateData(List<StudentEntity> newData){
         data.clear();

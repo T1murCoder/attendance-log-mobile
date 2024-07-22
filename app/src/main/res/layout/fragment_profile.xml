@@ -20,345 +20,367 @@
         android:layout_height="match_parent"
         android:id="@+id/swipe">
 
-        <LinearLayout
-            android:id="@+id/profile_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone"
-            tools:visibility="visible">
-
-            <RelativeLayout
-                android:id="@+id/avatar_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/profile_new_image_fab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/profile_avatar_iv"
-                    android:layout_alignBottom="@id/profile_avatar_iv"
-                    android:backgroundTint="@color/main_blue"
-                    android:clickable="true"
-                    android:contentDescription="@string/groups_fab_content_description"
-                    android:src="@drawable/ic_new_avatar"
-                    android:tint="@color/white"
-                    android:visibility="visible"
-                    app:fabCustomSize="69dp" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:padding="5dp"
-                    android:id="@+id/profile_avatar_iv"
-                    android:layout_width="205dp"
-                    android:layout_height="205dp"
-                    app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/empty_avatar_image"
-                    app:strokeColor="@color/main_gray"
-                    app:strokeWidth="1dp"/>
-            </RelativeLayout>
-
+            android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/profile_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20sp"
-                    android:fontFamily="@font/inter_semibold"
-                    android:text="Основная информация"
-                    android:textSize="16sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="vertical">
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_regular"
-                            android:text="Login"
-                            android:textColor="@color/main_gray"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/profile_login_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:fontFamily="@font/inter_regular"
-                            tools:text="login"
-                            android:textAlignment="textEnd"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-
-                        <View
-                            android:layout_width="40dp"
-                            android:layout_height="30dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_regular"
-                            android:text="Фамилия"
-                            android:textColor="@color/main_gray"
-                            android:textSize="14sp" />
-
-                        <EditText
-                            android:id="@+id/profile_surname_et"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:inputType="text"
-                            android:maxLength="15"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:fontFamily="@font/inter_regular"
-                            tools:text="Surname"
-                            android:textAlignment="textEnd"
-                            android:textSize="14sp" />
-
-                        <ImageButton
-                            android:id="@+id/profile_surname_edit_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:backgroundTint="@color/background_gray"
-                            app:srcCompat="@drawable/ic_redact" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_regular"
-                            android:text="Имя"
-                            android:textColor="@color/main_gray"
-                            android:textSize="14sp" />
-
-                        <EditText
-
-                            android:id="@+id/profile_name_et"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:fontFamily="@font/inter_regular"
-                            tools:text="Name"
-                            android:inputType="text"
-                            android:maxLength="15"
-                            android:textAlignment="textEnd"
-                            android:textSize="14sp" />
-
-                        <ImageButton
-                            android:id="@+id/profile_name_edit_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:backgroundTint="@color/background_gray"
-                            app:srcCompat="@drawable/ic_redact" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_regular"
-                            android:text="Telegram"
-                            android:textColor="@color/main_gray"
-                            android:textSize="14sp" />
-
-                        <EditText
-                            android:id="@+id/profile_telegram_et"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:fontFamily="@font/inter_regular"
-                            tools:text="telegram"
-                            android:inputType="text"
-                            android:maxLength="30"
-                            android:textAlignment="textEnd"
-                            android:textSize="14sp" />
-
-                        <ImageButton
-                            android:id="@+id/profile_telegram_edit_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:backgroundTint="@color/background_gray"
-                            app:srcCompat="@drawable/ic_redact" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_regular"
-                            android:text="Github"
-                            android:textColor="@color/main_gray"
-                            android:textSize="14sp" />
-
-                        <EditText
-                            android:id="@+id/profile_github_et"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:focusable="false"
-                            android:inputType="text"
-                            android:maxLength="30"
-                            android:focusableInTouchMode="false"
-                            android:fontFamily="@font/inter_regular"
-                            tools:text="github_link"
-                            android:textAlignment="textEnd"
-                            android:textSize="14sp" />
-
-                        <ImageButton
-                            android:id="@+id/profile_github_edit_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:backgroundTint="@color/background_gray"
-                            app:srcCompat="@drawable/ic_redact" />
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20sp"
-                    android:fontFamily="@font/inter_semibold"
-                    android:text="Напоминания"
-                    android:textSize="16sp"
-                    android:visibility="gone" />
-
-                <LinearLayout
+                <RelativeLayout
+                    android:id="@+id/avatar_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/profile_new_image_fab"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:orientation="horizontal">
+                        android:layout_alignEnd="@+id/profile_avatar_iv"
+                        android:layout_alignBottom="@id/profile_avatar_iv"
+                        android:backgroundTint="@color/main_blue"
+                        android:clickable="true"
+                        android:contentDescription="@string/groups_fab_content_description"
+                        android:src="@drawable/ic_new_avatar"
+                        android:tint="@color/white"
+                        android:visibility="visible"
+                        app:fabCustomSize="72dp" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_regular"
-                            android:text="Включить напоминания"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:padding="5dp"
+                        android:id="@+id/profile_avatar_iv"
+                        android:layout_width="205dp"
+                        android:layout_height="205dp"
+                        app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/empty_avatar_image"
+                        app:strokeColor="@color/main_gray"
+                        app:strokeWidth="1dp"/>
+                </RelativeLayout>
 
-                        <CheckBox
-                            android:id="@+id/profile_notify_cb"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_regular"
-                            android:text="Напоминать о занятии"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20sp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:text="Основная информация"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="vertical">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="Login"
+                                android:textColor="@color/main_gray"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/profile_login_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:fontFamily="@font/inter_regular"
+                                tools:text="login"
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+                            <View
+                                android:layout_width="40dp"
+                                android:layout_height="30dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="Фамилия"
+                                android:textColor="@color/main_gray"
+                                android:textSize="14sp" />
+
+                            <EditText
+                                android:id="@+id/profile_surname_et"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:inputType="text"
+                                android:maxLength="15"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:fontFamily="@font/inter_regular"
+                                tools:text="Surname"
+                                android:textAlignment="textEnd"
+                                android:textSize="14sp" />
+
+                            <ImageButton
+                                android:id="@+id/profile_surname_edit_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:backgroundTint="@color/background_gray"
+                                app:srcCompat="@drawable/ic_redact" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="Имя"
+                                android:textColor="@color/main_gray"
+                                android:textSize="14sp" />
+
+                            <EditText
+
+                                android:id="@+id/profile_name_et"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:fontFamily="@font/inter_regular"
+                                tools:text="Name"
+                                android:inputType="text"
+                                android:maxLength="15"
+                                android:textAlignment="textEnd"
+                                android:textSize="14sp" />
+
+                            <ImageButton
+                                android:id="@+id/profile_name_edit_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:backgroundTint="@color/background_gray"
+                                app:srcCompat="@drawable/ic_redact" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="Telegram"
+                                android:textColor="@color/main_gray"
+                                android:textSize="14sp" />
+
+                            <EditText
+                                android:id="@+id/profile_telegram_et"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:fontFamily="@font/inter_regular"
+                                tools:text="telegram"
+                                android:inputType="text"
+                                android:maxLength="30"
+                                android:textAlignment="textEnd"
+                                android:textSize="14sp" />
+
+                            <ImageButton
+                                android:id="@+id/profile_telegram_edit_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:backgroundTint="@color/background_gray"
+                                app:srcCompat="@drawable/ic_redact" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="Github"
+                                android:textColor="@color/main_gray"
+                                android:textSize="14sp" />
+
+                            <EditText
+                                android:id="@+id/profile_github_et"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:focusable="false"
+                                android:inputType="text"
+                                android:maxLength="30"
+                                android:focusableInTouchMode="false"
+                                android:fontFamily="@font/inter_regular"
+                                tools:text="github_link"
+                                android:textAlignment="textEnd"
+                                android:textSize="14sp" />
+
+                            <ImageButton
+                                android:id="@+id/profile_github_edit_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:backgroundTint="@color/background_gray"
+                                app:srcCompat="@drawable/ic_redact" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20sp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:text="Напоминания"
+                        android:textSize="16sp"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/inter_regular"
-                        android:text="Выход из аккаунта"
-                        android:textColor="@color/main_red"
-                        android:textSize="14sp" />
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                    <ImageButton
-                        android:id="@+id/profile_logout_btn"
-                        android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="Включить напоминания"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+                            <CheckBox
+                                android:id="@+id/profile_notify_cb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="Напоминать о занятии"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+                            <CheckBox
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@color/background_gray"
-                        app:srcCompat="@drawable/ic_logout" />
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="Выход из аккаунта"
+                            android:textColor="@color/main_red"
+                            android:textSize="14sp" />
+
+                        <ImageButton
+                            android:id="@+id/profile_logout_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@color/background_gray"
+                            app:srcCompat="@drawable/ic_logout" />
+
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_save_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/main_blue"
+                android:clickable="true"
+                android:src="@drawable/ic_commit_button"
+                android:tint="@color/white"
+                app:fabCustomSize="69dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

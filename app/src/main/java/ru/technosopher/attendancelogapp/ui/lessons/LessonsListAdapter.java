@@ -41,15 +41,13 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
     private final Consumer<String> onCheckQrCodeIsAlive;
     private final Consumer<String> onDelete;
     private final Consumer<String> onOpenJournal;
-    private final List<LessonEntity> data = new ArrayList<>();
-
+    private final List<LessonEntityModel> data = new ArrayList<>();
     public LessonsListAdapter(Context context, Consumer<String> onCheckQrCodeIsAlive, Consumer<String> onDelete, Consumer<String> onOpenJournal) {
         this.context = context;
         this.onCheckQrCodeIsAlive = onCheckQrCodeIsAlive;
         this.onDelete = onDelete;
         this.onOpenJournal = onOpenJournal;
     }
-
     @NonNull
     @Override
     public LessonsListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -59,28 +57,24 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
                         parent,
                         false));
     }
-
     @Override
     public void onBindViewHolder(@NonNull LessonsListAdapter.ViewHolder holder, int position) {
         holder.bind(data.get(position));
     }
-
     @Override
     public int getItemCount() {
         return data.size();
     }
-
     @SuppressLint("NotifyDataSetChanged")
-    public void updateData(List<LessonEntity> newData){
+    public void updateData(List<LessonEntityModel> newData){
         data.clear();
         data.addAll(newData);
         notifyDataSetChanged();
     }
-
     public void updateItemQrCode(QrCodeEntity qrCode){
         if (qrCode.getId().isEmpty() || qrCode.getId() == null) {
             for (int ind = 0; ind < data.size(); ind++){
-                if (data.get(ind).getId().equals(qrCode.getLessonId())){
+                if (data.get(ind).getLesson().getId().equals(qrCode.getLessonId())){
                     data.set(ind, data.get(ind));
                     notifyItemChanged(ind);
                     break;
@@ -89,33 +83,35 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
         }
         else{
             for (int ind = 0; ind < data.size(); ind++){
-                if (data.get(ind).getId().equals(qrCode.getLessonId())){
-                    LessonEntity lessonWithQrCOde = data.get(ind);
+                if (data.get(ind).getLesson().getId().equals(qrCode.getLessonId())){
+                    LessonEntity lessonWithQrCOde = data.get(ind).getLesson();
                     lessonWithQrCOde.setActiveQrCode(qrCode);
-                    data.set(ind, lessonWithQrCOde);
+                    data.set(ind, new LessonEntityModel(lessonWithQrCOde, data.get(ind).isClosed()));
                     notifyItemChanged(ind);
                     break;
                 }
             }
         }
     }
-
     public class ViewHolder extends RecyclerView.ViewHolder{
         private final ItemLessonsListBinding binding;
-        private Boolean closed = true;
         public ViewHolder(@NonNull ItemLessonsListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
-        public void bind(LessonEntity item) {
+        public void bind(LessonEntityModel item) {
+            if (item.isClosed()) {
+                binding.qrCodeAdditionalBox.setVisibility(View.GONE);
+            } else {
+                binding.qrCodeAdditionalBox.setVisibility(View.VISIBLE);
+            }
+            binding.timeTv.setText(DateFormatter.getFullTimeStringFromDate(item.getLesson().getTimeStart(), item.getLesson().getTimeEnd(), "HH:mm"));
+            binding.groupName.setText(item.getLesson().getGroupName());
+            binding.dateTv.setText(DateFormatter.getDateStringFromDate(item.getLesson().getTimeStart(), "dd MMM yyyy"));
+            binding.lessonTitle.setText(item.getLesson().getTheme());
 
-            binding.timeTv.setText(DateFormatter.getFullTimeStringFromDate(item.getTimeStart(), item.getTimeEnd(), "HH:mm"));
-            binding.groupName.setText(item.getGroupName());
-            binding.dateTv.setText(DateFormatter.getDateStringFromDate(item.getTimeStart(), "dd MMM yyyy"));
-            binding.lessonTitle.setText(item.getTheme());
-
-            if (item.getActiveQrCode() == null){
+            if (item.getLesson().getActiveQrCode() == null){
                 binding.qrCodeImage.setVisibility(View.GONE);
                 binding.lessonItemImageCheckingPb.setVisibility(View.GONE);
                 binding.emptyQrCodeState.setVisibility(View.VISIBLE);
@@ -125,7 +121,7 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
                 binding.lessonItemImageCheckingPb.setVisibility(View.GONE);
                 binding.emptyQrCodeState.setVisibility(View.GONE);
                 binding.qrCodeImage.setVisibility(View.VISIBLE);
-                binding.qrCodeImage.setImageBitmap(Utils.generateQr(item.getActiveQrCode().getId(), 900, 900));
+                binding.qrCodeImage.setImageBitmap(Utils.generateQr(item.getLesson().getActiveQrCode().getId(), 900, 900));
                 binding.qrCodeUploadLayout.setVisibility(View.VISIBLE);
 
             }
@@ -134,28 +130,28 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
                 public void onClick(View view) {
                     binding.lessonItemImageCheckingPb.setVisibility(View.VISIBLE);
                     binding.qrCodeImage.setVisibility(View.GONE);
-                    onCheckQrCodeIsAlive.accept(item.getId());
+                    onCheckQrCodeIsAlive.accept(item.getLesson().getId());
                 }
             });
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (closed){
+                    if (item.isClosed()){
                         binding.qrCodeAdditionalBox.setVisibility(View.VISIBLE);
-                        if (item.getActiveQrCode() == null){
+                        if (item.getLesson().getActiveQrCode() == null){
                             binding.qrCodeImage.setVisibility(View.GONE);
                             binding.lessonItemImageCheckingPb.setVisibility(View.GONE);
                             binding.emptyQrCodeState.setVisibility(View.VISIBLE);
                         } else{
                             binding.qrCodeImage.setVisibility(View.VISIBLE);
-                            binding.qrCodeImage.setImageBitmap(Utils.generateQr(item.getActiveQrCode().getId(), 900, 900));
+                            binding.qrCodeImage.setImageBitmap(Utils.generateQr(item.getLesson().getActiveQrCode().getId(), 900, 900));
                             binding.lessonItemImageCheckingPb.setVisibility(View.GONE);
                             binding.emptyQrCodeState.setVisibility(View.GONE);
                         }
-                        closed = false;
+                        item.setClosed(false);
                     }else{
                         binding.qrCodeAdditionalBox.setVisibility(View.GONE);
-                        closed = true;
+                        item.setClosed(true);
                     }
                 }
             });
@@ -163,20 +159,20 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
                 @Override
                 public void onClick(View view) {
                     if (view == null) return;
-                    onDelete.accept(item.getId());
+                    onDelete.accept(item.getLesson().getId());
                 }
             });
             binding.qrCodeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onOpenJournal.accept(item.getId());
+                    onOpenJournal.accept(item.getLesson().getId());
                 }
             });
             binding.lessonUploadBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (item.getActiveQrCode() != null){
-                        Bitmap bitmap = Utils.generateQr(item.getActiveQrCode().getId(), 900,900);
+                    if (item.getLesson().getActiveQrCode() != null){
+                        Bitmap bitmap = Utils.generateQr(item.getLesson().getActiveQrCode().getId(), 900,900);
 
                         File imagePath = new File(context.getCacheDir(), "to-share-qr.png");
                         try {
@@ -200,9 +196,6 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
 
                 }
             });
-        }
-        public Boolean getIsClosed(){
-            return this.closed;
         }
     }
 }

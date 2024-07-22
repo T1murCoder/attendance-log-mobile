@@ -5,8 +5,6 @@ import androidx.annotation.NonNull;
 import java.util.GregorianCalendar;
 import java.util.function.Consumer;
 
-import ru.technosopher.attendancelogapp.data.LessonRepositoryImpl;
-import ru.technosopher.attendancelogapp.data.source.LessonApi;
 import ru.technosopher.attendancelogapp.domain.entities.LessonEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
 

@@ -17,7 +17,6 @@ import ru.technosopher.attendancelogapp.domain.entities.ItemStudentEntity;
 import ru.technosopher.attendancelogapp.ui.groups.GroupsListAdapter;
 
 public class DummyAdapter extends RecyclerView.Adapter<DummyAdapter.ViewHolder> {
-
     private final List<ItemStudentEntity> data = new ArrayList<>();
     @NonNull
     @Override
@@ -28,17 +27,14 @@ public class DummyAdapter extends RecyclerView.Adapter<DummyAdapter.ViewHolder> 
                         parent,
                         false));
     }
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(data.get(position));
     }
-
     @Override
     public int getItemCount() {
         return data.size();
     }
-
     @SuppressLint("NotifyDataSetChanged")
     public void updateData(List<ItemStudentEntity> newData){
         data.clear();

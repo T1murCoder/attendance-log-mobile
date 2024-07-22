@@ -12,28 +12,25 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import ru.technosopher.attendancelogapp.R;
-import ru.technosopher.attendancelogapp.databinding.DummyAttendanceFragmentBinding;
+import ru.technosopher.attendancelogapp.databinding.FragmentDummyAttendanceBinding;
 import ru.technosopher.attendancelogapp.ui.utils.Utils;
 
 public class DummyAttendancesFragment extends Fragment {
-
     private static final String KEY_ID = "DUMMY_FRAGMENT";
-    private DummyAttendanceFragmentBinding binding;
+    private FragmentDummyAttendanceBinding binding;
     private DummyAttendancesViewModel viewModel;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dummy_attendance_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_dummy_attendance, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding = DummyAttendanceFragmentBinding.bind(view);
+        binding = FragmentDummyAttendanceBinding.bind(view);
 
         DummyAdapter adapter = new DummyAdapter();
         viewModel = new ViewModelProvider(this).get(DummyAttendancesViewModel.class);
@@ -51,7 +48,16 @@ public class DummyAttendancesFragment extends Fragment {
         });
         viewModel.load(id);
     }
-
+    public static Bundle getBundle(@NonNull String id){
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_ID, id);
+        return bundle;
+    }
+    @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
+    }
     private void subscribe(DummyAttendancesViewModel viewModel, DummyAdapter adapter) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), state->{
             if (!state.getLoading()) {
@@ -61,14 +67,5 @@ public class DummyAttendancesFragment extends Fragment {
                 }
             }
         });
-    }
-    public static Bundle getBundle(@NonNull String id){
-        Bundle bundle = new Bundle();
-        bundle.putString(KEY_ID, id);
-        return bundle;
-    }
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
     }
 }

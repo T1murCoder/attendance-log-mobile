@@ -18,14 +18,13 @@ import java.util.Objects;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
-import ru.technosopher.attendancelogapp.data.GroupsRepositoryImpl;
-import ru.technosopher.attendancelogapp.data.LessonRepositoryImpl;
-import ru.technosopher.attendancelogapp.data.QrCodeRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.GroupsRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.LessonRepositoryImpl;
+import ru.technosopher.attendancelogapp.data.repository.QrCodeRepositoryImpl;
 import ru.technosopher.attendancelogapp.domain.entities.ItemGroupEntity;
 import ru.technosopher.attendancelogapp.domain.entities.LessonEntity;
 import ru.technosopher.attendancelogapp.domain.entities.QrCodeEntity;
 import ru.technosopher.attendancelogapp.domain.entities.Status;
-import ru.technosopher.attendancelogapp.domain.groups.GetGroupNameByIdUseCase;
 import ru.technosopher.attendancelogapp.domain.groups.GetGroupsListUseCase;
 import ru.technosopher.attendancelogapp.domain.lessons.CreateLessonUseCase;
 import ru.technosopher.attendancelogapp.domain.lessons.DeleteLessonUseCase;
@@ -47,30 +46,24 @@ public class LessonsViewModel extends ViewModel {
     public LiveData<QrCodeEntity> itemQrCodeLiveData = mutableItemQrCodeLiveData;
     private MutableLiveData<QrCodeState> mutableErrorsLiveDate = new MutableLiveData<>();
     public LiveData<QrCodeState> errorsLiveData = mutableErrorsLiveDate;
-
     private final GetLessonsListUseCase getLessonsListUseCase = new GetLessonsListUseCase(
             LessonRepositoryImpl.getINSTANCE()
     );
-
     private final CreateLessonUseCase createLessonUseCase = new CreateLessonUseCase(
             LessonRepositoryImpl.getINSTANCE()
     );
-
     private final DeleteLessonUseCase deleteLessonUseCase = new DeleteLessonUseCase(
             LessonRepositoryImpl.getINSTANCE()
     );
-
     private final GetGroupsListUseCase getGroupsListUseCase = new GetGroupsListUseCase(
             GroupsRepositoryImpl.getInstance()
     );
-
     private final CheckQrCodeIsAliveUseCase checkQrCodeIsAliveUseCase = new CheckQrCodeIsAliveUseCase(
             QrCodeRepositoryImpl.getInstance()
     );
     /* USE CASES */
-    private List<LessonEntity> lessons = new ArrayList<>();
-    private List<LessonEntity> endedLessons = new ArrayList<>();
-
+    private List<LessonEntityModel> lessons = new ArrayList<>();
+    private List<LessonEntityModel> endedLessons = new ArrayList<>();
     @Nullable
     private String groupId = null;
     @Nullable
@@ -81,19 +74,15 @@ public class LessonsViewModel extends ViewModel {
     private GregorianCalendar timeEnd = null;
     @Nullable
     private GregorianCalendar date = null;
-
-
     /* LOGIC */
 
     public LessonsViewModel() {
         update();
     }
-
     public void update() {
         getGroupsList();
         getLessonsList();
     }
-
     public void getLessonsList() {
         mutableStateLiveData.postValue(new State(null, null, false, true));
         getLessonsListUseCase.execute(
@@ -102,50 +91,6 @@ public class LessonsViewModel extends ViewModel {
                 }
         );
     }
-
-    private State fromLessonStatus(Status<List<LessonEntity>> status) {
-        if (status.getErrors() == null && status.getValue() != null) {
-            List<LessonEntity> tmp = status.getValue();
-            lessons = getCurrentLessons(tmp);
-            endedLessons = getEndedLessons(tmp);
-            endedLessons = sortLessonsByTimeStart(endedLessons);
-        }
-        List<LessonEntity> lessonsSortedByTimeStart = sortLessonsByTimeStart(lessons);
-        return new State(
-                lessonsSortedByTimeStart,
-                status.getErrors() == null ? null : status.getErrors().getLocalizedMessage(),
-                status.getErrors() == null && status.getValue() != null,
-                false
-        );
-    }
-
-
-    private List<LessonEntity> sortLessonsByTimeStart(List<LessonEntity> lessons) {
-        return lessons.stream()
-                .sorted(Comparator.comparing(LessonEntity::getTimeStart))
-                .collect(Collectors.toList());
-    }
-
-    private List<LessonEntity> getEndedLessons(List<LessonEntity> lessons){
-        List<LessonEntity> ended = new ArrayList<>();
-        for (LessonEntity entity: lessons) {
-            if (entity.getTimeEnd().compareTo(new GregorianCalendar()) <= 0){
-                ended.add(entity);
-            }
-        }
-        return ended;
-    }
-
-    private List<LessonEntity> getCurrentLessons(List<LessonEntity> lessons){
-        List<LessonEntity> current = new ArrayList<>();
-        for (LessonEntity entity: lessons) {
-            if (entity.getTimeEnd().compareTo(new GregorianCalendar()) > 0){
-                current.add(entity);
-            }
-        }
-        return current;
-    }
-
     public void createLesson() {
         if (groupId == null) {
             mutableAddErrorLiveData.postValue("Выберете группу");
@@ -169,7 +114,7 @@ public class LessonsViewModel extends ViewModel {
         createLessonUseCase.execute(theme, groupId, "", timeStart, timeEnd, date, lessonStatus -> {
             if (lessonStatus.getStatusCode() == 200) {
                 if (lessonStatus.getValue() != null && lessonStatus.getErrors() == null) {
-                    addNewLesson(lessonStatus.getValue());
+                    addNewLesson(new LessonEntityModel(lessonStatus.getValue(), true));
                     update();
                 } else {
                     mutableAddErrorLiveData.postValue("Что-то пошло не так");
@@ -188,12 +133,6 @@ public class LessonsViewModel extends ViewModel {
             mutableGroupsLiveData.postValue(fromGroupsStatus(status));
         });
     }
-    private GroupsState fromGroupsStatus(Status<List<ItemGroupEntity>> status) {
-        return new GroupsState(
-                status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
-                status.getValue(),
-                status.getErrors() == null && status.getValue() != null);
-    }
     public void deleteLesson(@NonNull String id) {
         deleteLessonUseCase.execute(id, status -> {
             mutableDeleteLiveData.postValue(status.getStatusCode() == 200);
@@ -208,9 +147,6 @@ public class LessonsViewModel extends ViewModel {
                 mutableErrorsLiveDate.postValue(new QrCodeState(lessonId, "Урок закончился. Невозможно создать QR-код"));
             }
         });
-    }
-    private void addNewLesson(LessonEntity lesson) {
-        lessons.add(lesson);
     }
     public void changeTheme(Editable editable) {
         theme = String.valueOf(editable).trim();
@@ -257,11 +193,11 @@ public class LessonsViewModel extends ViewModel {
             return "";
         }
     }
-    public List<LessonEntity> getEndedLessons(){
-        return endedLessons;
+    public List<LessonEntityModel> getEndedLessons(){
+        return sortLessonsByTimeStart(endedLessons);
     }
-    public List<LessonEntity> getCurrentLessons(){
-        return lessons;
+    public List<LessonEntityModel> getCurrentLessons(){
+        return sortLessonsByTimeStart(lessons);
     }
     public void changeStartAndEndDate(int year, int month, int day) {
         if (timeStart == null) timeStart = new GregorianCalendar();
@@ -287,11 +223,61 @@ public class LessonsViewModel extends ViewModel {
         theme = null;
         groupId = null;
     }
-
+    private State fromLessonStatus(Status<List<LessonEntity>> status) {
+        if (status.getErrors() == null && status.getValue() != null) {
+            List<LessonEntity> tmp = status.getValue();
+            List<LessonEntityModel> tmpClosed = new ArrayList<>();
+            for (LessonEntity lesson: tmp) {
+                tmpClosed.add(new LessonEntityModel(lesson, true));
+            }
+            lessons = getCurrentLessons(tmpClosed);
+            endedLessons = getEndedLessons(tmpClosed);
+            endedLessons = sortLessonsByTimeStart(endedLessons);
+        }
+        List<LessonEntityModel> lessonsSortedByTimeStart = sortLessonsByTimeStart(lessons);
+        return new State(
+                lessonsSortedByTimeStart,
+                status.getErrors() == null ? null : status.getErrors().getLocalizedMessage(),
+                status.getErrors() == null && status.getValue() != null,
+                false
+        );
+    }
+    private List<LessonEntityModel> sortLessonsByTimeStart(List<LessonEntityModel> lessons) {
+        return lessons.stream()
+                .sorted(Comparator.comparing(LessonEntityModel::getTimeStart))
+                .collect(Collectors.toList());
+    }
+    private List<LessonEntityModel> getEndedLessons(List<LessonEntityModel> lessons){
+        List<LessonEntityModel> ended = new ArrayList<>();
+        for (LessonEntityModel entity: lessons) {
+            if (entity.getLesson().getTimeEnd().compareTo(new GregorianCalendar()) <= 0){
+                ended.add(entity);
+            }
+        }
+        return ended;
+    }
+    private List<LessonEntityModel> getCurrentLessons(List<LessonEntityModel> lessons){
+        List<LessonEntityModel> current = new ArrayList<>();
+        for (LessonEntityModel entity: lessons) {
+            if (entity.getLesson().getTimeEnd().compareTo(new GregorianCalendar()) > 0){
+                current.add(entity);
+            }
+        }
+        return current;
+    }
+    private GroupsState fromGroupsStatus(Status<List<ItemGroupEntity>> status) {
+        return new GroupsState(
+                status.getErrors() != null ? status.getErrors().getLocalizedMessage() : null,
+                status.getValue(),
+                status.getErrors() == null && status.getValue() != null);
+    }
+    private void addNewLesson(LessonEntityModel lesson) {
+        lessons.add(lesson);
+    }
     /* LOGIC */
     public class State {
         @Nullable
-        private final List<LessonEntity> lessons;
+        private final List<LessonEntityModel> lessons;
         @Nullable
         private final String errorMessage;
         @NonNull
@@ -299,7 +285,7 @@ public class LessonsViewModel extends ViewModel {
         @NonNull
         private Boolean isLoading;
 
-        public State(@Nullable List<LessonEntity> lessons, @Nullable String errorMessage, @NonNull Boolean isSuccess, @NonNull Boolean isLoading) {
+        public State(@Nullable List<LessonEntityModel> lessons, @Nullable String errorMessage, @NonNull Boolean isSuccess, @NonNull Boolean isLoading) {
             this.lessons = lessons;
             this.errorMessage = errorMessage;
             this.isSuccess = isSuccess;
@@ -307,7 +293,7 @@ public class LessonsViewModel extends ViewModel {
         }
 
         @Nullable
-        public List<LessonEntity> getLessons() {
+        public List<LessonEntityModel> getLessons() {
             return lessons;
         }
 
@@ -326,7 +312,6 @@ public class LessonsViewModel extends ViewModel {
             return isLoading;
         }
     }
-
     public class GroupsState {
         @Nullable
         private final List<ItemGroupEntity> groups;
@@ -357,7 +342,6 @@ public class LessonsViewModel extends ViewModel {
         }
 
     }
-
     public class QrCodeState{
         @Nullable
         private final String lessonId;

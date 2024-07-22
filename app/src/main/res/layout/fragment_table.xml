@@ -99,7 +99,8 @@
                     android:backgroundTint="@color/main_blue"
                     android:fontFamily="@font/inter_regular"
                     android:text="Посещения"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textColor="@color/white"/>
 
                 <Button
                     android:layout_marginStart="10dp"
@@ -110,7 +111,8 @@
                     android:backgroundTint="@color/main_blue"
                     android:fontFamily="@font/inter_regular"
                     android:text="Баллы"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textColor="@color/white"/>
 
             </LinearLayout>
 

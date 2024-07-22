@@ -5,8 +5,14 @@
         <item name="colorControlNormal">@color/main_blue</item>
     </style>
 
-    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+    <style name="DialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="colorAccent">@color/main_blue</item>
+<!--        <item name="background">@color/white</item>-->
+<!--        <item name="backgroundTint">@color/white</item>-->
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:background">@color/white</item>
+        <item name="alertDialogTheme">@style/Theme.AppCompat.DayNight.Dialog.Alert</item>
+        <item name="android:alertDialogTheme">@style/Theme.AppCompat.DayNight.Dialog.Alert</item>
         <item name="android:colorAccent">@color/main_blue</item>
         <item name="android:buttonBarPositiveButtonStyle">@style/DialogPositiveButtonStyle</item>
         <item name="android:buttonBarNegativeButtonStyle">@style/DialogNegativeButtonStyle</item>
