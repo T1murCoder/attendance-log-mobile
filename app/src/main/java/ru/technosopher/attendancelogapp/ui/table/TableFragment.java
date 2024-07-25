@@ -1,5 +1,6 @@
 package ru.technosopher.attendancelogapp.ui.table;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,15 +30,21 @@ public class TableFragment extends Fragment {
     private static final String KEY_ID = "TABLE_FRAGMENT";
     private FragmentTableBinding binding;
     private TableViewModel viewModel;
+
+    private Boolean buttonsState = true;
     private NavigationBarChangeListener navigationBarChangeListener;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_table, container, false);
     }
+
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -50,6 +57,7 @@ public class TableFragment extends Fragment {
 
         StudentAttendancesAdapter attendancesAdapter = new StudentAttendancesAdapter(getContext(), true, this::setAttAndPointsToStudent, this::deleteStudentFromGroup);
         DatesAdapter datesAdapter = new DatesAdapter();
+
 
         binding.back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,18 +76,32 @@ public class TableFragment extends Fragment {
         });
 
         binding.pointsBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View view) {
                 viewModel.update(null);
+
+                if (buttonsState) {
+                    binding.pointsBtn.setBackgroundColor(R.color.main_blue_selected);
+                    binding.attendanceBtn.setBackgroundColor(R.color.main_blue);
+                    buttonsState = false;
+                }
+
                 attendancesAdapter.updateState(false);
                 attendancesAdapter.updateData(viewModel.getStudents());
                 datesAdapter.update(viewModel.extractDates(viewModel.getStudents().get(0).getAttendanceEntityList()));
             }
         });
         binding.attendanceBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View view) {
                 viewModel.update(null);
+                if (!buttonsState) {
+                    binding.attendanceBtn.setBackgroundColor(R.color.main_blue_selected);
+                    binding.pointsBtn.setBackgroundColor(R.color.main_blue);
+                    buttonsState = true;
+                }
                 attendancesAdapter.updateState(true);
                 attendancesAdapter.updateData(viewModel.getStudents());
                 datesAdapter.update(viewModel.extractDates(viewModel.getStudents().get(0).getAttendanceEntityList()));
@@ -108,7 +130,6 @@ public class TableFragment extends Fragment {
 
             }
         });
-
         binding.calendarForward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,6 +143,7 @@ public class TableFragment extends Fragment {
         subscribe(viewModel, attendancesAdapter, datesAdapter);
         viewModel.update(id);
     }
+
     @Override
     public void onDestroyView() {
         binding = null;
@@ -143,17 +165,21 @@ public class TableFragment extends Fragment {
             throw new ClassCastException(context.toString());
         }
     }
+
     public static Bundle getBundle(@NonNull String id) {
         Bundle bundle = new Bundle();
         bundle.putString(KEY_ID, id);
         return bundle;
     }
-    private void setAttAndPointsToStudent(AttendanceEntity attendanceToStudent){
+
+    private void setAttAndPointsToStudent(AttendanceEntity attendanceToStudent) {
         viewModel.setAttAndPointsToStudent(attendanceToStudent);
     }
-    private void deleteStudentFromGroup(String studentId){
+
+    private void deleteStudentFromGroup(String studentId) {
         createDeletionDialog(studentId).show();
     }
+
     private void subscribe(TableViewModel viewModel, StudentAttendancesAdapter attendancesAdapter, DatesAdapter datesAdapter) {
         viewModel.stateLiveData.observe(getViewLifecycleOwner(), state -> {
             if (state.getLoading()) {
@@ -161,10 +187,8 @@ public class TableFragment extends Fragment {
                 binding.tableErrorTv.setVisibility(View.GONE);
                 binding.tableProgressBar.setVisibility(View.VISIBLE);
                 binding.backWithoutLoading.setVisibility(View.VISIBLE);
-
                 binding.swipe.setEnabled(false);
                 binding.swipe.setVisibility(View.GONE);
-
             } else {
                 binding.swipe.setVisibility(View.VISIBLE);
                 binding.swipe.setEnabled(true);
@@ -176,7 +200,7 @@ public class TableFragment extends Fragment {
                     binding.backWithoutLoading.setVisibility(View.GONE);
                     binding.tableErrorTv.setVisibility(View.GONE);
 
-                    if (state.getStudents().get(0).getAttendanceEntityList().isEmpty()){
+                    if (state.getStudents().get(0).getAttendanceEntityList().isEmpty()) {
                         binding.buttonsAttPointsLayout.setVisibility(View.GONE);
                         binding.datesLayout.setVisibility(View.GONE);
                         binding.rvsContent.setVisibility(View.GONE);
@@ -186,8 +210,7 @@ public class TableFragment extends Fragment {
                         StudentsListAdapterForTable adapter = new StudentsListAdapterForTable(this::deleteStudentFromGroup);
                         binding.studentsEmptyLessonsRv.setAdapter(adapter);
                         adapter.updateData(state.getStudents());
-                    }
-                    else{
+                    } else {
                         binding.buttonsAttPointsLayout.setVisibility(View.VISIBLE);
                         binding.calendarHeaderLayout.setVisibility(View.VISIBLE);
                         binding.studentsRv.setVisibility(View.VISIBLE);
@@ -206,20 +229,20 @@ public class TableFragment extends Fragment {
             if (success) {
                 Toast.makeText(getContext(), "Ученик успешно удален", Toast.LENGTH_SHORT).show();
                 viewModel.update(null);
-            }
-            else{
+            } else {
                 Toast.makeText(getContext(), "Что-то пошло не так", Toast.LENGTH_SHORT).show();
                 viewModel.update(null);
             }
         });
 
-        viewModel.errorLiveData.observe(getViewLifecycleOwner(), errorMsg ->{
+        viewModel.errorLiveData.observe(getViewLifecycleOwner(), errorMsg -> {
             Toast.makeText(getContext(), errorMsg, Toast.LENGTH_SHORT).show();
             viewModel.update(null);
         });
     }
-    private AlertDialog createDeletionDialog(@NonNull String studentId){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),  R.style.DialogTheme);
+
+    private AlertDialog createDeletionDialog(@NonNull String studentId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
         builder.setMessage("Удалить ученика?")
                 .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

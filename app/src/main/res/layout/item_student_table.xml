@@ -59,7 +59,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/table_student_name"
         app:layout_constraintTop_toTopOf="parent"
-        tools:itemCount="1"
+        tools:itemCount="4"
         tools:listitem="@layout/element_check_box" />
 
 </LinearLayout>

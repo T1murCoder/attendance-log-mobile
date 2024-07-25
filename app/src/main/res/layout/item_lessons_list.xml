@@ -8,10 +8,10 @@
     android:layout_marginBottom="5dp">
 
     <androidx.cardview.widget.CardView
-        android:backgroundTint="@color/white"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -189,30 +189,30 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:visibility="gone"
                         android:id="@+id/qr_code_image"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
 
                     <ProgressBar
-                        android:visibility="gone"
                         android:id="@+id/lesson_item_image_checking_pb"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="10dp"/>
+                        android:layout_marginBottom="10dp"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/empty_qr_code_state"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="@color/main_gray"
-                        android:textAlignment="center"
                         android:layout_marginTop="30dp"
                         android:layout_marginBottom="30dp"
-                        android:text="@string/empty_qr_code_state"/>
+                        android:text="@string/empty_qr_code_state"
+                        android:textAlignment="center"
+                        android:textColor="@color/main_gray"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/generate_qr_code_btn"

@@ -4,11 +4,15 @@ import static android.app.PendingIntent.getActivity;
 import static androidx.core.content.ContextCompat.getCodeCacheDir;
 import static androidx.core.content.ContextCompat.startActivity;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -137,7 +141,9 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
                 @Override
                 public void onClick(View view) {
                     if (item.isClosed()){
-                        binding.qrCodeAdditionalBox.setVisibility(View.VISIBLE);
+                        //TransitionManager.beginDelayedTransition(binding.qrCodeAdditionalBox, new AutoTransition());
+                        //binding.qrCodeAdditionalBox.setVisibility(View.VISIBLE);
+                        expand(binding.qrCodeAdditionalBox);
                         if (item.getLesson().getActiveQrCode() == null){
                             binding.qrCodeImage.setVisibility(View.GONE);
                             binding.lessonItemImageCheckingPb.setVisibility(View.GONE);
@@ -150,7 +156,9 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
                         }
                         item.setClosed(false);
                     }else{
-                        binding.qrCodeAdditionalBox.setVisibility(View.GONE);
+                        //TransitionManager.beginDelayedTransition(binding.qrCodeAdditionalBox, new AutoTransition());
+                        //binding.qrCodeAdditionalBox.setVisibility(View.GONE);
+                        collapse(binding.qrCodeAdditionalBox);
                         item.setClosed(true);
                     }
                 }
@@ -197,5 +205,72 @@ public class LessonsListAdapter extends RecyclerView.Adapter<LessonsListAdapter.
                 }
             });
         }
+    }
+
+    public static void expand(final View view) {
+        view.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final int targetHeight = view.getMeasuredHeight();
+
+        view.getLayoutParams().height = 1;
+        view.setVisibility(View.VISIBLE);
+
+        ValueAnimator animation = ValueAnimator.ofInt(1, targetHeight);
+        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                int value = (int) valueAnimator.getAnimatedValue();
+                view.getLayoutParams().height = value;
+                view.requestLayout();
+            }
+        });
+        animation.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {}
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                view.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                view.requestLayout();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {}
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {}
+        });
+        animation.setDuration(200);
+        animation.start();
+    }
+
+    public static void collapse(final View view) {
+        final int initialHeight = view.getMeasuredHeight();
+
+        ValueAnimator animation = ValueAnimator.ofInt(initialHeight, 0);
+        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                int value = (int) valueAnimator.getAnimatedValue();
+                view.getLayoutParams().height = value;
+                view.requestLayout();
+            }
+        });
+        animation.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {}
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                view.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {}
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {}
+        });
+        animation.setDuration(200);
+        animation.start();
     }
 }

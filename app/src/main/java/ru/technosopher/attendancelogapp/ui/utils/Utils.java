@@ -1,7 +1,9 @@
 package ru.technosopher.attendancelogapp.ui.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -32,5 +34,12 @@ public class Utils {
         } catch (WriterException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void setClipboard(String text, Context context) {
+        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", text);
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(context, "Скопировано!", Toast.LENGTH_SHORT).show();
     }
 }
