@@ -202,8 +202,8 @@ public class TableFragment extends Fragment {
 
                     if (state.getStudents().get(0).getAttendanceEntityList().isEmpty()) {
                         binding.buttonsAttPointsLayout.setVisibility(View.GONE);
-                        binding.datesLayout.setVisibility(View.GONE);
-                        binding.rvsContent.setVisibility(View.GONE);
+                        binding.tableHeader.setVisibility(View.GONE);
+                        binding.hsrStudentsTable.setVisibility(View.GONE);
                         binding.studentsRv.setVisibility(View.GONE);
                         binding.studentsEmptyLessonsRv.setVisibility(View.VISIBLE);
 
@@ -212,9 +212,9 @@ public class TableFragment extends Fragment {
                         adapter.updateData(state.getStudents());
                     } else {
                         binding.buttonsAttPointsLayout.setVisibility(View.VISIBLE);
-                        binding.calendarHeaderLayout.setVisibility(View.VISIBLE);
+                        binding.tableHeader.setVisibility(View.VISIBLE);
                         binding.studentsRv.setVisibility(View.VISIBLE);
-                        binding.rvsContent.setVisibility(View.VISIBLE);
+                        binding.hsrStudentsTable.setVisibility(View.VISIBLE);
                         binding.studentsEmptyLessonsRv.setVisibility(View.GONE);
 //                        binding.dateHeader.setText(DateFormatter.getDateStringFromDate(state.getStudents().get(0).getAttendanceEntityList().get(0).getLessonTimeStart(), "MMM yyyy"));
                         binding.dateHeader.setText("Календарь");

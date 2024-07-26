@@ -120,33 +120,35 @@
 
             </LinearLayout>
 
-            <HorizontalScrollView
-                android:id="@+id/rvs_content"
+            <com.tans.horizontalnestedscrollview.HorizontalNestedScrollView
+                android:id="@+id/hsr_students_table"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:visibility="visible">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    <LinearLayout
-                        android:id="@+id/dates_layout"
-                        android:layout_width="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/table_header"
+                        android:visibility="visible"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
+                        android:orientation="horizontal"
                         android:background="@color/white"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:visibility="visible">
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/calendar_header_layout"
                             android:layout_width="340dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             android:gravity="center_vertical"
                             android:padding="10dp">
 
@@ -178,6 +180,18 @@
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintVertical_bias="0.0" />
 
+                            <!--                        <Spinner-->
+                            <!--                            android:id="@+id/date_header_spinner"-->
+                            <!--                            android:layout_width="150dp"-->
+                            <!--                            android:layout_height="wrap_content"-->
+                            <!--                            android:layout_marginStart="20dp"-->
+                            <!--                            android:textAlignment="center"-->
+                            <!--                            android:gravity="center_horizontal"-->
+                            <!--                            app:layout_constraintStart_toEndOf="@id/calendar_back"-->
+                            <!--                            app:layout_constraintTop_toTopOf="parent"-->
+                            <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+                            <!--                            app:layout_constraintVertical_bias="0.0" />-->
+
                             <ImageButton
                                 android:id="@+id/calendar_forward"
                                 android:layout_width="wrap_content"
@@ -195,27 +209,35 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/dates_rv"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0"
                             android:orientation="horizontal"
+                            app:layout_constraintStart_toEndOf="@id/calendar_header_layout"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            android:nestedScrollingEnabled="false"
                             tools:itemCount="1"
                             tools:listitem="@layout/element_date" />
 
-                    </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/students_rv"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:orientation="vertical"
-                        android:visibility="visible"
+                        app:layout_constraintTop_toBottomOf="@id/table_header"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_student_table" />
-                </LinearLayout>
 
-            </HorizontalScrollView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.tans.horizontalnestedscrollview.HorizontalNestedScrollView>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/students_empty_lessons_rv"
