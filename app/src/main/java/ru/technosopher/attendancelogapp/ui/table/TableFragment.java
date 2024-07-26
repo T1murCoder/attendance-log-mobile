@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +13,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.button.MaterialButton;
+
+import java.util.Objects;
 
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
@@ -58,7 +65,8 @@ public class TableFragment extends Fragment {
         StudentAttendancesAdapter attendancesAdapter = new StudentAttendancesAdapter(getContext(), true, this::setAttAndPointsToStudent, this::deleteStudentFromGroup);
         DatesAdapter datesAdapter = new DatesAdapter();
 
-
+        select(binding.pointsBtn);
+        unselect(binding.attendanceBtn);
         binding.back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,11 +89,8 @@ public class TableFragment extends Fragment {
             public void onClick(View view) {
                 viewModel.update(null);
 
-                if (buttonsState) {
-                    binding.pointsBtn.setBackgroundColor(R.color.main_blue_selected);
-                    binding.attendanceBtn.setBackgroundColor(R.color.main_blue);
-                    buttonsState = false;
-                }
+                select(binding.attendanceBtn);
+                unselect(binding.pointsBtn);
 
                 attendancesAdapter.updateState(false);
                 attendancesAdapter.updateData(viewModel.getStudents());
@@ -97,11 +102,10 @@ public class TableFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 viewModel.update(null);
-                if (!buttonsState) {
-                    binding.attendanceBtn.setBackgroundColor(R.color.main_blue_selected);
-                    binding.pointsBtn.setBackgroundColor(R.color.main_blue);
-                    buttonsState = true;
-                }
+
+                select(binding.pointsBtn);
+                unselect(binding.attendanceBtn);
+
                 attendancesAdapter.updateState(true);
                 attendancesAdapter.updateData(viewModel.getStudents());
                 datesAdapter.update(viewModel.extractDates(viewModel.getStudents().get(0).getAttendanceEntityList()));
@@ -170,6 +174,15 @@ public class TableFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString(KEY_ID, id);
         return bundle;
+    }
+
+    private void select(AppCompatButton button){
+        ColorStateList colorStateList = ContextCompat.getColorStateList(requireContext(), R.color.color_selector_focused);
+        button.setBackgroundTintList(colorStateList);
+    }
+    private void unselect(AppCompatButton button){
+        ColorStateList colorStateList = ContextCompat.getColorStateList(requireContext(), R.color.color_selector_default);
+        button.setBackgroundTintList(colorStateList);
     }
 
     private void setAttAndPointsToStudent(AttendanceEntity attendanceToStudent) {
