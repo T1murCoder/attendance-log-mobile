@@ -20,15 +20,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.material.button.MaterialButton;
-
-import java.util.Objects;
-
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.databinding.FragmentTableBinding;
 import ru.technosopher.attendancelogapp.domain.entities.AttendanceEntity;
-import ru.technosopher.attendancelogapp.ui.utils.DateFormatter;
 import ru.technosopher.attendancelogapp.ui.utils.NavigationBarChangeListener;
 import ru.technosopher.attendancelogapp.ui.student_add.StudentAddFragment;
 import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
@@ -177,7 +172,7 @@ public class TableFragment extends Fragment {
     }
 
     private void select(AppCompatButton button){
-        ColorStateList colorStateList = ContextCompat.getColorStateList(requireContext(), R.color.color_selector_focused);
+        ColorStateList colorStateList = ContextCompat.getColorStateList(requireContext(), R.color.color_selector_unfocused);
         button.setBackgroundTintList(colorStateList);
     }
     private void unselect(AppCompatButton button){
