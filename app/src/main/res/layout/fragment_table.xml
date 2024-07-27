@@ -133,9 +133,6 @@
             android:id="@+id/hsr_students_table"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fadeScrollbars="false"
-            android:scrollbarSize="12dp"
-            android:scrollbars="horizontal"
             android:visibility="visible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -175,21 +172,37 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/date_header"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <com.jaredrummler.materialspinner.MaterialSpinner
+                            android:id="@+id/date_header_spinner"
+                            android:layout_width="150dp"
+                            android:layout_height="42dp"
                             android:layout_marginStart="20dp"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_regular"
-                            android:text="Календарь"
+                            android:background="@color/white"
                             android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            app:ms_dropdown_max_height="300dp"
+                            app:ms_background_color="@color/white"
+                            android:text="Все"
                             android:textSize="16sp"
-
-                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@id/calendar_back"
                             app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintVertical_bias="0.0" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/date_header"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginStart="20dp"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:fontFamily="@font/inter_regular"-->
+<!--                            android:text="Календарь"-->
+<!--                            android:textAlignment="center"-->
+<!--                            android:textSize="16sp"-->
+
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintStart_toEndOf="@id/calendar_back"-->
+<!--                            app:layout_constraintTop_toTopOf="parent"-->
+<!--                            app:layout_constraintVertical_bias="0.0" />-->
 
                         <!--                        <Spinner-->
                         <!--                            android:id="@+id/date_header_spinner"-->
@@ -212,9 +225,8 @@
                             android:background="@color/white"
                             android:src="@drawable/ic_forward"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/date_header"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
+                            app:layout_constraintStart_toEndOf="@id/date_header_spinner"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.jaredrummler.materialspinner.MaterialSpinner;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
@@ -83,10 +90,9 @@ public class TableFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 viewModel.update(null);
-
                 select(binding.attendanceBtn);
                 unselect(binding.pointsBtn);
-
+                binding.dateHeaderSpinner.setSelectedIndex(0);
                 attendancesAdapter.updateState(false);
                 attendancesAdapter.updateData(viewModel.getStudents());
                 datesAdapter.update(viewModel.extractDates(viewModel.getStudents().get(0).getAttendanceEntityList()));
@@ -97,10 +103,9 @@ public class TableFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 viewModel.update(null);
-
                 select(binding.pointsBtn);
                 unselect(binding.attendanceBtn);
-
+                binding.dateHeaderSpinner.setSelectedIndex(0);
                 attendancesAdapter.updateState(true);
                 attendancesAdapter.updateData(viewModel.getStudents());
                 datesAdapter.update(viewModel.extractDates(viewModel.getStudents().get(0).getAttendanceEntityList()));
@@ -119,20 +124,18 @@ public class TableFragment extends Fragment {
             @Override
             public void onRefresh() {
                 viewModel.update(null);
+                binding.dateHeaderSpinner.setSelectedIndex(0);
             }
         });
 
-        //TODO (CALENDAR CHANGE)
-        binding.calendarBack.setOnClickListener(new View.OnClickListener() {
+        String[] months = getResources().getStringArray(R.array.group_dropdown_months);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(requireContext(), R.layout.item_spinner, months);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.dateHeaderSpinner.setAdapter(arrayAdapter);
+        binding.dateHeaderSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-
-            }
-        });
-        binding.calendarForward.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                viewModel.filterGroupByMonth(getCalendarByMonth(months[position]));
             }
         });
 
@@ -151,6 +154,7 @@ public class TableFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        binding.dateHeaderSpinner.setSelectedIndex(0);
         UpdateSharedPreferences prefs = (UpdateSharedPreferences) requireActivity();
         CredentialsDataSource.getInstance().updateLogin(prefs.getPrefsLogin(), prefs.getPrefsPassword());
         viewModel.update(null);
@@ -208,7 +212,7 @@ public class TableFragment extends Fragment {
                     binding.backWithoutLoading.setVisibility(View.GONE);
                     binding.tableErrorTv.setVisibility(View.GONE);
 
-                    if (state.getStudents().get(0).getAttendanceEntityList().isEmpty()) {
+                    if (state.getStudents().get(0).getAttendanceEntityList().isEmpty() && binding.dateHeaderSpinner.getSelectedIndex() == 0) {
                         binding.buttonsAttPointsLayout.setVisibility(View.GONE);
                         binding.tableHeader.setVisibility(View.GONE);
                         binding.hsrStudentsTable.setVisibility(View.GONE);
@@ -224,8 +228,6 @@ public class TableFragment extends Fragment {
                         binding.studentsRv.setVisibility(View.VISIBLE);
                         binding.hsrStudentsTable.setVisibility(View.VISIBLE);
                         binding.studentsEmptyLessonsRv.setVisibility(View.GONE);
-//                        binding.dateHeader.setText(DateFormatter.getDateStringFromDate(state.getStudents().get(0).getAttendanceEntityList().get(0).getLessonTimeStart(), "MMM yyyy"));
-                        binding.dateHeader.setText("Календарь");
                         attendancesAdapter.updateData(state.getStudents());
                         datesAdapter.update(viewModel.extractDates(state.getStudents().get(0).getAttendanceEntityList()));
                     }
@@ -247,6 +249,31 @@ public class TableFragment extends Fragment {
             Toast.makeText(getContext(), errorMsg, Toast.LENGTH_SHORT).show();
             viewModel.update(null);
         });
+    }
+    private GregorianCalendar getCalendarByMonth(String month) {
+
+        String monthLower = month.toLowerCase().trim();
+
+        String[] months = getResources().getStringArray(R.array.months_strings);
+
+        int monthIndex = -1;
+
+        for (int i = 0; i < months.length; i++) {
+            if (months[i].toLowerCase().equals(monthLower)) {
+                monthIndex = i;
+                break;
+            }
+        }
+
+        if (monthIndex == -1) {
+            return null;
+        }
+
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTimeZone(TimeZone.getDefault());
+        calendar.set(Calendar.MONTH, monthIndex);
+
+        return calendar;
     }
 
     private AlertDialog createDeletionDialog(@NonNull String studentId) {
