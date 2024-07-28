@@ -1,0 +1,81 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/add_lesson_layout"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:layout_alignBottom="@id/lesson_content_layout"
+    android:background="@drawable/dialog_background"
+    android:backgroundTint="@color/white"
+    android:minHeight="180dp"
+    android:paddingLeft="30dp"
+    android:paddingTop="15dp"
+    android:paddingRight="30dp"
+    android:paddingBottom="30dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/group_name_dialog_et"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:paddingLeft="12dp"
+                android:background="@drawable/action_elements_background"
+                android:backgroundTint="@color/background_gray"
+                android:fontFamily="@font/inter_regular"
+                android:hint="Введите название группы"
+                android:inputType="text"
+                android:maxLength="10"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/inter_regular"
+                android:text="Добавить группу"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/add_group_confirm_button"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/action_elements_background"
+                android:fontFamily="@font/inter_regular"
+                android:text="Добавить"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:backgroundTint="@color/main_blue" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

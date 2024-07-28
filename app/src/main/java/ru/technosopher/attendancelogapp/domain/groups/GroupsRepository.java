@@ -17,7 +17,7 @@ import ru.technosopher.attendancelogapp.domain.entities.Status;
 public interface GroupsRepository {
 
     void getGroups(@NonNull Consumer<Status<List<ItemGroupEntity>>> callback);
-    void getGroupNameById(@NonNull String id, Consumer<Status<String>> callback);
+    void getGroupById(@NonNull String id, Consumer<Status<GroupEntity>> callback);
     void addGroup(@NonNull String name, @NonNull List<ItemStudentEntity> students, @NonNull Consumer<Status<GroupEntity>> callback);
     void deleteGroup(@NonNull String id, @NonNull Consumer<Status<Void>> callback);
     void addStudentsToGroup(@NonNull String id, @NonNull List<ItemStudentEntity> students, Consumer<Status<Void>> callback);

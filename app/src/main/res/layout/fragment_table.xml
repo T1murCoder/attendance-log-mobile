@@ -30,7 +30,7 @@
         android:layout_gravity="center"
         android:fontFamily="@font/inter_regular"
         android:text="This is an error message"
-        android:textColor="@color/main_red"
+        android:textColor="@color/main_gray"
         android:textSize="18sp"
         android:visibility="gone" />
 

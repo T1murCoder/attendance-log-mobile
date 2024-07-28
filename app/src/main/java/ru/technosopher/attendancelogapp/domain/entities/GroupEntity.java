@@ -14,10 +14,14 @@ public class GroupEntity {
     @NonNull
     private final List<ItemStudentEntity> studentList;
 
-    public GroupEntity(@NonNull String name, @NonNull String id, @NonNull List<ItemStudentEntity> studentList) {
+    @NonNull
+    private final String joinCode;
+
+    public GroupEntity(@NonNull String name, @NonNull String id, @NonNull List<ItemStudentEntity> studentList, @NonNull String joinCode) {
         this.name = name;
         this.id = id;
         this.studentList = studentList;
+        this.joinCode = joinCode;
     }
 
     @NonNull
@@ -33,5 +37,10 @@ public class GroupEntity {
     @NonNull
     public List<ItemStudentEntity> getStudentList() {
         return studentList;
+    }
+
+    @NonNull
+    public String getJoinCode() {
+        return joinCode;
     }
 }

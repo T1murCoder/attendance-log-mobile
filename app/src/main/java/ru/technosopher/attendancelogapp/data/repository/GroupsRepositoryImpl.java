@@ -49,12 +49,12 @@ public class GroupsRepositoryImpl implements GroupsRepository {
     }
 
     @Override
-    public void getGroupNameById(@NonNull String id, Consumer<Status<String>> callback) {
+    public void getGroupById(@NonNull String id, Consumer<Status<GroupEntity>> callback) {
         groupApi.getGroupNameById(id).enqueue(new CallToConsumer<>(
                 callback,
                 group -> {
                     if (group != null) {
-                        if (group.id != null && group.name != null) return group.name;
+                        if (group.id != null && group.name != null && group.joinCode != null) return new GroupEntity(group.name, group.id, new ArrayList<>(), group.joinCode);
                     }
                     return null;
                 }
@@ -68,11 +68,12 @@ public class GroupsRepositoryImpl implements GroupsRepository {
                 callback,
                 groupDto -> {
                     if (groupDto != null) {
-                        if (groupDto.id != null && groupDto.name != null && groupDto.studentList != null) {
+                        if (groupDto.id != null && groupDto.name != null && groupDto.studentList != null && groupDto.joinCode != null) {
                             final String id = groupDto.id;
                             final String res_name = groupDto.name;
                             final List<StudentItemDto> res_students = groupDto.studentList;
-                            return new GroupEntity(id, res_name, Mapper.fromDtoListToEntityList(res_students));
+                            final String joinCode = groupDto.joinCode;
+                            return new GroupEntity(id, res_name, Mapper.fromDtoListToEntityList(res_students), joinCode);
                         }
                     }
                     return null;
