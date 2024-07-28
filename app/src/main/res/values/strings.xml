@@ -27,6 +27,38 @@
 
     <string name="SHARED_PREFS_CHECKED">false</string>
 
+    <!--    Months strings-->
+    <array name="group_dropdown_months">
+        <item name="all">Все</item>
+        <item name="september">Сентябрь</item>
+        <item name="october">Октябрь</item>
+        <item name="november">Ноябрь</item>
+        <item name="december">Декабрь</item>
+        <item name="january">Январь</item>
+        <item name="february">Февраль</item>
+        <item name="march">Март</item>
+        <item name="april">Апрель</item>
+        <item name="may">Май</item>
+        <item name="june">Июнь</item>
+        <item name="july">Июль</item>
+        <item name="august">Август</item>
+    </array>
+
+    <array name="months_strings">
+        <item name="january">Январь</item>
+        <item name="february">Февраль</item>
+        <item name="march">Март</item>
+        <item name="april">Апрель</item>
+        <item name="may">Май</item>
+        <item name="june">Июнь</item>
+        <item name="july">Июль</item>
+        <item name="august">Август</item>
+        <item name="september">Сентябрь</item>
+        <item name="october">Октябрь</item>
+        <item name="november">Ноябрь</item>
+        <item name="december">Декабрь</item>
+    </array>
+
 
     <string name="fragment_group_add_header_text">Добавление группы</string>
     <string name="fragment_group_add_group_name_hint">Имя группы</string>

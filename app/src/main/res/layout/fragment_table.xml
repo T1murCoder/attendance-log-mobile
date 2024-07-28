@@ -7,14 +7,14 @@
     android:background="@color/background_gray">
 
     <ImageButton
-        android:padding="20dp"
-        android:visibility="gone"
         android:id="@+id/back_without_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:background="@color/background_gray"
-        android:src="@drawable/ic_back" />
+        android:padding="20dp"
+        android:src="@drawable/ic_back"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/tableProgressBar"
@@ -25,207 +25,281 @@
 
     <TextView
         android:id="@+id/table_error_tv"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:fontFamily="@font/inter_regular"
         android:text="This is an error message"
         android:textColor="@color/main_red"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:visibility="gone" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <LinearLayout
+        android:id="@+id/table_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/swipe">
+        android:orientation="vertical"
+        android:visibility="visible">
 
-        <LinearLayout
-            android:id="@+id/table_content"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="visible">
+            android:layout_height="180dp">
 
             <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="20dp">
-
-                <ImageButton
-                    android:id="@+id/back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/background_gray"
-                    android:src="@drawable/ic_back" />
-
-                <TextView
-                    android:id="@+id/table_group_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:fontFamily="@font/inter_semibold"
-                    android:text="@string/table_group_name_header"
-                    android:textAlignment="center"
-                    android:textSize="18sp" />
-
-                <ImageButton
-                    android:visibility="visible"
-                    android:id="@+id/add_student"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:background="@color/background_gray"
-                    android:src="@drawable/ic_student_add" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/buttonsAttPointsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <Button
-                    android:layout_marginEnd="10dp"
-                    android:id="@+id/attendance_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/main_blue"
-                    android:fontFamily="@font/inter_regular"
-                    android:text="Посещения"
-                    android:textSize="14sp"
-                    android:textColor="@color/white"/>
-
-                <Button
-                    android:layout_marginStart="10dp"
-                    android:id="@+id/points_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/main_blue"
-                    android:fontFamily="@font/inter_regular"
-                    android:text="Баллы"
-                    android:textSize="14sp"
-                    android:textColor="@color/white"/>
-
-            </LinearLayout>
-
-            <HorizontalScrollView
-                android:id="@+id/rvs_content"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:visibility="visible">
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="20dp">
 
-                    <LinearLayout
-                        android:id="@+id/dates_layout"
-                        android:visibility="visible"
+                    <ImageButton
+                        android:id="@+id/back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:background="@color/white"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="4dp">
+                        android:layout_weight="1"
+                        android:background="@color/background_gray"
+                        android:src="@drawable/ic_back" />
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/calendar_header_layout"
-                            android:layout_width="340dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:padding="10dp">
-
-                            <ImageButton
-                                android:id="@+id/calendar_back"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="20dp"
-                                android:layout_weight="1"
-                                android:background="@color/white"
-                                android:src="@drawable/ic_back2"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/date_header"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="20dp"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/inter_regular"
-                                android:text="Календарь"
-                                android:textAlignment="center"
-                                android:textSize="16sp"
-
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toEndOf="@id/calendar_back"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintVertical_bias="0.0" />
-
-                            <ImageButton
-                                android:id="@+id/calendar_forward"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="20dp"
-                                android:layout_weight="1"
-                                android:background="@color/white"
-                                android:src="@drawable/ic_forward"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toEndOf="@id/date_header"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintVertical_bias="0.0" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/dates_rv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="0"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:itemCount="1"
-                            tools:listitem="@layout/element_date" />
-
-                    </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:visibility="visible"
-                        android:id="@+id/students_rv"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/table_group_name"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_student_table" />
+                        android:layout_weight="5"
+                        android:fontFamily="@font/inter_semibold"
+                        android:text="@string/table_group_name_header"
+                        android:textAlignment="center"
+                        android:textSize="18sp" />
+
+                    <ImageButton
+                        android:id="@+id/add_student"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:background="@color/background_gray"
+                        android:src="@drawable/ic_student_add"
+                        android:visibility="visible" />
                 </LinearLayout>
 
-            </HorizontalScrollView>
+                <LinearLayout
+                    android:id="@+id/buttonsAttPointsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:visibility="gone"
-                android:id="@+id/students_empty_lessons_rv"
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/attendance_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/action_elements_background"
+                        android:backgroundTint="@color/main_blue"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Посещения"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/points_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/action_elements_background"
+                        android:backgroundTint="@color/main_blue"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Баллы"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <com.tans.horizontalnestedscrollview.HorizontalNestedScrollView
+            android:id="@+id/hsr_students_table"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_dummy_list"
-                tools:itemCount="10"/>
+                android:layout_height="match_parent">
 
-        </LinearLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/table_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/calendar_header_layout"
+                        android:layout_width="340dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
+                        <ImageButton
+                            android:id="@+id/calendar_back"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:src="@drawable/ic_back2"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.jaredrummler.materialspinner.MaterialSpinner
+                            android:id="@+id/date_header_spinner"
+                            android:layout_width="150dp"
+                            android:layout_height="42dp"
+                            android:layout_marginStart="20dp"
+                            android:background="@color/white"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            app:ms_dropdown_max_height="300dp"
+                            app:ms_background_color="@color/white"
+                            android:text="Все"
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toEndOf="@id/calendar_back"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintVertical_bias="0.0" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/date_header"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginStart="20dp"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:fontFamily="@font/inter_regular"-->
+<!--                            android:text="Календарь"-->
+<!--                            android:textAlignment="center"-->
+<!--                            android:textSize="16sp"-->
+
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintStart_toEndOf="@id/calendar_back"-->
+<!--                            app:layout_constraintTop_toTopOf="parent"-->
+<!--                            app:layout_constraintVertical_bias="0.0" />-->
+
+                        <!--                        <Spinner-->
+                        <!--                            android:id="@+id/date_header_spinner"-->
+                        <!--                            android:layout_width="150dp"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_marginStart="20dp"-->
+                        <!--                            android:textAlignment="center"-->
+                        <!--                            android:gravity="center_horizontal"-->
+                        <!--                            app:layout_constraintStart_toEndOf="@id/calendar_back"-->
+                        <!--                            app:layout_constraintTop_toTopOf="parent"-->
+                        <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+                        <!--                            app:layout_constraintVertical_bias="0.0" />-->
+
+                        <ImageButton
+                            android:id="@+id/calendar_forward"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:src="@drawable/ic_forward"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/date_header_spinner"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/dates_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/calendar_header_layout"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/element_date" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/students_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/table_header"
+                    tools:listitem="@layout/item_student_table" />
+
+                <!--                    <ImageView-->
+                <!--                        android:id="@+id/imageView2"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:src="@drawable/ic_finger"-->
+                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                        app:layout_constraintStart_toStartOf="parent"-->
+                <!--                        app:layout_constraintTop_toBottomOf="@+id/students_rv" />-->
+
+                <!--                    <ImageView-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:src="@drawable/ic_back2"-->
+                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                        app:layout_constraintEnd_toStartOf="@+id/imageView2"-->
+                <!--                        app:layout_constraintStart_toStartOf="parent"-->
+                <!--                        app:layout_constraintTop_toBottomOf="@+id/students_rv" />-->
+
+                <!--                    <ImageView-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:src="@drawable/ic_forward"-->
+                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                        app:layout_constraintStart_toEndOf="@+id/imageView2"-->
+                <!--                        app:layout_constraintTop_toBottomOf="@+id/students_rv" />-->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.tans.horizontalnestedscrollview.HorizontalNestedScrollView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/students_empty_lessons_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_dummy_list" />
+
+    </LinearLayout>
 
 </FrameLayout>

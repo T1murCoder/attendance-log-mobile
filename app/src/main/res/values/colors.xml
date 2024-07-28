@@ -6,4 +6,5 @@
     <color name="main_gray">#AEAEAE</color>
     <color name="background_gray">#f0f0f0</color>
     <color name="main_red">#FF8080</color>
+    <color name="main_blue_deselected">#4B8ECC</color>
 </resources>

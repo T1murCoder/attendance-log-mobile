@@ -1,0 +1,7 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#ffcccccc"/> <!-- Цвет заливки -->
+    <corners android:radius="16dp"/> <!-- Скругление углов -->
+    <stroke android:width="1dp" android:color="#ff666666"/> <!-- Обводка -->
+    <padding android:left="10dp" android:top="10dp" android:right="10dp" android:bottom="10dp"/>
+    <shadow android:shadowRadius="4" android:shadowColor="#ff666666"/> <!-- Тень -->
+</shape>

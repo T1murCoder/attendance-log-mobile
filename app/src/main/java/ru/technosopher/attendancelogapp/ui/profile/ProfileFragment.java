@@ -1,5 +1,7 @@
 package ru.technosopher.attendancelogapp.ui.profile;
 
+import static ru.technosopher.attendancelogapp.ui.utils.Utils.setClipboard;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -294,6 +296,10 @@ public class ProfileFragment extends Fragment {
                             user.getPhoto_url()
                     );
                     binding.profileLoginTv.setText(user.getUsername());
+                    binding.profileLoginTv.setOnLongClickListener(v -> {
+                        setClipboard(user.getUsername(), requireContext());
+                        return true;
+                    });
                     binding.profileNameEt.setText(user.getName());
                     binding.profileSurnameEt.setText(user.getSurname());
                     binding.profileTelegramEt.setText(user.getTelegram_url() != null ? user.getTelegram_url() : "Provide your telegram");

@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,23 +7,26 @@
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
     android:gravity="center_vertical"
+    android:backgroundTint="@color/white"
     android:orientation="horizontal"
-    android:background="@drawable/action_elements_background"
-    android:backgroundTint="@color/white">
+    android:background="@drawable/action_elements_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:id="@+id/student_info_box"
+        android:layout_width="340dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="15dp">
 
         <TextView
-            android:layout_marginStart="20dp"
             android:id="@+id/table_student_name"
-            android:layout_width="wrap_content"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:fontFamily="@font/inter_regular"
             android:gravity="center_vertical"
             android:text="Student name"
@@ -33,33 +36,29 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:layout_marginStart="20dp"
-            android:id="@+id/table_student_points"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_points"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_regular"
-            android:gravity="center_vertical"
-            android:text="0"
-            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="16sp"
+            android:gravity="center_horizontal"
+            android:text="Баллы"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:nestedScrollingEnabled="false"
         android:id="@+id/att_and_balls_rv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:nestedScrollingEnabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@id/table_student_name"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/student_info_box"
         tools:itemCount="1"
         tools:listitem="@layout/element_check_box" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.technosopher.attendancelogapp.data.dto.AttendanceDto;
@@ -28,6 +29,15 @@ public class StudentEntity {
         this.surname = surname;
         this.points = points;
         this.attendanceEntityList = attendanceEntityList;
+    }
+
+    public StudentEntity(StudentEntity student) {
+        this.id = student.id;
+        this.name = student.name;
+        this.surname = student.surname;
+        this.points = student.points;
+        this.attendanceEntityList = new ArrayList<>();
+        this.attendanceEntityList.addAll(student.attendanceEntityList);
     }
 
     @NonNull
