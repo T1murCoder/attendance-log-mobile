@@ -113,8 +113,8 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
         <action
-            android:id="@+id/action_tableFragment_to_studentAddFragment"
-            app:destination="@id/studentAddFragment"
+            android:id="@+id/action_tableFragment_to_groupManageFragment"
+            app:destination="@id/groupManageFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
@@ -139,11 +139,11 @@
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
-        android:id="@+id/studentAddFragment"
-        android:name="ru.technosopher.attendancelogapp.ui.student_add.StudentAddFragment"
-        android:label="StudentAddFragment" >
+        android:id="@+id/groupManageFragment"
+        android:name="ru.technosopher.attendancelogapp.ui.group_manage.GroupManageFragment"
+        android:label="GroupManageFragment" >
         <action
-            android:id="@+id/action_studentAddFragment_to_tableFragment"
+            android:id="@+id/action_groupManageFragment_to_tableFragment"
             app:destination="@id/tableFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
