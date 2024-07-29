@@ -84,7 +84,7 @@
                         android:layout_height="50dp"
                         android:layout_weight="1"
                         android:background="@color/background_gray"
-                        android:src="@drawable/ic_student_add"
+                        android:src="@drawable/ic_group_management"
                         android:visibility="visible" />
                 </LinearLayout>
 
