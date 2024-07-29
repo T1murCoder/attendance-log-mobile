@@ -65,7 +65,7 @@ public class StudentAddFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (view == null) return;
-                Navigation.findNavController(view).navigate(R.id.action_studentAddFragment_to_tableFragment, TableFragment.getBundle(id));
+                //Navigation.findNavController(view).navigate(R.id.action_studentAddFragment_to_tableFragment, TableFragment.getBundle(id));
             }
         });
 
@@ -132,7 +132,7 @@ public class StudentAddFragment extends Fragment {
         viewModel.confirmLiveData.observe(getViewLifecycleOwner(), unused -> {
             View view = getView();
             if (view == null) return;
-            Navigation.findNavController(view).navigate(R.id.action_studentAddFragment_to_tableFragment, TableFragment.getBundle(viewModel.getGroupId()));
+            //Navigation.findNavController(view).navigate(R.id.action_studentAddFragment_to_tableFragment, TableFragment.getBundle(viewModel.getGroupId()));
         });
     }
     private void addStudent(@NonNull String id) {viewModel.addStudent(id);}

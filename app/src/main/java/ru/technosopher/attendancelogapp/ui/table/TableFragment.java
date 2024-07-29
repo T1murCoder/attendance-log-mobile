@@ -31,6 +31,7 @@ import ru.technosopher.attendancelogapp.R;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.databinding.FragmentTableBinding;
 import ru.technosopher.attendancelogapp.domain.entities.AttendanceEntity;
+import ru.technosopher.attendancelogapp.ui.group_manage.GroupManageFragment;
 import ru.technosopher.attendancelogapp.ui.utils.NavigationBarChangeListener;
 import ru.technosopher.attendancelogapp.ui.student_add.StudentAddFragment;
 import ru.technosopher.attendancelogapp.ui.utils.UpdateSharedPreferences;
@@ -39,8 +40,6 @@ public class TableFragment extends Fragment {
     private static final String KEY_ID = "TABLE_FRAGMENT";
     private FragmentTableBinding binding;
     private TableViewModel viewModel;
-
-    private Boolean buttonsState = true;
     private NavigationBarChangeListener navigationBarChangeListener;
 
     @Override
@@ -116,7 +115,7 @@ public class TableFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (view == null) return;
-                Navigation.findNavController(view).navigate(R.id.action_tableFragment_to_studentAddFragment, StudentAddFragment.getBundle(id));
+                Navigation.findNavController(view).navigate(R.id.action_tableFragment_to_groupManageFragment, GroupManageFragment.getBundle(id));
             }
         });
 
@@ -212,7 +211,15 @@ public class TableFragment extends Fragment {
                     binding.backWithoutLoading.setVisibility(View.GONE);
                     binding.tableErrorTv.setVisibility(View.GONE);
 
-                    if (state.getStudents().get(0).getAttendanceEntityList().isEmpty() && binding.dateHeaderSpinner.getSelectedIndex() == 0) {
+                    if (state.getStudents().isEmpty()){
+                        binding.buttonsAttPointsLayout.setVisibility(View.GONE);
+                        binding.tableHeader.setVisibility(View.GONE);
+                        binding.hsrStudentsTable.setVisibility(View.GONE);
+                        binding.studentsRv.setVisibility(View.GONE);
+                        binding.studentsEmptyLessonsRv.setVisibility(View.GONE);
+                        binding.tableErrorTv.setVisibility(View.VISIBLE);
+                        binding.tableErrorTv.setText("У вас пока нет учеников");
+                    } else if (state.getStudents().get(0).getAttendanceEntityList().isEmpty() && binding.dateHeaderSpinner.getSelectedIndex() == 0) {
                         binding.buttonsAttPointsLayout.setVisibility(View.GONE);
                         binding.tableHeader.setVisibility(View.GONE);
                         binding.hsrStudentsTable.setVisibility(View.GONE);

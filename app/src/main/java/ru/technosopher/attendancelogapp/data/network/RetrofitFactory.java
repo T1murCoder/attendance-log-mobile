@@ -1,6 +1,7 @@
 package ru.technosopher.attendancelogapp.data.network;
 
 import android.annotation.SuppressLint;
+import android.graphics.Paint;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -26,6 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import ru.technosopher.attendancelogapp.data.source.AttendanceApi;
 import ru.technosopher.attendancelogapp.data.source.CredentialsDataSource;
 import ru.technosopher.attendancelogapp.data.source.GroupApi;
+import ru.technosopher.attendancelogapp.data.source.JoinApi;
 import ru.technosopher.attendancelogapp.data.source.LessonApi;
 import ru.technosopher.attendancelogapp.data.source.QrCodeApi;
 import ru.technosopher.attendancelogapp.data.source.StudentApi;
@@ -78,6 +80,7 @@ public class RetrofitFactory {
     public LessonApi getLessonApi() { return retrofit.create(LessonApi.class); }
     public AttendanceApi getAttendanceApi() { return retrofit.create(AttendanceApi.class); }
     public QrCodeApi getQrCodeApi() { return retrofit.create(QrCodeApi.class); }
+    public JoinApi getJoinApi() { return retrofit.create(JoinApi.class); }
     public class DateTypeAdapter implements JsonDeserializer<GregorianCalendar>, JsonSerializer<GregorianCalendar> {
 
         @SuppressLint("SimpleDateFormat")

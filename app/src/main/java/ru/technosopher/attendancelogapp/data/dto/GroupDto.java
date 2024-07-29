@@ -11,12 +11,18 @@ public class GroupDto {
     @Nullable
     @SerializedName("id")
     public String id;
+
     @Nullable
     @SerializedName("name")
     public String name;
+
     @Nullable
     @SerializedName("studentList")
     public List<StudentItemDto> studentList;
+
+    @Nullable
+    @SerializedName("joinCode")
+    public String joinCode;
 
     public GroupDto(@Nullable String id, @Nullable String name, @Nullable List<StudentItemDto> studentList) {
         this.name = name;

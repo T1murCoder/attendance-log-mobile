@@ -30,7 +30,7 @@
         android:layout_gravity="center"
         android:fontFamily="@font/inter_regular"
         android:text="This is an error message"
-        android:textColor="@color/main_red"
+        android:textColor="@color/main_gray"
         android:textSize="18sp"
         android:visibility="gone" />
 
@@ -84,7 +84,7 @@
                         android:layout_height="50dp"
                         android:layout_weight="1"
                         android:background="@color/background_gray"
-                        android:src="@drawable/ic_student_add"
+                        android:src="@drawable/ic_group_management"
                         android:visibility="visible" />
                 </LinearLayout>
 
