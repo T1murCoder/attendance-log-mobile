@@ -78,15 +78,15 @@ public class GroupManageViewModel extends ViewModel {
 
     public void acceptStudent(@NonNull String id) {
         acceptStudentUseCase.execute(id, status -> {
-            if (status.getStatusCode() == 200) mutableInteractionLiveData.postValue("Ученик успешно добавлен");
+            if (status.getStatusCode() == 200) mutableInteractionLiveData.postValue("Заявка успешно принята");
             else mutableInteractionLiveData.postValue("Не получилось добавить ученика");
         });
     }
 
     public void declineStudent(@NonNull String id) {
         declineStudentUseCase.execute(id, status -> {
-            if (status.getStatusCode() == 200) mutableInteractionLiveData.postValue("Ученик успешно отклонен");
-            else mutableInteractionLiveData.postValue("Не получилось отклонить ученика");
+            if (status.getStatusCode() == 200) mutableInteractionLiveData.postValue("Заявка успешно отклонена");
+            else mutableInteractionLiveData.postValue("Не получилось отклонить заявку");
         });
     }
 
